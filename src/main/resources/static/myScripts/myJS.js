@@ -63,13 +63,13 @@ $(document).ready(function () {
 function buscarCEP() {
     var cepDigitado = document.getElementById('cep').value;
     $.ajax({
-       type: 'GET',
-       url:"/buscarCEP/"+cepDigitado,
-       success: function(htmlContent){
-           // o div #modalAddressContent é substituído pelo html que vem do return de /buscarCEP
-           // e os dados são extraídos dos atributos adicionados ao model, também em  /buscarCEP
-           $('#modalAddressContent').html(htmlContent);
-       }
+        type: 'GET',
+        url: "/buscarCEP/" + cepDigitado,
+        success: function (htmlContent) {
+            // o div #modalAddressContent é substituído pelo html que vem do return de /buscarCEP
+            // e os dados são extraídos dos atributos adicionados ao model, também em  /buscarCEP
+            $('#modalAddressContent').html(htmlContent);
+        }
     });
 }
 
