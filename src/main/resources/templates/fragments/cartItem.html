@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="<http://www.thymeleaf.org>"> 
+    <head>
+        <title>RFS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    </head>
+    <body>
+        <div th:fragment="cartItem(cartItem)">
+            <form id="formCartItem" th:action="@{/removeCartItem}" method="POST">
+                    <div class="row row-cols-1 w-100 pt-0 mt-0">
+                        <div class="col-12 w-100 text-start">
+                            <label class="fw-bold" for="description" th:text="${cartItem.title}">Item</label>
+                        </div>
+                        <div class="col-12 w-100 text-start">
+                            <textarea class="w-100 border-0" id="description" name="description" readonly
+                                      th:text="${cartItem.description}"></textarea>
+                        </div>
+                        <div class="row w-100 ms-0 me-0 justify-content-between">
+                            <div class="col-4 ps-0 pe-1 align-self-center">
+                                <div class="col-12 w-100 text-start">
+                                    <label class="fw-bold" for="amount">Quantidade</label>
+                                </div>
+                                <div class="col-12 w-100 text-end">
+                                    <input 
+                                        class="text-end border-0" 
+                                        type="text" 
+                                        id="amount" name="amount" 
+                                        readonly 
+                                        th:text="${cartItem.amount}"
+                                        style="width: 2em"/>
+                                </div>
+                            </div>
+                            <div class="col-4 ps-0 pe-0 align-self-center">
+                                <div class="col-12 w-100 text-end">
+                                    <label class="fw-bold" for="unitprice">Preço</label>
+                                </div>
+                                <div class="col-12 w-100 text-end">
+                                    <input class="border-0 text-end" 
+                                           type="text" 
+                                           id="unitprice" 
+                                           name="unitprice" 
+                                           th:text="${cartItem.unitPrice}"
+                                           style="width: 2em"
+                                           readonly/>
+                                </div>
+                            </div>
+                            <div class="col-4 ps-1 pe-0 align-self-center">
+                                <div class="col-12 w-100 text-end">
+                                    <label class="fw-bold" for="calcprice">Total</label>
+                                </div>
+                                <div class="col-12 w-100 text-end">
+                                    <input class="border-0 text-end"
+                                           type="text" 
+                                           id="calcprice" 
+                                           name="calcprice" 
+                                           th:text="${#numbers.formatDecimal(cartItem.amount*cartItem.unitPrice,1,2)}"
+                                           style="width: 2em"
+                                           readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 w-100 text-start">
+                            <label class="fw-bold" for="observations">Observações</label>
+                        </div>
+                        <div class="col-12 w-100 text-start">
+                            <textarea 
+                                class="w-100 border-0" 
+                                id="observations" 
+                                rows="2" 
+                                th:text="${cartItem.observations}"
+                                name="observations"
+                                readonly></textarea>
+                        </div>
+                        <input type="hidden" id="cartItemId" name="cartItemId" th:value="${cartItem.id}"/>
+                    </div>
+                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+            </form>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    </body>
+</html>

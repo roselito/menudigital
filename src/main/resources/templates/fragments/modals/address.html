@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="<http://www.thymeleaf.org>"> 
+    <head>
+        <title>RFS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    </head>
+    <body>
+        <div th:fragment="address">
+            <div class="modal" id="modalAddress" 
+                 tabindex="-1" 
+                 data-bs-backdrop="static"
+                 aria-labelledby="modalAddressLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" id="modalAddressContent">
+                        <div th:insert="~{:: addressContent}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div th:fragment="addressContent">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modalAddressLabel">Cliente</h1>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/login}" method="post">
+                                <div class="row row-cols-1">
+                                    <div class="col-12 w-100 text-start">
+                                        <label for="cep">CEP</label>
+                                    </div>
+                                    <div class="col-12 w-100">
+                                        <input class="w-100" type="text" 
+                                               name="cep" id="cep"
+                                               onblur="buscarCEP()"
+                                               th:value="${cep}"/>
+                                    </div>
+                                    <div class="col-12 w-100 text-start">
+                                        <label for="endereco">Endereço</label>
+                                    </div>
+                                    <div class="col-12 w-100">
+                                        <input class="w-100" type="text" 
+                                               name="endereco" id="endereco"
+                                               th:value="${endereco}"/>
+                                    </div>
+                                    <div class="col-12 w-100 text-start">
+                                        <label for="bairro">Bairro</label>
+                                    </div>
+                                    <div class="col-12 w-100">
+                                        <input class="w-100" type="text" 
+                                               name="bairro" id="bairro"
+                                               th:value="${bairro}"/>
+                                    </div>
+                                    <div class="col-12 w-100 text-start">
+                                        <label for="cidade">Cidade</label>
+                                    </div>
+                                    <div class="col-12 w-100">
+                                        <input class="w-100" type="text" 
+                                               name="cidade" id="cidade"
+                                               th:value="${cidade}"/>
+                                    </div>
+                                    <div class="col-12 w-100 text-start">
+                                        <label for="estado">Estado</label>
+                                    </div>
+                                    <div class="col-12 w-100">
+                                        <input class="w-100" type="text" 
+                                               name="estado" id="estado"
+                                               th:value="${estado}"/>
+                                    </div>
+                                    <div class="col-12 w-100 text-start mt-1">
+                                        <button type="submit" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    </body>
+</html>

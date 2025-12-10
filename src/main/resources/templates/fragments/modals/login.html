@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="<http://www.thymeleaf.org>"> 
+    <head>
+        <title>RFS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    </head>
+    <body>
+        <div th:fragment="login">
+            <div class="modal" id="modalLogin" 
+                 tabindex="-1" 
+                 data-bs-backdrop="static"
+                 aria-labelledby="modalLoginLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modalLoginLabel">Cliente</h1>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/login}" method="post">
+                                <div class="row row-cols-1">
+                                    <div class="col-12 w-100 text-start">
+                                        <label for="email">E-mail</label>
+                                    </div>
+                                    <div class="col-12 w-100">
+                                        <input class="w-100" type="text" name="email" id="email" />
+                                    </div>
+                                    <div class="col-12 w-100 text-start mt-1">
+                                        <button type="submit" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Entrar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 7 de dez. de 2025, 15:54:02
+    Author     : Roselito
+*/
+.no-decoration {
+    text-decoration: none !important;
+}
+.text-justify {
+    text-align: justify;
+}
+
+.text-truncate-3-lines {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limits text to 3 lines */
+    -webkit-box-orient: vertical;
+}
+
+textarea {
+  field-sizing: content; 
+}
