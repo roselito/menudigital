@@ -10,10 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-/**
- *
- * @author Roselito
- */
 @Data
 @Entity
 public class Customer {

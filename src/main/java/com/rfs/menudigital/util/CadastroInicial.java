@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.rfs.menudigital.repositories.ItensRepository;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class CadastroInicial {
 
