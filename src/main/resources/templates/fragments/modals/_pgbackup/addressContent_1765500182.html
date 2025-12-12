@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Blank Template for Bootstrap</title>
+        <!-- Bootstrap core CSS -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="style.css" rel="stylesheet">
+    </head>
+    <body class="mw-100">
+        <div class="container-fluid">
+            <div class="
+ align-content-center mh-100 modal mw-100 p-0 pg-show-modal vh-100" id="modal1" tabindex="-1" role="dialog" aria-hidden="true" th:value="{} th:value=" {}""> 
+                <div class="modal-dialog"> 
+                    <div class="modal-content mw-100"> 
+                        <div th:fragment="addressContent" data-pg-name="fragmentAddressContent">
+                            <div class="justify-content-center modal-header p-1 ps-2">
+                                <h4 class="bg-warning-subtle modal-title text-primary">Cadastro de endereço</h4> 
+                            </div>
+                            <div class="modal-body mw-100 p-1 ps-2 pe-2"> 
+                                <form class="col-12 mw-100" action="@{/login}" method="post" data-pg-name="formEndereco" id="formEndereco">
+                                    <fieldset class="col-12 mw-100">
+                                        <label class="fw-bold">CEP</label>
+                                        <input id="cep" data-pg-name="cep" class="col-12 mb-1 mw-100" onblur="buscarCEP()">
+                                    </fieldset>
+                                    <fieldset class="col-12 mw-100">
+                                        <label class="fw-bold mb-1">Endereço</label>
+                                        <input id="endereco" data-pg-name="endereco" class="col-12 mw-100" th:value="${endereco}">
+                                    </fieldset>
+                                    <fieldset class="col-12 mw-100">
+                                        <label class="fw-bold mb-1">Bairro</label>
+                                        <input id="bairro" data-pg-name="bairro" class="col-12 mw-100" th:value="${bairro}">
+                                    </fieldset>
+                                    <fieldset class="col-12 mw-100">
+                                        <label class="fw-bold mb-1">Cidade</label>
+                                        <input id="cidade" data-pg-name="cidade" class="col-12 mw-100" th:value="${cidade}">
+                                    </fieldset>
+                                    <fieldset class="col-12 mw-100">
+                                        <label class="fw-bold mb-1">Estado</label>
+                                        <input id="estado" data-pg-name="estado" class="col-12 mw-100" th:value="${estado}">
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="modal-footer p-1"> 
+                                <button type="reset" class="btn btn-danger btn-default btn-sm" data-bs-dismiss="modal" data-bs-toggle="modal">Cancelar</button>                                 
+                                <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="modal">Gravar</button>                                 
+                            </div>
+                        </div>                         
+                    </div>                     
+                </div>                 
+            </div>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="assets/js/popper.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+    </body>
+</html>

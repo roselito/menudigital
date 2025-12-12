@@ -15,7 +15,8 @@
     <body class="mw-100">
         <div class="container-fluid">
             <div th:fragment="address">
-                <div class="align-content-center mh-100 modal mw-100 p-0 pg-show-modal vh-100" id="modalAddress" tabindex="-1" role="dialog" aria-hidden="true" data-pg-name="modal"> 
+                <div class="
+ align-content-center mh-100 modal mw-100 p-0 pg-show-modal vh-100" id="modalAddress" tabindex="-1" role="dialog" aria-hidden="true" th:value="{} th:value=" {}"" data-pg-name="modal"> 
                     <div class="modal-dialog"> 
                         <div class="modal-content mw-100" id="modalAddressContent" data-pg-name="modalContent"> 
                             <div th:fragment="addressContent" data-pg-name="fragmentAddressContent">
@@ -23,7 +24,7 @@
                                     <h4 class="bg-warning-subtle modal-title text-primary">Cadastro de endereço</h4> 
                                 </div>
                                 <div class="modal-body mw-100 p-1 ps-2 pe-2"> 
-                                    <form class="col-12 mw-100 text-start" action="@{/login}" method="post" data-pg-name="formEndereco" id="formEndereco">
+                                    <form class="col-12 mw-100" action="@{/login}" method="post" data-pg-name="formEndereco" id="formEndereco">
                                         <fieldset class="col-12 mw-100">
                                             <label class="fw-bold">CEP</label>
                                             <input id="cep" data-pg-name="cep" class="col-12 mb-1 mw-100" onblur="buscarCEP()" th:value="${cep}">
