@@ -1,19 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author Roselito
  */
 package com.rfs.menudigital.util;
 
 import com.rfs.menudigital.models.Item;
-import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.rfs.menudigital.repositories.ItensRepository;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author rosel
- */
+
 @Component
 public class CadastroInicial {
 

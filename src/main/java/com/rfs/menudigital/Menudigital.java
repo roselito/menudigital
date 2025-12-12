@@ -1,5 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+/**
+ *
+ * @author Roselito
  */
 package com.rfs.menudigital;
 
@@ -8,10 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-/**
- *
- * @author rosel
- */
+
 @SpringBootApplication
 public class Menudigital {
 

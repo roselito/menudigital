@@ -1,6 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author Roselito
  */
 package com.rfs.menudigital.models;
 
@@ -12,10 +12,6 @@ import lombok.Data;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-/**
- *
- * @author Roselito
- */
 @Data
 @Entity
 public class Item {

@@ -1,11 +1,11 @@
+/**
+ *
+ * @author Roselito
+ */
 package com.rfs.menudigital.models;
 
 import lombok.Data;
 
-/**
- *
- * @author roselito
- */
 @Data
 public class Endereco {
     private String endereco;

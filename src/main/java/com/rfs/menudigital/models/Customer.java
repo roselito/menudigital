@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Roselito
+ */
 package com.rfs.menudigital.models;
 
 import jakarta.persistence.Entity;

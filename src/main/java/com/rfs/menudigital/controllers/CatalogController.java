@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ *
+ * @author Roselito
  */
 package com.rfs.menudigital.controllers;
 
 import com.rfs.menudigital.beans.UserSessionData;
 import com.rfs.menudigital.models.CartItem;
 import com.rfs.menudigital.models.Customer;
-import com.rfs.menudigital.models.Endereco;
 import com.rfs.menudigital.models.Item;
 import com.rfs.menudigital.repositories.CustomersRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +29,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
