@@ -109,12 +109,14 @@ public class CatalogController {
                     userSessionData.setCustomer(foundCustomer);
                     redirectAttributes.addFlashAttribute("successMessage", "Bem-vindo(a)!");
                 } else {
+                    userSessionData.setCustomer(null);
                     redirectAttributes.addFlashAttribute("errorMessage", "Senha incorreta!");
                 }
             } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
                 System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
         } else {
+            userSessionData.setCustomer(null);
             redirectAttributes.addFlashAttribute("errorMessage", "Cliente não encontrado!");
         }
         return retorno;

@@ -19,7 +19,7 @@
                         </div>
                         <div class="modal-body mt-0 pt-0">
                             <div th:each="cartItem : ${cart}">
-                                <div th:insert="~{fragments/cartItem :: cartItem(${cartItem})}"></div>
+                                <div th:replace="~{fragments/cartItem :: cartItem(${cartItem})}"></div>
                                 <hr>
                             </div>
                         </div>

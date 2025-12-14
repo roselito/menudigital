@@ -90,22 +90,10 @@ setTimeout(function () {
     }
 }, 5000);
 
-$(document).ready(function () {
-    $('.classes-botao').addClass('btn btn-sm d-inline-flex gap-2 lh-1 mb-auto me-2 ms-0 mt-0 pb-auto text-center');
-});
-
 function convertPtBrToEnUs(ptBrNumberString) {
-  // 1. Ensure the input is treated as a string
-  let cleanedString = String(ptBrNumberString);
-
-  // 2. Remove all thousand separators (points in pt-BR)
-  cleanedString = cleanedString.replace(/\./g, '');
-
-  // 3. Replace the decimal comma with a decimal point
-  cleanedString = cleanedString.replace(/,/g, '.');
-
-  // 4. Convert the cleaned string into a JavaScript number
-  const enUsNumber = Number(cleanedString);
-
-  return enUsNumber;
+    let cleanedString = String(ptBrNumberString);
+    cleanedString = cleanedString.replace(/\./g, '');
+    cleanedString = cleanedString.replace(/,/g, '.');
+    const enUsNumber = Number(cleanedString);
+    return enUsNumber;
 }

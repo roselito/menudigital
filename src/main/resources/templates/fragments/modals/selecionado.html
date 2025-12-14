@@ -67,9 +67,9 @@
                             <div class="bg-success-subtle justify-content-end modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer">
                                 <div class="col-12 pb-2 pe-0 ps-0 pt-0 text-end">
                                     <div th:replace="~{fragments/components/botoes :: 
-                                         botao(texto='Cancelar',imagem='bi-x-circle',cor='btn-danger',dismiss='modal')}" />
+                                         botao(texto='Cancelar',imagem='bi-x-circle',cor='btn-danger',dismiss='modal')}"></div>
                                     <div th:replace="~{fragments/components/botoes :: 
-                                         botao(tipo='submit',texto='Adicionar',imagem='bi-person-add',cor='btn-success')}" />
+                                         botao(tipo='submit',texto='Adicionar',imagem='bi-person-add',cor='btn-success')}"></div>
                                 </div>         
                             </div>     
                         </form>
@@ -77,7 +77,6 @@
                 </div>
             </div>
         </div>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     </body>
 </html>
