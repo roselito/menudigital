@@ -25,14 +25,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -77,13 +81,38 @@ public class CatalogController {
     }
 
     @PostMapping("/login")
-    public String logar(@RequestParam String email, Model model) {
+    public String logar(
+            @RequestParam String email,
+            @RequestParam String senha,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        String retorno = "redirect:/catalog";
+        userSessionData.setCustomer(new Customer());
         List<Customer> customers = customersRepository.findByEmail(email);
         if (!customers.isEmpty()) {
-            Customer foundCustomer = customers.get(0);
-            userSessionData.setCustomer(foundCustomer);
+            try {
+                Customer foundCustomer = customers.get(0);
+
+                MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
+                byte messageDigest[] = algorithm.digest(senha.getBytes("UTF-8"));
+                StringBuilder hexString = new StringBuilder();
+                for (byte b : messageDigest) {
+                    hexString.append(String.format("%02X", 0xFF & b));
+                }
+                String senhaCrypt = hexString.toString();
+                if (foundCustomer.getSenha().equals(senhaCrypt)) {
+                    userSessionData.setCustomer(foundCustomer);
+                    redirectAttributes.addFlashAttribute("successMessage", "Bem-vindo(a)!");
+                } else {
+                    redirectAttributes.addFlashAttribute("errorMessage", "Senha incorreta!");
+                }
+            } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
+                System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Cliente não encontrado!");
         }
-        return "redirect:/catalog";
+        return retorno;
     }
 
     @PostMapping("/logout")
@@ -178,7 +207,7 @@ public class CatalogController {
                 System.out.println(i);
                 System.out.println(array[i]);
             }
-            */
+             */
             if (array.length > 27) {
                 model.addAttribute("endereco", array[7]);
                 model.addAttribute("bairro", array[19]);

@@ -9,7 +9,7 @@
     </head>
     <body>
         <div class="container-fluid p-0 text-center ">
-            <div class="row align-items-center mt-1">
+            <div class="row align-items-center mt-1 mb-1">
                 <div class="col-6 text-start">
                     <span 
                         th:text="'Olá, '+${userName}"
@@ -30,11 +30,13 @@
                     <button 
                         th:if="${#strings.isEmpty(userName)}" 
                         type="button" 
-                        class="btn btn-primary btn-sm me-2" 
                         data-bs-toggle="modal" 
-                        data-bs-target="#modalAddress"
-                        th:text="Entrar">
+                        data-bs-target="#modalLogin"
+                        class="classes-botao btn-primary">
+                        <label>Entrar</label>
+                        <div th:insert="fragments/components/icones :: bi-box-arrow-in-right"/>
                     </button>
+
                     <form 
                         th:action="@{/logout}" 
                         th:unless="${#strings.isEmpty(userName)}" 
@@ -47,8 +49,21 @@
                     </form>
                 </div>
             </div>
-            <div class="row ms-1 me-1">
-                <div class="col-sm-6 p-0" th:each="item,i : ${itens}">
+
+            <div th:if="${errorMessage}" class="mensagem m-0 px-2 py-1">
+                <div class="alert alert-danger m-0 p-0">
+                    <p th:text="${errorMessage}" class="my-1 p-0" >Erro</p>
+                </div>            
+            </div>
+
+            <div th:if="${successMessage}" class="mensagem m-0 px-2 py-1">
+                <div class="alert alert-success m-0 p-0">
+                    <p th:text="${successMessage}" class="my-1 p-0">Sucesso</p>
+                </div>
+            </div>
+
+            <div class="m-0 mw-100 p-0 ps-1 row row-cols-1 row-cols-sm-2">
+                <div class="col-sm-6 m-0 mb-1 p-0 pe-1" th:each="item,i : ${itens}">
                     <div th:insert="~{fragments/cartao :: cartao(${item})}"></div>
                 </div>
             </div>
@@ -56,7 +71,8 @@
             <div th:insert="~{fragments/modals/carrinho :: carrinho}"></div>
             <div th:insert="~{fragments/modals/selecionado :: selecionado}"></div>
             <div th:insert="~{fragments/modals/login :: login}"></div>
-            <div th:insert="~{fragments/modals/address :: address}"></div>
+            <div th:insert="~{fragments/modals/address :: address}"></div>            
+
             <input type="hidden" id="closeModalCart" th:value="${closeModalCart}" />
 
         </div>

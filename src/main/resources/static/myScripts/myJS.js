@@ -23,10 +23,6 @@ $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal.find('#itemid').val(itemid);
 });
 
-//$('#modalSelecionado').on('hidden.bs.modal', function () {
-//    $(this).find('form')[0].reset();
-//});
-
 const formatter = new Intl.NumberFormat('en-US', {
     style: 'decimal', // or 'currency', 'percent'
     minimumFractionDigits: 2,
@@ -73,3 +69,19 @@ function buscarCEP() {
     });
 }
 
+setTimeout(function () {
+    var sucesso = document.querySelector('.alert-success');
+    var erro = document.querySelector('.alert-danger');
+    var mensagem = document.querySelector('.mensagem');
+    if (sucesso) {
+        sucesso.style.display = 'none';
+    }
+    if (erro) {
+        erro.style.display = 'none';
+    }
+    mensagem.style.display= 'none';
+}, 5000);
+
+$(document).ready(function(){
+    $('.classes-botao').addClass('btn btn-sm d-inline-flex gap-2 lh-1 mb-auto me-2 ms-0 mt-0 pb-auto text-center');
+});

@@ -12,69 +12,76 @@
                  data-bs-backdrop="static"
                  aria-labelledby="modalSelecionadoLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content mw-100" data-pg-name="content"> 
                         <form th:action="@{/addCartItem}" method="POST">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="modalSelecionadoLabel">Item selecionado</h1>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row row-cols-1 w-100">
-                                    <div class="col-12 w-100 text-start">
-                                        <label class="fw-bold" for="description" id="titlelabel">Item</label>
+                            <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
+                                <h1 class="modal-title fs-5">Item selecionado</h1> 
+                            </div>     
+                            <div class="bg-light modal-body p-2" data-pg-name="body">
+                                <form action=".">
+                                    <div class="col-12 m-0 p-0">
+                                        <label class="fs-5 fw-bold mb-2 w-100 text-start" id="titlelabel">Item 1</label>
+                                        <textarea class="border-0 mb-2 w-100" type="text" required="true" readonly 
+                                                  data-pg-name="textarea"
+                                                  id="description" name="description">Descrição</textarea>
                                     </div>
-                                    <div class="col-12 w-100 text-start">
-                                        <textarea class="w-100 border-0" id="description" name="description" readonly></textarea>
-                                    </div>
-                                    <div class="row w-100 ms-0 me-0 justify-content-between">
-                                        <div class="col-4 ps-0 pe-1 align-self-center">
-                                            <div class="col-12 w-100 text-start">
-                                                <label class="fw-bold" for="amount">Quantidade</label>
-                                            </div>
-                                            <div class="row w-100 ms-0 ps-0">
-                                                <button type="button" class="btn btn-outline-danger btn-sm fw-bold w-25" onclick="decreaseAmount()">
-                                                    <i class="bi bi-dash-lg" style="margin-left: -0.3em"></i></button>
-
-                                                <span class="w-50" id="amountlabel">amount</span>
-
-                                                <button type="button" class="btn btn-outline-success btn-sm fw-bold w-25" onclick="increaseAmount()">
-                                                    <i class="bi bi-plus-lg" style="margin-left: -0.3em"></i></button>
-
+                                    <div class="col-12 d-flex flex-row justify-content-between m-0 p-0">
+                                        <div class="align-content-between col-4 d-flex flex-column m-0 p-0 text-center">
+                                            <label class="fs-5 fw-semibold">Quantidade</label>
+                                            <div class="align-items-center col-4 
+                                                 d-flex flex-row justify-content-between 
+                                                 m-0 p-0 w-100">
+                                                <button type="button"  onclick="decreaseAmount()"
+                                                        class="align-self-center 
+                                                        bg-danger-subtle btn btn-light btn-outline-danger btn-sm 
+                                                        d-flex flex-column fs-1 fw-bolder 
+                                                        h-75 justify-content-center 
+                                                        lh-1 pb-1 pe-2 ps-2 pt-0 text-danger">-</button>
+                                                <label id="amountlabel" class="fs-4 fw-bolder text-end">12</label>
+                                                <button type="button"  onclick="increaseAmount()"
+                                                        class="align-self-center 
+                                                        bg-success-subtle btn btn-light btn-outline-success btn-sm 
+                                                        d-flex flex-column fs-1 fw-bolder 
+                                                        h-75 justify-content-center 
+                                                        lh-1 pb-1 pe-1 ps-1 pt-0 text-success">+</button>
                                             </div>
                                         </div>
-                                        <div class="col-4 ps-0 pe-0 align-self-center">
-                                            <div class="col-12 w-100 text-end">
-                                                <label class="fw-bold" for="unitprice">Preço</label>
-                                            </div>
-                                            <div class="col-12 w-100 text-end">
-                                                <input class="w-100 border-0 text-end" type="text" id="unitprice" name="unitprice" readonly />
-                                            </div>
+                                        <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
+                                            <label class="fs-5 fw-semibold text-end">Preço</label>
+                                            <label class="fs-4 fw-bolder mt-1 text-end" id="unitprice" name="unitprice">12,34</label>
                                         </div>
-                                        <div class="col-4 ps-1 pe-0 align-self-center">
-                                            <div class="col-12 w-100 text-end">
-                                                <label class="fw-bold" for="calcprice">Total</label>
-                                            </div>
-                                            <div class="col-12 w-100 text-end">
-                                                <input class="w-100 border-0 text-end" type="text" id="calcprice" name="calcprice" readonly/>
-                                            </div>
+                                        <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
+                                            <label class="fs-5 fw-semibold text-end">Total</label>
+                                            <label class="fs-4 fw-bolder mt-1 text-end" id="calcprice" name="calcprice">12,34</label>
                                         </div>
                                     </div>
-                                    <div class="col-12 w-100 text-start">
-                                        <label class="fw-bold" for="observations">Observações</label>
-                                    </div>
-                                    <div class="col-12 w-100 text-start">
-                                        <textarea class="w-100" id="observations" rows="2" name="observations"></textarea>
+                                    <div class="col-12 m-0 p-0">
+                                        <label class="fs-5 fw-bold mb-2 w-100 text-start">Observações</label>
+                                        <textarea class="mb-2 w-100"
+                                                  id="observations" name="observations"
+                                                  data-pg-name="textarea"></textarea>
                                     </div>
                                     <input type="hidden" id="itemid" name="itemid"/>
                                     <input type="hidden" id="title" name="title"/>
                                     <input type="hidden" id="amount" name="amount"/>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Adicionar</button>
-                            </div>
+                                </form>         
+                            </div>     
+                            <div class="bg-success-subtle justify-content-end modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer">
+                                <div class="col-12 pb-2 pe-0 ps-0 pt-0 text-end">
+                                    <button type="reset" data-bs-dismiss="modal"
+                                            class="classes-botao btn-danger">
+                                        <div th:insert="fragments/components/icones :: bi-x-circle"/>
+                                        <label>Cancelar</label>
+                                    </button>
+                                    <button type="submit" data-bs-dismiss="modal"
+                                            class="classes-botao btn-success">
+                                        <div th:insert="fragments/components/icones :: bi-person-add"/>
+                                        <label>Adicionar</label>
+                                    </button>
+                                </div>         
+                            </div>     
                         </form>
-                    </div>
+                    </div>                    
                 </div>
             </div>
         </div>

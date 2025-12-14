@@ -11,7 +11,7 @@
                  tabindex="-1" 
                  data-bs-backdrop="static"
                  aria-labelledby="modalLoginLabel" aria-hidden="true">
-                <div class="modal-dialog">
+<!--                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="modalLoginLabel">Cliente</h1>
@@ -32,7 +32,61 @@
                             </form>
                         </div>
                     </div>
+                </div>-->
+
+<div class="modal-dialog rounded rounded-3 shadow" data-pg-name="modalDialog">
+    <div class="col-12 modal-content mw-100" data-pg-name="content"> 
+        <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
+            <div class="col-12 p-0">
+                <p class="col-12 fs-3 fw-bold lh-1 modal-title pb-2 pe-2">Login</p>
+            </div>             
+        </div>         
+        <div class="bg-light col-12 modal-body pb-0 pe-0 ps-2 pt-2" data-pg-name="body">
+            <form th:action="@{/login}" method="post" class="col-12 lh-sm">
+                <div class="col-12 pb-2 pe-2">
+                    <label class="col-12 mb-2">E-mail</label>
+                    <input class="col-12" type="email" name="email" id="email" required>
                 </div>
+                <div class="col-12 pb-2 pe-2">
+                    <label class="col-12 mb-2 ">Senha</label>
+                    <input type="password" name="senha" id="senha" required class="col-12">
+                </div>
+                <div class="col-12 justify-content-end pb-2 pe-2 ps-0 pt-0 text-end">
+                    <button type="reset" class="btn btn-danger btn-sm d-inline-flex gap-2 lh-1 mb-auto ms-2 pb-auto text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16"> 
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/> 
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                        <label>Cancelar</label>
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm d-inline-flex gap-2 lh-1 mb-auto ms-2 pb-auto text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16"> 
+                            <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/> 
+                            <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                        </svg>
+                        <label>Entrar</label>
+                    </button>
+                </div>
+            </form>             
+        </div>         
+        <div class="bg-success-subtle justify-content-center modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer"> 
+            <div class="col-12 lh-1 pb-2 pe-2 ps-0 pt-0 text-center">
+                <label class="fs-6 fst-italic lh-1 p-0 text-center text-primary w-100">Não tem uma senha? Cadastre-se!
+</label>
+            </div>
+            <div class="col-12 lh-1 pb-2 pe-2 ps-0 pt-0 text-center">
+                <button type="submit" class="btn btn-sm btn-success d-inline-flex gap-2 lh-1 mb-auto me-2 ms-0 mt-0 pb-auto text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                        <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                    </svg>
+                    <label>Cadastrar</label>
+                </button>
+            </div>
+        </div>         
+    </div>     
+</div>
+                
             </div>
         </div>
 

@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="<http://www.thymeleaf.org>"> 
-    <head>
-        <title>RFS</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
-    </head>
+<html> 
     <body>
         <div th:fragment="cartao(itemCartao)">
             <a th:href="modalSelecionado" class="no-decoration" data-bs-toggle="modal" data-bs-target="#modalSelecionado"
@@ -15,33 +10,34 @@
                th:data-calcprice="${itemCartao.price}"
                th:data-itemid="${itemCartao.id}"
                >
-                <div class="card rounded-3 m-1 shadow">
-                    <div class="row row-cols-2 m-0">
-                        <div class="col-4 m-0 p-0">
-                            <img class="img-fluid h-100 rounded-start-3" src="/images/mandala09.jpg" />
+                <div class="card mw-100 p-0 rounded rounded-3 shadow">
+                    <div class="m-0 mw-100 p-0 row">
+
+                        <div class="align-content-center col-4 m-0 mw-100 p-1">
+                            <img class="card-img-top h-100 m-0 rounded" src="/images/mandala09.jpg" alt="Imagem">
                         </div>
-                        <div class="col-8">
-                            <div class="row row-cols-sm-1 row-cols-md-2 h-100">
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="d-flex col-12 align-self-start text-center fw-bold p-1">
-                                            <span class="w-100 bg-primary-subtle border border-primary-subtle rounded-3" th:text="${{itemCartao.title}}">Título</span>
-                                        </div>
-                                        <div class="col-12 align-self-start text-justify text-truncate-3-lines">
-                                            <span th:text="${itemCartao.description}">Descrição</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 align-self-end text-end">
-                                    <span class="text-secondary fw-bold" th:text="${{itemCartao.price}}">Preço</span>
-                                </div>
-                            </div>
+
+                        <div class="col-8 card-body 
+                             m-0 mw-100 p-0
+                             d-flex flex-column"> 
+                            <h6 th:text="${{itemCartao.title}}" 
+                                class="row bg-warning-subtle card-subtitle 
+                                fw-bold rounded rounded-2
+                                my-1 ms-0 me-1 mw-100 p-0 
+                                text-success">Card subtitle</h6> 
+                            <label th:text="${itemCartao.description}"
+                                   class="row card-text lh-1 
+                                   m-0 me-2
+                                   text-justify text-truncate-3-lines">Descrição</label>                     
+                            <label th:text="${{itemCartao.price}}" 
+                                   class="row d-flex fw-bold justify-content-end
+                                   m-0 mt-auto me-2 p-0 
+                                   text-success">Preço</label>
                         </div>
+
                     </div>
                 </div>
             </a>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     </body>
 </html>
