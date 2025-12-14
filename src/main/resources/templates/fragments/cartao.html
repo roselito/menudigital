@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
     <body>
-        <div th:fragment="cartao(itemCartao)">
+        <div th:fragment="cartao(itemCartao)" th:remove="tag">
             <a th:href="modalSelecionado" class="no-decoration" data-bs-toggle="modal" data-bs-target="#modalSelecionado"
                th:data-title="${itemCartao.title}"
                th:data-description="${itemCartao.description}"

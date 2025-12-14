@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <body>       
+        <div th:fragment="botao" 
+             th:with="
+             tipo=${tipo}?:'button',
+             cor=${cor}?:'btn-primary'             "
+             th:remove="tag">
+            <button th:type="${tipo}"
+                    th:data-bs-dismiss="${dismiss}"
+                    th:data-bs-toggle="${toggle}"
+                    th:data-bs-target="${target}"
+                    th:class="${'classes-botao '+cor}">
+                <i th:if="${imagem}" th:class="${'bi '+imagem}"></i>
+                <span th:text="${texto}" />
+                <i th:if="${revImagem}" th:class="${'bi '+imagem}"></i>
+            </button>
+        </div>
+    </body>
+</html>

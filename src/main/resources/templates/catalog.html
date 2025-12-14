@@ -18,25 +18,20 @@
                     </span>
                 </div>
                 <div class="col-6 d-flex flex-nowrap justify-content-end">
-                    <button 
-                        th:unless="${cart.isEmpty()}" 
-                        type="button" 
-                        class="btn btn-primary btn-sm me-1" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modalCart"
-                        style="width: fit-content;"
-                        th:text="Carrinho">
-                    </button>
-                    <button 
-                        th:if="${#strings.isEmpty(userName)}" 
-                        type="button" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#modalLogin"
-                        class="classes-botao btn-primary">
-                        <label>Entrar</label>
-                        <div th:insert="fragments/components/icones :: bi-box-arrow-in-right"/>
-                    </button>
-
+                    <div th:unless="${cart.isEmpty()}"
+                         th:insert="~{fragments/components/botoes :: 
+                         botao(texto='Carrinho',
+                         imagem='bi-cart',
+                         cor='btn-primary',
+                         toggle='modal',
+                         target='#modalCart')}" />
+                    <div th:if="${userName.isEmpty()}"
+                         th:insert="~{fragments/components/botoes :: 
+                         botao(texto='Entrar',
+                         imagem='bi-box-arrow-in-right',
+                         cor='btn-primary',
+                         toggle='modal',
+                         target='#modalLogin')}" />
                     <form 
                         th:action="@{/logout}" 
                         th:unless="${#strings.isEmpty(userName)}" 

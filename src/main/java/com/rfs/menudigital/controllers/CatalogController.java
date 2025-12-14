@@ -21,6 +21,7 @@ import com.rfs.menudigital.util.CadastroInicial;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import com.rfs.menudigital.repositories.ItensRepository;
+import com.rfs.menudigital.util.NumberConverter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +51,9 @@ public class CatalogController {
     UserSessionData userSessionData;
 
     @Autowired
+    NumberConverter numberConverter;
+
+    @Autowired
     CadastroInicial cadastroInicial;
 
     @Autowired
@@ -77,6 +81,7 @@ public class CatalogController {
         model.addAttribute("cart", cart);
         model.addAttribute("totalCarrinho", totalCarrinho);
         model.addAttribute("closeModalCart", userSessionData.getCloseModalCart());
+        System.out.println(cart);
         return "catalog";
     }
 
@@ -142,7 +147,7 @@ public class CatalogController {
         cartItem.setTitle(title);
         cartItem.setItemId(Integer.valueOf(itemid));
         cartItem.setAmount(Integer.valueOf(amount));
-        cartItem.setUnitPrice(Double.valueOf(unitprice));
+        cartItem.setUnitPrice(Double.valueOf(numberConverter.ptBrEnUs(unitprice)));
         cartItem.setObservations(observations);
         userSessionData.getCart().add(cartItem);
         return "redirect:/catalog";

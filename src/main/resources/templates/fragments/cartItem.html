@@ -6,7 +6,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
     </head>
     <body>
-        <div th:fragment="cartItem(cartItem)">
+        <div th:fragment="cartItem(cartItem)" th:remove="tag">
             <form id="formCartItem" th:action="@{/removeCartItem}" method="POST">
                     <div class="row row-cols-1 w-100 pt-0 mt-0">
                         <div class="col-12 w-100 text-start">
@@ -28,7 +28,7 @@
                                         id="amount" name="amount" 
                                         readonly 
                                         th:text="${cartItem.amount}"
-                                        style="width: 2em"/>
+                                        style="width: 2em" />
                                 </div>
                             </div>
                             <div class="col-4 ps-0 pe-0 align-self-center">
@@ -72,7 +72,7 @@
                                 name="observations"
                                 readonly></textarea>
                         </div>
-                        <input type="hidden" id="cartItemId" name="cartItemId" th:value="${cartItem.id}"/>
+                        <input type="hidden" id="cartItemId" name="cartItemId" th:value="${cartItem.id}" />
                     </div>
                 <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
             </form>

@@ -16,14 +16,20 @@ $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal.find('#amountlabel').text(amount);
 //    document.getElementById('amountlabel').textContent = amount;
     modal.find('#amount').val(amount);
-    modal.find('#unitprice').val(unitprice);
-    modal.find('#calcprice').val(calcprice);
+    modal.find('#unitprice').val(formatterBR.format(unitprice));
+    modal.find('#calcprice').val(formatterBR.format(calcprice));
     modal.find('#observations').text(observations);
 //    document.getElementById('itemid').value = itemid;
     modal.find('#itemid').val(itemid);
 });
 
 const formatter = new Intl.NumberFormat('en-US', {
+    style: 'decimal', // or 'currency', 'percent'
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+});
+
+const formatterBR = new Intl.NumberFormat('pt-BR', {
     style: 'decimal', // or 'currency', 'percent'
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
@@ -37,7 +43,7 @@ function decreaseAmount() {
     modal.find('#amount').val(valorAmount);
 //    document.getElementById('amountlabel').textContent = valorAmount;
     modal.find('#amountlabel').text(valorAmount);
-    modal.find('#calcprice').val(formatter.format(valorAmount * parseFloat(modal.find('#unitprice').val())));
+    modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
 }
 
 function increaseAmount() {
@@ -46,7 +52,7 @@ function increaseAmount() {
     modal.find('#amount').val(valorAmount);
 //    document.getElementById('amountlabel').textContent = valorAmount;
     modal.find('#amountlabel').text(valorAmount);
-    modal.find('#calcprice').val(formatter.format(valorAmount * parseFloat(modal.find('#unitprice').val())));
+    modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
 }
 
 $(document).ready(function () {
@@ -79,9 +85,27 @@ setTimeout(function () {
     if (erro) {
         erro.style.display = 'none';
     }
-    mensagem.style.display= 'none';
+    if (mensagem) {
+        mensagem.style.display = 'none';
+    }
 }, 5000);
 
-$(document).ready(function(){
+$(document).ready(function () {
     $('.classes-botao').addClass('btn btn-sm d-inline-flex gap-2 lh-1 mb-auto me-2 ms-0 mt-0 pb-auto text-center');
 });
+
+function convertPtBrToEnUs(ptBrNumberString) {
+  // 1. Ensure the input is treated as a string
+  let cleanedString = String(ptBrNumberString);
+
+  // 2. Remove all thousand separators (points in pt-BR)
+  cleanedString = cleanedString.replace(/\./g, '');
+
+  // 3. Replace the decimal comma with a decimal point
+  cleanedString = cleanedString.replace(/,/g, '.');
+
+  // 4. Convert the cleaned string into a JavaScript number
+  const enUsNumber = Number(cleanedString);
+
+  return enUsNumber;
+}
