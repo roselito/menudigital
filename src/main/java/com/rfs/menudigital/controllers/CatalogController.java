@@ -34,6 +34,7 @@ import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,6 +69,9 @@ public class CatalogController {
         if (itens.isEmpty()) {
             cadastroInicial.executar();
         }
+        if (userSessionData.getCustomer() == null) {
+            userSessionData.setCustomer(new Customer());
+        }
         Customer customer = userSessionData.getCustomer();
         List<CartItem> cart = userSessionData.getCart();
         Double totalCarrinho = 0.0;
@@ -75,11 +79,12 @@ public class CatalogController {
             totalCarrinho = cart.stream().mapToDouble(item
                     -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
         }
-        String userName = customer != null ? customer.getNome() : "";
+        String userName = customer != null ? customer.getNome() != null ? customer.getNome() : "" : "";
         model.addAttribute("itens", itens);
         model.addAttribute("userName", userName);
         model.addAttribute("cart", cart);
         model.addAttribute("totalCarrinho", totalCarrinho);
+        model.addAttribute("customer", userSessionData.getCustomer());
         model.addAttribute("closeModalCart", userSessionData.getCloseModalCart());
 //        System.out.println(cart);
         return "catalog";
@@ -125,6 +130,14 @@ public class CatalogController {
     @PostMapping("/logout")
     public String sair(Model model) {
         userSessionData.setCustomer(null);
+        return "redirect:/catalog";
+    }
+
+    @PostMapping("/gravarCadastro")
+    public String gravarCadastro(@ModelAttribute("customer") Customer customer) {
+        System.out.println(customer.getId());
+        System.out.println(customer.getNome());
+//        userSessionData.setCustomer(customer);
         return "redirect:/catalog";
     }
 

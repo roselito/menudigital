@@ -2,9 +2,7 @@
 <html>
     <body>       
         <div th:fragment="botao" 
-             th:with="
-             tipo=${tipo}?:'button',
-             cor=${cor}?:'btn-primary'             "
+             th:with="tipo=${tipo}?:'button',cor=${cor}?:'btn-primary'"
              th:remove="tag">
             <button th:type="${tipo}"
                     th:data-bs-dismiss="${dismiss}"
