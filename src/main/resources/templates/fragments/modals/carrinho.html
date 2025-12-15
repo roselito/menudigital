@@ -17,22 +17,25 @@
                             <h1 class="modal-title fs-5 text-center" id="modalCartLabel">Carrinho</h1>
                             <hr>
                         </div>
-                        <div class="modal-body mt-0 pt-0">
-                            <div th:each="cartItem : ${cart}">
-                                <div th:replace="~{fragments/cartItem :: cartItem(${cartItem})}"></div>
-                                <hr>
+                        <div id="cartItemsContent">
+                            <div class="modal-body mt-0 pt-0"  th:fragment="cartItems" >
+                                <div th:each="cartItem : ${cart}">
+                                    <div th:replace="~{fragments/cartItem :: cartItem(${cartItem})}"></div>
+                                    <hr>
+                                </div>
+                                <div class="modal-footer d-flex flex-nowrap m-0 p-0 ps-3">
+                                    <div class="col-6 d-inline-flex gap-2 flex-column bg-success-subtle">
+                                        <span class="fw-bolder fs-5">Total:</span>
+                                        <span
+                                            class="fw-bolder fs-5"
+                                            th:text="${#numbers.formatCurrency(totalCarrinho)}">0.00</span>
+                                    </div>
+                                    <div class="col-6 d-inline-flex gap-2 flex-column">
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Cardápio</button>
+                                        <button type="submit" class="btn btn-success btn-sm" data-bs-dismiss="modal">Pagamento</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <span
-                                class="fw-bolder"
-                                th:text="${'Total: '+#numbers.formatCurrency(totalCarrinho)}">0.00</span>
-                            <form 
-                                th:action="@{/closeModalCart}" 
-                                method="post">
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Cardápio</button>
-                            </form>
-                            <button type="submit" class="btn btn-success btn-sm" data-bs-dismiss="modal">Pagamento</button>
                         </div>
                     </div>
                 </div>

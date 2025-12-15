@@ -75,6 +75,16 @@ function buscarCEP() {
     });
 }
 
+function removerCartItem(id) {
+    $.ajax({
+        type: 'POST',
+        url: "/removeCartItem/" + id,
+        success: function (htmlContent) {
+            $('#cartItemsContent').html(htmlContent);
+        }
+    });
+}
+
 setTimeout(function () {
     var sucesso = document.querySelector('.alert-success');
     var erro = document.querySelector('.alert-danger');

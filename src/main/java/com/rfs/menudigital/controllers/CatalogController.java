@@ -81,7 +81,7 @@ public class CatalogController {
         model.addAttribute("cart", cart);
         model.addAttribute("totalCarrinho", totalCarrinho);
         model.addAttribute("closeModalCart", userSessionData.getCloseModalCart());
-        System.out.println(cart);
+//        System.out.println(cart);
         return "catalog";
     }
 
@@ -152,12 +152,13 @@ public class CatalogController {
         cartItem.setUnitPrice(Double.valueOf(numberConverter.ptBrEnUs(unitprice)));
         cartItem.setObservations(observations);
         userSessionData.getCart().add(cartItem);
+        userSessionData.setCloseModalCart("ocultar");
         return "redirect:/catalog";
     }
 
-    @PostMapping("/removeCartItem")
+    @PostMapping("/removeCartItem/{cartItemId}")
     public String removeCartItem(
-            @RequestParam String cartItemId,
+            @PathVariable String cartItemId,
             Model model) {
         Integer id = Integer.valueOf(cartItemId);
         if (userSessionData.getCart().isEmpty()) {
@@ -177,7 +178,14 @@ public class CatalogController {
         } else {
             userSessionData.setCloseModalCart("ocultar");
         }
-        return "redirect:/catalog";
+        Double totalCarrinho = 0.0;
+        if (!cart.isEmpty()) {
+            totalCarrinho = cart.stream().mapToDouble(item
+                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
+        }
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalCarrinho", totalCarrinho);
+        return "fragments/modals/carrinho :: cartItems";
     }
 
     @RequestMapping("/closeModalCart")
