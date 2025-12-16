@@ -18,21 +18,23 @@
                     </span>
                 </div>
                 <div class="d-flex flex-row justify-content-end">
-                    <div th:unless="${userName.isEmpty()}"
-                         th:insert="~{fragments/components/botoes :: 
-                         botao(texto='Cadastro',
-                         imagem='bi-person',
-                         cor='btn-primary',
-                         toggle='modal',
-                         target='#modalLogin')}" ></div>
-                    <div th:unless="${cart.isEmpty()}"
+                    <form th:unless="${#strings.isEmpty(userName)}"
+                          th:action="@{editarCadastro}"
+                          method="get">
+                        <div th:insert="~{fragments/components/botoes :: 
+                             botao(texto='Cadastro',
+                             tipo='submit',
+                             imagem='bi-person',
+                             cor='btn-primary')}" ></div>
+                    </form>
+                    <div th:unless="${#lists.isEmpty(cart)}"
                          th:insert="~{fragments/components/botoes :: 
                          botao(texto='Carrinho',
                          imagem='bi-cart',
                          cor='btn-primary',
                          toggle='modal',
                          target='#modalCart')}" ></div>
-                    <div th:if="${userName.isEmpty()}"
+                    <div th:if="${#strings.isEmpty(userName)}"
                          th:insert="~{fragments/components/botoes :: 
                          botao(texto='Entrar',
                          imagem='bi-box-arrow-in-right',
@@ -73,14 +75,25 @@
             <div th:insert="~{fragments/modals/carrinho :: carrinho}"></div>
             <div th:insert="~{fragments/modals/selecionado :: selecionado}"></div>
             <div th:insert="~{fragments/modals/login :: login}"></div>
-            <div th:insert="~{fragments/modals/address :: address}"></div>            
-            <div th:insert="~{fragments/modals/cadastro :: cadastro}"></div>            
-
-            <input type="hidden" id="closeModalCart" th:value="${closeModalCart}" />
+            <div th:insert="~{fragments/modals/address :: address}"></div>     
+            <div th:insert="~{fragments/modals/cadastro :: cadastro}"></div>
 
         </div>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" crossorigin="anonymous"></script>
         <script src="myScripts/myJS.js"></script>
+        <script th:inline="javascript" >
+            $(document).ready(function () {
+                if ([[${telaCadastro}]]) {
+                    $("#modalCadastro").modal("show");
+                    $('#toastErros').toast('show');
+                }
+            });
+//            const meuModalElement = document.getElementById('modalCadastro');
+//            meuModalElement.addEventListener('hidden.bs.modal', function (event) {
+//                window.location.href = 'catalog';
+//            });
+        </script>
     </body>
 </html>

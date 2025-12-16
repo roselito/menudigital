@@ -55,13 +55,6 @@ function increaseAmount() {
     modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
 }
 
-$(document).ready(function () {
-    var closeModalCart = document.getElementById('closeModalCart').value;
-    if (closeModalCart === "mostrar") {
-        $('#modalCart').modal('show');
-    }
-});
-
 function buscarCEP() {
     var cepDigitado = document.getElementById('cep').value;
     $.ajax({
@@ -107,3 +100,17 @@ function convertPtBrToEnUs(ptBrNumberString) {
     const enUsNumber = Number(cleanedString);
     return enUsNumber;
 }
+
+$(document).ready(function () {
+    var SPMaskBehavior = function (val) {
+        return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
+    };
+    spOptions = {
+        onKeyPress: function (val, e, field, options) {
+            field.mask(SPMaskBehavior.apply({}, arguments), options);
+        }
+    };
+    $('.cpfMask').mask('000.000.000-00');
+    $('.phoneMask').mask(SPMaskBehavior,spOptions);
+    $('.dateMask').mask('00/00/0000');
+});

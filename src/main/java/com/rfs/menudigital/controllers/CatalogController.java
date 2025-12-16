@@ -21,18 +21,20 @@ import com.rfs.menudigital.util.CadastroInicial;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import com.rfs.menudigital.repositories.ItensRepository;
+import com.rfs.menudigital.util.Crypt;
 import com.rfs.menudigital.util.NumberConverter;
+import jakarta.validation.Valid;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +65,9 @@ public class CatalogController {
     @Autowired
     private CustomersRepository customersRepository;
 
+    @Autowired
+    private Crypt crypt;
+
     @RequestMapping(value = "/catalog")
     public String mostrarCatalogo(HttpServletRequest request, Model model) {
         List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
@@ -72,21 +77,114 @@ public class CatalogController {
         if (userSessionData.getCustomer() == null) {
             userSessionData.setCustomer(new Customer());
         }
-        Customer customer = userSessionData.getCustomer();
+        Customer customerCadastro = userSessionData.getCustomer();
+        if (model.getAttribute("customer") != null) {
+            userSessionData.setCustomer((Customer) model.getAttribute("customer"));
+        }
+        if (model.getAttribute("customerCadastro") != null) {
+            customerCadastro = (Customer) model.getAttribute("customerCadastro");
+        }
         List<CartItem> cart = userSessionData.getCart();
         Double totalCarrinho = 0.0;
         if (!cart.isEmpty()) {
             totalCarrinho = cart.stream().mapToDouble(item
                     -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
         }
-        String userName = customer != null ? customer.getNome() != null ? customer.getNome() : "" : "";
+        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
         model.addAttribute("itens", itens);
         model.addAttribute("userName", userName);
         model.addAttribute("cart", cart);
         model.addAttribute("totalCarrinho", totalCarrinho);
-        model.addAttribute("customer", userSessionData.getCustomer());
-        model.addAttribute("closeModalCart", userSessionData.getCloseModalCart());
-//        System.out.println(cart);
+        model.addAttribute("customerCadastro", customerCadastro);
+        return "catalog";
+    }
+
+    @PostMapping("/gravarCadastro")
+    public String gravarCadastro(@Valid @ModelAttribute("customerCadastro") Customer customerCadastro, BindingResult result, Model model) {
+        Integer id = customerCadastro.getId();
+        String email = customerCadastro.getEmail();
+        String senha = customerCadastro.getSenha();
+        String senhaConf = customerCadastro.getSenhaConf();
+        senha = senha == null ? "" : senha;
+        senhaConf = senhaConf == null ? "" : senhaConf;
+        String retorno = "redirect:/catalog";
+        List<Customer> emails = customersRepository.findByEmail(email);
+        if ((id == null || (!senha.isEmpty() || !senhaConf.isEmpty()))) {
+            if (!senha.equals(senhaConf)) {
+                result.rejectValue("senha", "", "Senha e confirmação não estão iguais.");
+                result.rejectValue("senhaConf", "", "");
+            }
+            if (!senhaForte(senha)) {
+                result.rejectValue("senha", "", "Senha deve ter pelo menos 4 números e letras misturados.");
+            }
+        }
+        for (Customer c : emails) {
+            if (!c.getId().equals(id)){
+                result.rejectValue("email", "", "E-mail já cadastrado.");              
+            }
+        }
+        if (result.hasErrors()) {
+        List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
+        if (userSessionData.getCustomer() == null) {
+            userSessionData.setCustomer(new Customer());
+        }
+        if (model.getAttribute("customer") != null) {
+            userSessionData.setCustomer((Customer) model.getAttribute("customer"));
+        }
+        List<CartItem> cart = userSessionData.getCart();
+        Double totalCarrinho = 0.0;
+        if (!cart.isEmpty()) {
+            totalCarrinho = cart.stream().mapToDouble(item
+                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
+        }
+        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
+        model.addAttribute("itens", itens);
+        model.addAttribute("userName", userName);
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalCarrinho", totalCarrinho);
+        model.addAttribute("customerCadastro", customerCadastro);
+        model.addAttribute("telaCadastro", true);
+            model.addAttribute("errors", result.getFieldErrors());
+            retorno = "catalog";
+        } else {
+            if (!senha.isEmpty()){
+                customerCadastro.setSenha(crypt.SHA(senha, "SHA-256"));
+            } else {
+                Customer c = customersRepository.findById(id).get();
+                customerCadastro.setSenha(c.getSenha());
+            }
+            customersRepository.save(customerCadastro);
+            userSessionData.setCustomer(customerCadastro);
+        }
+        return retorno;
+    }
+
+    @GetMapping("/editarCadastro")
+    public String editarCadastro(Model model) {
+        List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
+        if (userSessionData.getCustomer() == null) {
+            userSessionData.setCustomer(new Customer());
+        }
+        if (model.getAttribute("customer") != null) {
+            userSessionData.setCustomer((Customer) model.getAttribute("customer"));
+        }
+        Customer customerCadastro = userSessionData.getCustomer();
+        if (model.getAttribute("customerCadastro") != null) {
+            customerCadastro = (Customer) model.getAttribute("customerCadastro");
+        }
+        List<CartItem> cart = userSessionData.getCart();
+        Double totalCarrinho = 0.0;
+        if (!cart.isEmpty()) {
+            totalCarrinho = cart.stream().mapToDouble(item
+                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
+        }
+        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
+        model.addAttribute("itens", itens);
+        model.addAttribute("userName", userName);
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalCarrinho", totalCarrinho);
+        model.addAttribute("customerCadastro", customerCadastro);
+        model.addAttribute("telaCadastro", true);
         return "catalog";
     }
 
@@ -100,25 +198,16 @@ public class CatalogController {
         userSessionData.setCustomer(new Customer());
         List<Customer> customers = customersRepository.findByEmail(email);
         if (!customers.isEmpty()) {
-            try {
-                Customer foundCustomer = customers.get(0);
-
-                MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
-                byte messageDigest[] = algorithm.digest(senha.getBytes("UTF-8"));
-                StringBuilder hexString = new StringBuilder();
-                for (byte b : messageDigest) {
-                    hexString.append(String.format("%02X", 0xFF & b));
-                }
-                String senhaCrypt = hexString.toString();
-                if (foundCustomer.getSenha().equals(senhaCrypt)) {
-                    userSessionData.setCustomer(foundCustomer);
-                    redirectAttributes.addFlashAttribute("successMessage", "Bem-vindo(a)!");
-                } else {
-                    userSessionData.setCustomer(null);
-                    redirectAttributes.addFlashAttribute("errorMessage", "Senha incorreta!");
-                }
-            } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
-                System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            Customer foundCustomer = customers.get(0);
+            String senhaCrypt = crypt.SHA(senha, "SHA-256");
+            System.out.println(senhaCrypt);
+            System.out.println(foundCustomer.getSenha());
+            if (foundCustomer.getSenha().equalsIgnoreCase(senhaCrypt)) {
+                userSessionData.setCustomer(foundCustomer);
+                redirectAttributes.addFlashAttribute("successMessage", "Bem-vindo(a)!");
+            } else {
+                userSessionData.setCustomer(null);
+                redirectAttributes.addFlashAttribute("errorMessage", "Senha incorreta!");
             }
         } else {
             userSessionData.setCustomer(null);
@@ -130,14 +219,6 @@ public class CatalogController {
     @PostMapping("/logout")
     public String sair(Model model) {
         userSessionData.setCustomer(null);
-        return "redirect:/catalog";
-    }
-
-    @PostMapping("/gravarCadastro")
-    public String gravarCadastro(@ModelAttribute("customer") Customer customer) {
-        System.out.println(customer.getId());
-        System.out.println(customer.getNome());
-//        userSessionData.setCustomer(customer);
         return "redirect:/catalog";
     }
 
@@ -165,7 +246,6 @@ public class CatalogController {
         cartItem.setUnitPrice(Double.valueOf(numberConverter.ptBrEnUs(unitprice)));
         cartItem.setObservations(observations);
         userSessionData.getCart().add(cartItem);
-        userSessionData.setCloseModalCart("ocultar");
         return "redirect:/catalog";
     }
 
@@ -186,11 +266,6 @@ public class CatalogController {
             }
         }
         userSessionData.setCart(new ArrayList<>(cart));
-        if (!userSessionData.getCart().isEmpty()) {
-            userSessionData.setCloseModalCart("mostrar");
-        } else {
-            userSessionData.setCloseModalCart("ocultar");
-        }
         Double totalCarrinho = 0.0;
         if (!cart.isEmpty()) {
             totalCarrinho = cart.stream().mapToDouble(item
@@ -199,13 +274,6 @@ public class CatalogController {
         model.addAttribute("cart", cart);
         model.addAttribute("totalCarrinho", totalCarrinho);
         return "fragments/modals/carrinho :: cartItems";
-    }
-
-    @RequestMapping("/closeModalCart")
-    public String closeModalCart(Model model
-    ) {
-        userSessionData.setCloseModalCart("ocultar");
-        return "redirect:/catalog";
     }
 
     @RequestMapping("/")
@@ -228,8 +296,7 @@ public class CatalogController {
             br.lines().forEach(l -> jsonSb.append(l.trim()));
             json = jsonSb.toString();
             json = json.replaceAll("[{},:]", "").replaceAll("\"", "\n");
-            String array[] = new String[30];
-            array = json.split("\n");
+            String array[] =  json.split("\n");
             /*
             for (int i = 0; i < array.length; i++) {
                 System.out.println(i);
@@ -248,5 +315,13 @@ public class CatalogController {
             System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return "fragments/modals/address :: addressContent";
+    }
+
+    public boolean senhaForte(String senha) {
+        // a expressão mais completa:
+        // "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"
+        Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)[A-Za-z\\d]{4,}$");
+        Matcher m = p.matcher(senha);
+        return m.matches();
     }
 }

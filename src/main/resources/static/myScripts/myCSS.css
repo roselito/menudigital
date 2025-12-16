@@ -19,3 +19,13 @@
 textarea {
   field-sizing: content; 
 }
+
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.fieldError {
+   border-color: red;
+   color: red;
+}

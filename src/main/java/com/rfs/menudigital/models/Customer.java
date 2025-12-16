@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
@@ -25,4 +26,6 @@ public class Customer {
     private String cidade;
     private String telefone;
     private String email;
+    @Transient
+    private String senhaConf;
 }

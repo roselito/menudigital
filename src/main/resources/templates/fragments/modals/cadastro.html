@@ -1,35 +1,60 @@
 <!DOCTYPE html>
 <html>
     <div th:fragment="cadastro" th:remove="tag">
-        <div class="align-content-center h-auto modal pg-show-modal w-100" id="modalCadastro" tabindex="-1" role="dialog" aria-hidden="true" data-pg-name="modal"> 
+        <div class="align-content-center h-auto modal pg-show-modal w-100" id="modalCadastro" tabindex="-1" role="dialog" data-pg-name="modal"> 
             <div class="modal-dialog rounded rounded-3 shadow" data-pg-name="modalDialog"> 
                 <div class="modal-content mw-100" data-pg-name="content"> 
                     <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
                         <h4 class="modal-title">Cadastro</h4> 
                     </div>             
-                    <form th:action="@{/gravarCadastro}"th:object="${customer}" method="post" >
+                    <form th:action="@{/gravarCadastro}" th:object="${customerCadastro}" method="post" >
                         <div class="bg-light modal-body p-2 d-flex flex-column text-start" data-pg-name="body">
                             <label class="mb-2 w-100">Nome</label>
-                            <input class="mb-2 w-100" type="text" required="true" th:field="*{nome}" name="nome" >
-                            <label class="mb-2 w-100">E-mail</label>
-                            <input class="mb-2 w-100" type="email" required th:field="*{email}" name="email">
+                            <input class="mb-2 w-100" type="text" required="true" th:field="*{nome}" id="nome" >
+                            <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('email')} ? 'fieldError' : ''">E-mail</label>
+                            <input class="mb-2 w-100" type="email" required th:field="*{email}" id="email" th:errorclass="fieldError">
                             <label class="mb-2 w-100">Telefone</label>
-                            <input class=" w-100" type="text" required th:field="*{telefone}" name="telefone">
-                        </div>             
+                            <input class="mb-2 w-100 phoneMask" type="text" required th:field="*{telefone}" id="telefone">
+                            <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senha')} ? 'fieldError' : ''" >Senha com 4 letras e números misturados</label>
+                            <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senha}" id="senha"  th:errorclass="fieldError">
+                            <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senhaConf')} ? 'fieldError' : ''" >Repita a senha</label>
+                            <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senhaConf}" id="senhaConf" th:errorclass="fieldError">
+                            <input type="hidden" th:field="*{id}" name="id" ></input>
+                        </div>              
                         <div class="bg-success-subtle modal-footer text-end pt-2 pe-0" data-pg-name="footer">
+
                             <div th:replace="~{fragments/components/botoes :: 
                                  botao(texto='Cancelar',
-                                 tipo='reset',
+                                 tipo='button',
                                  imagem='bi-x-circle',
                                  cor='btn-danger',
-                                 dismiss='modal')}" ></div>                            
+                                 dismiss='modal')}" ></div>      
+
                             <div th:replace="~{fragments/components/botoes :: 
                                  botao(texto='Gravar',
                                  tipo='submit',
                                  imagem='bi-x-circle',
                                  cor='btn-success')}" ></div>                            
                         </div>             
-                    </form>                 
+                        <div th:if="${#fields.hasErrors()}" 
+                             class="toast" id="toastErros" 
+                             data-bs-delay="10000"
+                             style="position: absolute; top: 10px;">
+                            <div class="toast-header">
+                                <strong class="me-auto"><i class="bi-x-circle"></i> Erros encontrados!</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                            </div>
+                            <div class="toast-body">
+                                <ul class="list-group">
+                                    <div th:each="err : ${#fields.errors()}">
+                                        <li th:unless="${err.isEmpty()}" class="list-group-item text-danger text-start fw-bold" >
+                                            <span th:text="${err}"></span>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>         
                 </div>         
             </div>     
         </div>

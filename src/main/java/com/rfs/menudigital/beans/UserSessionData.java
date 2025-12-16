@@ -19,5 +19,4 @@ import org.springframework.web.context.WebApplicationContext;
 public class UserSessionData {
     private Customer customer;
     private List<CartItem> cart = new ArrayList();
-    private String closeModalCart = "ocultar";
 }
