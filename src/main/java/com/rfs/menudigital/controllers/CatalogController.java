@@ -62,7 +62,7 @@ public class CatalogController {
     private CustomersRepository customersRepository;
     @Autowired
     private Crypt crypt;
-
+    
     @RequestMapping(value = "/catalog")
     public String mostrarCatalogo(HttpServletRequest request, Model model) {
         atualizarModelCatalogo(model);
@@ -76,11 +76,11 @@ public class CatalogController {
     
     @GetMapping("/editarCadastro")
     public String editarCadastro(Model model) {
-        atualizarModelCatalogo(model);
+//        atualizarModelCatalogo(model);
         Customer customerCadastro = userSessionData.getCustomer();
         model.addAttribute("customerCadastro", customerCadastro);
         model.addAttribute("telaCadastro", true);
-        return "catalog";
+        return "fragments/modals/cadastro :: cadastroContent";
     }
 
     @PostMapping("/gravarCadastro")
@@ -108,7 +108,7 @@ public class CatalogController {
             }
         }
         if (result.hasErrors()) {
-            atualizarModelCatalogo(model);
+//            atualizarModelCatalogo(model);
             model.addAttribute("customerCadastro", customerCadastro);
             model.addAttribute("telaCadastro", true);
             model.addAttribute("errors", result.getFieldErrors());
@@ -129,16 +129,16 @@ public class CatalogController {
 
     @PostMapping("/login")
     public String logar(
-            @RequestParam String email,
-            @RequestParam String senha,
+            @RequestParam String emailLogin,
+            @RequestParam String senhaLogin,
             Model model,
             RedirectAttributes redirectAttributes) {
         String retorno = "redirect:/catalog";
         userSessionData.setCustomer(new Customer());
-        List<Customer> customers = customersRepository.findByEmail(email);
+        List<Customer> customers = customersRepository.findByEmail(emailLogin);
         if (!customers.isEmpty()) {
             Customer foundCustomer = customers.get(0);
-            String senhaCrypt = crypt.SHA(senha, "SHA-256");
+            String senhaCrypt = crypt.SHA(senhaLogin, "SHA-256");
             if (foundCustomer.getSenha().equalsIgnoreCase(senhaCrypt)) {
                 userSessionData.setCustomer(foundCustomer);
                 redirectAttributes.addFlashAttribute("successMessage", "Bem-vindo(a)!");

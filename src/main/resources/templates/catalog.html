@@ -18,15 +18,12 @@
                     </span>
                 </div>
                 <div class="d-flex flex-row justify-content-end">
-                    <form th:unless="${#strings.isEmpty(userName)}"
-                          th:action="@{editarCadastro}"
-                          method="get">
-                        <div th:insert="~{fragments/components/botoes :: 
+
+                        <div th:unless="${#strings.isEmpty(userName)}" th:insert="~{fragments/components/botoes :: 
                              botao(texto='Cadastro',
-                             tipo='submit',
+                             onclick='editarCustomer()',
                              imagem='bi-person',
                              cor='btn-primary')}" ></div>
-                    </form>
                     <div th:unless="${#lists.isEmpty(cart)}"
                          th:insert="~{fragments/components/botoes :: 
                          botao(texto='Carrinho',
@@ -85,15 +82,12 @@
         <script src="myScripts/myJS.js"></script>
         <script th:inline="javascript" >
             $(document).ready(function () {
-                if ([[${telaCadastro}]]) {
+                console.log([[${errors}]]);
+                if ([[${errors}]]) {
                     $("#modalCadastro").modal("show");
                     $('#toastErros').toast('show');
                 }
             });
-//            const meuModalElement = document.getElementById('modalCadastro');
-//            meuModalElement.addEventListener('hidden.bs.modal', function (event) {
-//                window.location.href = 'catalog';
-//            });
         </script>
     </body>
 </html>

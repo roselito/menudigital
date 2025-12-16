@@ -61,12 +61,29 @@ function buscarCEP() {
         type: 'GET',
         url: "/buscarCEP/" + cepDigitado,
         success: function (htmlContent) {
+            // div #modalAddressContent engloba o div do fragmento que o backend vai retornar
             // o div #modalAddressContent é substituído pelo html que vem do return de /buscarCEP
             // e os dados são extraídos dos atributos adicionados ao model, também em  /buscarCEP
             $('#modalAddressContent').html(htmlContent);
         }
     });
 }
+
+function editarCustomer() {
+    $.ajax({
+        type: 'GET',
+        url: "/editarCadastro",
+        success: function (htmlContent) {
+            $('#modalCadastroContent').html(htmlContent);
+            $('#modalCadastro').modal('show');
+        }
+    });
+}
+
+function cancelaCadastro() {
+    window.location.href = 'catalog';
+}
+
 
 function removerCartItem(id) {
     $.ajax({
@@ -111,6 +128,6 @@ $(document).ready(function () {
         }
     };
     $('.cpfMask').mask('000.000.000-00');
-    $('.phoneMask').mask(SPMaskBehavior,spOptions);
+    $('.phoneMask').mask(SPMaskBehavior, spOptions);
     $('.dateMask').mask('00/00/0000');
 });
