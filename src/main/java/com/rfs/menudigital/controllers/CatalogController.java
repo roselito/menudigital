@@ -52,49 +52,24 @@ public class CatalogController {
 
     @Autowired
     UserSessionData userSessionData;
-
     @Autowired
     NumberConverter numberConverter;
-
     @Autowired
     CadastroInicial cadastroInicial;
-
     @Autowired
     private ItensRepository itensRepository;
-
     @Autowired
     private CustomersRepository customersRepository;
-
     @Autowired
     private Crypt crypt;
 
     @RequestMapping(value = "/catalog")
     public String mostrarCatalogo(HttpServletRequest request, Model model) {
-        List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
-        if (itens.isEmpty()) {
-            cadastroInicial.executar();
-        }
-        if (userSessionData.getCustomer() == null) {
-            userSessionData.setCustomer(new Customer());
-        }
+        atualizarModelCatalogo(model);
         Customer customerCadastro = userSessionData.getCustomer();
-        if (model.getAttribute("customer") != null) {
-            userSessionData.setCustomer((Customer) model.getAttribute("customer"));
-        }
         if (model.getAttribute("customerCadastro") != null) {
             customerCadastro = (Customer) model.getAttribute("customerCadastro");
         }
-        List<CartItem> cart = userSessionData.getCart();
-        Double totalCarrinho = 0.0;
-        if (!cart.isEmpty()) {
-            totalCarrinho = cart.stream().mapToDouble(item
-                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
-        }
-        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
-        model.addAttribute("itens", itens);
-        model.addAttribute("userName", userName);
-        model.addAttribute("cart", cart);
-        model.addAttribute("totalCarrinho", totalCarrinho);
         model.addAttribute("customerCadastro", customerCadastro);
         return "catalog";
     }
@@ -119,35 +94,18 @@ public class CatalogController {
             }
         }
         for (Customer c : emails) {
-            if (!c.getId().equals(id)){
-                result.rejectValue("email", "", "E-mail já cadastrado.");              
+            if (!c.getId().equals(id)) {
+                result.rejectValue("email", "", "E-mail já cadastrado.");
             }
         }
         if (result.hasErrors()) {
-        List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
-        if (userSessionData.getCustomer() == null) {
-            userSessionData.setCustomer(new Customer());
-        }
-        if (model.getAttribute("customer") != null) {
-            userSessionData.setCustomer((Customer) model.getAttribute("customer"));
-        }
-        List<CartItem> cart = userSessionData.getCart();
-        Double totalCarrinho = 0.0;
-        if (!cart.isEmpty()) {
-            totalCarrinho = cart.stream().mapToDouble(item
-                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
-        }
-        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
-        model.addAttribute("itens", itens);
-        model.addAttribute("userName", userName);
-        model.addAttribute("cart", cart);
-        model.addAttribute("totalCarrinho", totalCarrinho);
-        model.addAttribute("customerCadastro", customerCadastro);
-        model.addAttribute("telaCadastro", true);
+            atualizarModelCatalogo(model);
+            model.addAttribute("customerCadastro", customerCadastro);
+            model.addAttribute("telaCadastro", true);
             model.addAttribute("errors", result.getFieldErrors());
             retorno = "catalog";
         } else {
-            if (!senha.isEmpty()){
+            if (!senha.isEmpty()) {
                 customerCadastro.setSenha(crypt.SHA(senha, "SHA-256"));
             } else {
                 Customer c = customersRepository.findById(id).get();
@@ -161,28 +119,8 @@ public class CatalogController {
 
     @GetMapping("/editarCadastro")
     public String editarCadastro(Model model) {
-        List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
-        if (userSessionData.getCustomer() == null) {
-            userSessionData.setCustomer(new Customer());
-        }
-        if (model.getAttribute("customer") != null) {
-            userSessionData.setCustomer((Customer) model.getAttribute("customer"));
-        }
+        atualizarModelCatalogo(model);
         Customer customerCadastro = userSessionData.getCustomer();
-        if (model.getAttribute("customerCadastro") != null) {
-            customerCadastro = (Customer) model.getAttribute("customerCadastro");
-        }
-        List<CartItem> cart = userSessionData.getCart();
-        Double totalCarrinho = 0.0;
-        if (!cart.isEmpty()) {
-            totalCarrinho = cart.stream().mapToDouble(item
-                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
-        }
-        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
-        model.addAttribute("itens", itens);
-        model.addAttribute("userName", userName);
-        model.addAttribute("cart", cart);
-        model.addAttribute("totalCarrinho", totalCarrinho);
         model.addAttribute("customerCadastro", customerCadastro);
         model.addAttribute("telaCadastro", true);
         return "catalog";
@@ -200,8 +138,6 @@ public class CatalogController {
         if (!customers.isEmpty()) {
             Customer foundCustomer = customers.get(0);
             String senhaCrypt = crypt.SHA(senha, "SHA-256");
-            System.out.println(senhaCrypt);
-            System.out.println(foundCustomer.getSenha());
             if (foundCustomer.getSenha().equalsIgnoreCase(senhaCrypt)) {
                 userSessionData.setCustomer(foundCustomer);
                 redirectAttributes.addFlashAttribute("successMessage", "Bem-vindo(a)!");
@@ -296,7 +232,7 @@ public class CatalogController {
             br.lines().forEach(l -> jsonSb.append(l.trim()));
             json = jsonSb.toString();
             json = json.replaceAll("[{},:]", "").replaceAll("\"", "\n");
-            String array[] =  json.split("\n");
+            String array[] = json.split("\n");
             /*
             for (int i = 0; i < array.length; i++) {
                 System.out.println(i);
@@ -323,5 +259,26 @@ public class CatalogController {
         Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)[A-Za-z\\d]{4,}$");
         Matcher m = p.matcher(senha);
         return m.matches();
+    }
+
+    public void atualizarModelCatalogo(Model model) {
+        List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
+        if (itens.isEmpty()) {
+            cadastroInicial.executar();
+        }
+        if (userSessionData.getCustomer() == null) {
+            userSessionData.setCustomer(new Customer());
+        }
+        List<CartItem> cart = userSessionData.getCart();
+        Double totalCarrinho = 0.0;
+        if (!cart.isEmpty()) {
+            totalCarrinho = cart.stream().mapToDouble(item
+                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
+        }
+        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
+        model.addAttribute("itens", itens);
+        model.addAttribute("userName", userName);
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalCarrinho", totalCarrinho);
     }
 }
