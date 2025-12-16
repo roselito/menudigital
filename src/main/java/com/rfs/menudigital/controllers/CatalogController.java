@@ -73,6 +73,15 @@ public class CatalogController {
         model.addAttribute("customerCadastro", customerCadastro);
         return "catalog";
     }
+    
+    @GetMapping("/editarCadastro")
+    public String editarCadastro(Model model) {
+        atualizarModelCatalogo(model);
+        Customer customerCadastro = userSessionData.getCustomer();
+        model.addAttribute("customerCadastro", customerCadastro);
+        model.addAttribute("telaCadastro", true);
+        return "catalog";
+    }
 
     @PostMapping("/gravarCadastro")
     public String gravarCadastro(@Valid @ModelAttribute("customerCadastro") Customer customerCadastro, BindingResult result, Model model) {
@@ -117,14 +126,6 @@ public class CatalogController {
         return retorno;
     }
 
-    @GetMapping("/editarCadastro")
-    public String editarCadastro(Model model) {
-        atualizarModelCatalogo(model);
-        Customer customerCadastro = userSessionData.getCustomer();
-        model.addAttribute("customerCadastro", customerCadastro);
-        model.addAttribute("telaCadastro", true);
-        return "catalog";
-    }
 
     @PostMapping("/login")
     public String logar(
