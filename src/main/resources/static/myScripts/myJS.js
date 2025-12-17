@@ -14,12 +14,10 @@ $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal.find('#title').val(title);
     modal.find('#titlelabel').text(title);
     modal.find('#amountlabel').text(amount);
-//    document.getElementById('amountlabel').textContent = amount;
     modal.find('#amount').val(amount);
     modal.find('#unitprice').val(formatterBR.format(unitprice));
     modal.find('#calcprice').val(formatterBR.format(calcprice));
     modal.find('#observations').text(observations);
-//    document.getElementById('itemid').value = itemid;
     modal.find('#itemid').val(itemid);
 });
 
@@ -41,7 +39,6 @@ function decreaseAmount() {
         valorAmount = valorAmount - 1;
     }
     modal.find('#amount').val(valorAmount);
-//    document.getElementById('amountlabel').textContent = valorAmount;
     modal.find('#amountlabel').text(valorAmount);
     modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
 }
@@ -50,7 +47,6 @@ function increaseAmount() {
     var valorAmount = parseInt(modal.find('#amount').val());
     valorAmount = valorAmount + 1;
     modal.find('#amount').val(valorAmount);
-//    document.getElementById('amountlabel').textContent = valorAmount;
     modal.find('#amountlabel').text(valorAmount);
     modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
 }
@@ -83,7 +79,6 @@ function editarCustomer() {
 function cancelaCadastro() {
     window.location.href = 'catalog';
 }
-
 
 function removerCartItem(id) {
     $.ajax({
