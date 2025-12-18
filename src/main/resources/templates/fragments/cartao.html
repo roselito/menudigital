@@ -14,9 +14,10 @@
                     <div class="m-0 mw-100 p-0 row">
 
                         <div class="align-content-center col-4 m-0 mw-100 p-1">
-                            <img class="card-img-top h-100 m-0 rounded" src="/images/mandala09.jpg" alt="Imagem">
+                            <img th:src="@{'data:image/jpeg;base64,' + ${itemCartao.generateBase64Image()}}" 
+                                 class="card-img-top h-100 m-0 rounded" alt="Imagem" >
+                            <!--<img class="card-img-top h-100 m-0 rounded" src="/images/mandala09.jpg" alt="Imagem">-->
                         </div>
-
                         <div class="col-8 card-body 
                              m-0 mw-100 p-0
                              d-flex flex-column"> 

@@ -11,6 +11,7 @@ import lombok.Data;
 
 @Data
 public class CartItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,4 +22,5 @@ public class CartItem {
     private Integer amount;
     private Double unitPrice;
     private String observations;
+
 }
