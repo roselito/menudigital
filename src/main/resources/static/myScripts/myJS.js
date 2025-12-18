@@ -76,8 +76,15 @@ function editarCustomer() {
     });
 }
 
-function cancelaCadastro() {
-    window.location.href = 'catalog';
+function voltarTela() {
+            window.history.back();
+//    $.ajax({
+//        type: 'GET',
+//        url: "/catalog",
+//        success: function (htmlContent) {
+//            window.location.href = 'catalog';
+//        }
+//    });
 }
 
 function removerCartItem(id) {

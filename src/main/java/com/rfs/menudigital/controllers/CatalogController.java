@@ -32,6 +32,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -62,6 +64,12 @@ public class CatalogController {
     private CustomersRepository customersRepository;
     @Autowired
     private Crypt crypt;
+
+    @GetMapping("/favicon.ico")
+    @ResponseBody
+    public void dummyFavicon() {
+        // empty body to avoid get favicon.ico error in js console
+    }    
     
     @RequestMapping(value = "/catalog")
     public String mostrarCatalogo(HttpServletRequest request, Model model) {
@@ -73,14 +81,13 @@ public class CatalogController {
         model.addAttribute("customerCadastro", customerCadastro);
         return "catalog";
     }
-    
+
     @GetMapping("/editarCadastro")
     public String editarCadastro(Model model) {
-//        atualizarModelCatalogo(model);
         Customer customerCadastro = userSessionData.getCustomer();
         model.addAttribute("customerCadastro", customerCadastro);
-        model.addAttribute("telaCadastro", true);
-        return "fragments/modals/cadastro :: cadastroContent";
+        model.addAttribute("modais", Arrays.asList("#modalCadastro"));
+        return "catalog";
     }
 
     @PostMapping("/gravarCadastro")
@@ -108,9 +115,8 @@ public class CatalogController {
             }
         }
         if (result.hasErrors()) {
-//            atualizarModelCatalogo(model);
             model.addAttribute("customerCadastro", customerCadastro);
-            model.addAttribute("telaCadastro", true);
+            model.addAttribute("modais", Arrays.asList("#modalCadastro"));
             model.addAttribute("errors", result.getFieldErrors());
             retorno = "catalog";
         } else {
@@ -126,7 +132,12 @@ public class CatalogController {
         return retorno;
     }
 
-
+    @GetMapping("/telaLogin")
+    public String telaLogin(Model model) {
+        model.addAttribute("modais", Arrays.asList("#modalLogin"));
+        return "catalog";
+    }    
+    
     @PostMapping("/login")
     public String logar(
             @RequestParam String emailLogin,

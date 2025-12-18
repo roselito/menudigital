@@ -7,7 +7,7 @@
     </head>
     <body>
         <div th:fragment="selecionado" th:remove="tag">
-            <div class="modal" id="modalSelecionado" 
+            <div class="modal pe-2" id="modalSelecionado" 
                  tabindex="-1" 
                  data-bs-backdrop="static"
                  aria-labelledby="modalSelecionadoLabel" >
@@ -67,7 +67,7 @@
                             <div class="bg-success-subtle justify-content-end modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer">
                                 <div class="col-12 pb-2 pe-0 ps-0 pt-0 text-end">
                                     <div th:replace="~{fragments/components/botoes :: 
-                                         botao(texto='Cancelar',imagem='bi-x-circle',cor='btn-danger',dismiss='modal')}"></div>
+                                         botao(texto='Cancelar',imagem='bi-x-circle',cor='btn-danger',onclick='voltarTela()')}"></div>
                                     <div th:replace="~{fragments/components/botoes :: 
                                          botao(tipo='submit',texto='Adicionar',imagem='bi-person-add',cor='btn-success')}"></div>
                                 </div>         

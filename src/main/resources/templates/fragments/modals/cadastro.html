@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
     <div th:fragment="cadastro" th:remove="tag">
-        <div class="align-content-center h-auto modal pg-show-modal w-100" id="modalCadastro" tabindex="-1" role="dialog" data-pg-name="modal"> 
+        <div class="align-content-center h-auto modal pg-show-modal  pe-2" id="modalCadastro" tabindex="-1" role="dialog" data-pg-name="modal"> 
             <div class="modal-dialog rounded rounded-3 shadow" data-pg-name="modalDialog"> 
                 <div class="modal-content mw-100" data-pg-name="content" id="modalCadastroContent" > 
                     <div th:fragment="cadastroContent" data-pg-name="fragmentCadastroContent" th:remove="tag">
                         <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
                             <h4 class="modal-title">Cadastro</h4> 
                         </div>             
-                        <form th:action="@{/gravarCadastro}" th:object="${customerCadastro}" method="post" id="formCadastro" >
+                        <form th:action="@{/gravarCadastro}" 
+                              th:if="${customerCadastro}"
+                              th:object="${customerCadastro}" method="post" id="formCadastro" >
                             <div class="bg-light modal-body p-2 d-flex flex-column text-start" data-pg-name="body">
                                 <label class="mb-2 w-100">Nome</label>
                                 <input class="mb-2 w-100" type="text" required="true" th:field="*{nome}" id="nome" >
@@ -26,7 +28,7 @@
                                 <div th:replace="~{fragments/components/botoes :: 
                                      botao(texto='Cancelar',
                                      tipo='button',
-                                     onclick='cancelaCadastro()',
+                                     onclick='voltarTela()',
                                      imagem='bi-x-circle',
                                      cor='btn-danger',
                                      dismiss='modal')}" ></div>      
