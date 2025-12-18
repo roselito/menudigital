@@ -15,7 +15,7 @@
                                 <label class="mb-2 w-100">Nome</label>
                                 <input class="mb-2 w-100" type="text" required="true" th:field="*{nome}" id="nome" >
                                 <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('email')} ? 'fieldError' : ''">E-mail</label>
-                                <input class="mb-2 w-100" type="email" required th:field="*{email}" id="email" th:errorclass="fieldError">
+                                <input class="mb-2 w-100" type="email" required="true" th:field="*{email}" id="email" th:errorclass="fieldError">
                                 <label class="mb-2 w-100">Telefone</label>
                                 <input class="mb-2 w-100 phoneMask" type="text" required th:field="*{telefone}" id="telefone">
                                 <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senha')} ? 'fieldError' : ''" >Senha com 4 letras e números misturados</label>
@@ -40,7 +40,7 @@
                                      cor='btn-success')}" ></div>                            
                             </div>             
                             <div th:if="${#fields.hasErrors()}" 
-                                 class="toast" id="toastErros" 
+                                 class="toast" id="toastErrosCadastro" 
                                  data-bs-delay="10000"
                                  style="position: absolute; top: 10px;">
                                 <div class="toast-header">

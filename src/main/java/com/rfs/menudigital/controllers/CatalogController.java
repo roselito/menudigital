@@ -8,6 +8,7 @@ import com.rfs.menudigital.beans.UserSessionData;
 import com.rfs.menudigital.models.CartItem;
 import com.rfs.menudigital.models.Customer;
 import com.rfs.menudigital.models.Item;
+import com.rfs.menudigital.models.UserLogin;
 import com.rfs.menudigital.repositories.CustomersRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -65,8 +66,8 @@ public class CatalogController {
     @ResponseBody
     public void dummyFavicon() {
         // empty body to avoid get favicon.ico error in JS console
-    }    
-    
+    }
+
     @RequestMapping(value = "/catalog")
     public String mostrarCatalogo(HttpServletRequest request, Model model) {
         atualizarModelCatalogo(model);
@@ -113,6 +114,7 @@ public class CatalogController {
         if (result.hasErrors()) {
             model.addAttribute("customerCadastro", customerCadastro);
             model.addAttribute("modais", Arrays.asList("#modalCadastro"));
+            model.addAttribute("toasts", Arrays.asList("#toastErrosCadastro"));
             model.addAttribute("errors", result.getFieldErrors());
             retorno = "catalog";
         } else {
@@ -130,32 +132,37 @@ public class CatalogController {
 
     @GetMapping("/telaLogin")
     public String telaLogin(Model model) {
+        UserLogin userLogin = new UserLogin();
+        model.addAttribute("userLogin", userLogin);
         model.addAttribute("modais", Arrays.asList("#modalLogin"));
         return "catalog";
-    }    
-    
+    }
+
     @PostMapping("/login")
-    public String logar(
-            @RequestParam String emailLogin,
-            @RequestParam String senhaLogin,
-            Model model,
-            RedirectAttributes redirectAttributes) {
+    public String logar(@Valid UserLogin userLogin, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         String retorno = "redirect:/catalog";
         userSessionData.setCustomer(new Customer());
-        List<Customer> customers = customersRepository.findByEmail(emailLogin);
+        List<Customer> customers = customersRepository.findByEmail(userLogin.getEmailLogin());
         if (!customers.isEmpty()) {
             Customer foundCustomer = customers.get(0);
-            String senhaCrypt = crypt.SHA(senhaLogin, "SHA-256");
+            String senhaCrypt = crypt.SHA(userLogin.getSenhaLogin(), "SHA-256");
             if (foundCustomer.getSenha().equalsIgnoreCase(senhaCrypt)) {
                 userSessionData.setCustomer(foundCustomer);
                 redirectAttributes.addFlashAttribute("successMessage", "Bem-vindo(a)!");
             } else {
                 userSessionData.setCustomer(null);
-                redirectAttributes.addFlashAttribute("errorMessage", "Senha incorreta!");
+                result.rejectValue("senhaLogin", "", "Senha incorreta!.");
             }
         } else {
             userSessionData.setCustomer(null);
-            redirectAttributes.addFlashAttribute("errorMessage", "Cliente não encontrado!");
+            result.rejectValue("emailLogin", "", "E-mail não cadastrado.");
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("modais", Arrays.asList("#modalLogin"));
+            model.addAttribute("toasts", Arrays.asList("#toastErrosLogin"));
+            model.addAttribute("errors", result.getFieldErrors());
+            retorno = "catalog";
+
         }
         return retorno;
     }
@@ -197,6 +204,7 @@ public class CatalogController {
     public String removeCartItem(
             @PathVariable String cartItemId,
             Model model) {
+        String retorno = "redirect:/catalog";
         Integer id = Integer.valueOf(cartItemId);
         if (userSessionData.getCart().isEmpty()) {
             userSessionData.setCart(new ArrayList<>());
@@ -214,10 +222,11 @@ public class CatalogController {
         if (!cart.isEmpty()) {
             totalCarrinho = cart.stream().mapToDouble(item
                     -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
+            model.addAttribute("cart", cart);
+            model.addAttribute("totalCarrinho", totalCarrinho);
         }
-        model.addAttribute("cart", cart);
-        model.addAttribute("totalCarrinho", totalCarrinho);
-        return "fragments/modals/carrinho :: cartItems";
+        retorno = "fragments/modals/carrinho :: cartItems";
+        return retorno;
     }
 
     @RequestMapping("/")

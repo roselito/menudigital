@@ -21,13 +21,13 @@ $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal.find('#itemid').val(itemid);
 });
 
-const formatter = new Intl.NumberFormat('en-US', {
+var formatter = new Intl.NumberFormat('en-US', {
     style: 'decimal', // or 'currency', 'percent'
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
 });
 
-const formatterBR = new Intl.NumberFormat('pt-BR', {
+var formatterBR = new Intl.NumberFormat('pt-BR', {
     style: 'decimal', // or 'currency', 'percent'
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
@@ -77,7 +77,7 @@ function editarCustomer() {
 }
 
 function voltarTela() {
-            window.history.back();
+    window.history.back();
 //    $.ajax({
 //        type: 'GET',
 //        url: "/catalog",
@@ -93,6 +93,9 @@ function removerCartItem(id) {
         url: "/removeCartItem/" + id,
         success: function (htmlContent) {
             $('#cartItemsContent').html(htmlContent);
+            if (String(htmlContent).indexOf("<span >Excluir</span>") < 0) {
+                window.location.reload();
+            }
         }
     });
 }

@@ -87,17 +87,20 @@
         <script src="myScripts/myJS.js"></script>
         <script th:inline="javascript" >
             $(document).ready(function () {
-                var modais = [[${modais}]];
-                if (modais != null) {
-                    modais.forEach(function(mod){     
-                        console.log(mod);                   
+            var modais = [[${modais}]];
+            var toasts = [[${toasts}]];
+            var cart = [[${cart}]];
+            if (modais !== null) {
+                modais.forEach(function(mod){
                         $(mod).modal("show");
-                    });
-                }
-                if ([[${errors}]]) {
-                    $('#toastErros').toast('show');
-                }
-            });
+                });
+            }
+            if (toasts !== null) {
+                toasts.forEach(function(toast){
+                    $(toast).toast("show");
+                });
+            }
+        });
         </script>
     </body>
 </html>
