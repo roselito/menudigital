@@ -47,24 +47,24 @@
                                          imagem='bi-box-arrow-in-right',
                                          cor='btn-primary')}" />
                                 </div>
-                                    <div th:if="${#fields.hasErrors()}" 
-                                         class="toast" id="toastErrosLogin" 
-                                         data-bs-delay="10000"
-                                         style="position: absolute; top: 10px;">
-                                        <div class="toast-header">
-                                            <strong class="me-auto"><i class="bi-x-circle"></i> Erros encontrados!</strong>
-                                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                                        </div>
-                                        <div class="toast-body">
-                                            <ul class="list-group">
-                                                <div th:each="err : ${#fields.errors()}">
-                                                    <li th:unless="${err.isEmpty()}" class="list-group-item text-danger text-start fw-bold" >
-                                                        <span th:text="${err}"></span>
-                                                    </li>
-                                                </div>
-                                            </ul>
-                                        </div>
+                                <div th:if="${#fields.hasErrors()}" 
+                                     class="toast" id="toastErrosLogin" 
+                                     data-bs-delay="10000"
+                                     style="position: absolute; top: 10px;">
+                                    <div class="toast-header">
+                                        <strong class="me-auto"><i class="bi-x-circle"></i> Erros encontrados!</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
                                     </div>
+                                    <div class="toast-body">
+                                        <ul class="list-group">
+                                            <div th:each="err : ${#fields.errors()}">
+                                                <li th:unless="${err.isEmpty()}" class="list-group-item text-danger text-start fw-bold" >
+                                                    <span th:text="${err}"></span>
+                                                </li>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
                             </form>             
                         </div>         
                         <div class="bg-success-subtle justify-content-center modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer"> 
@@ -82,6 +82,10 @@
                                          cor='btn-success')}" ></div>
                                 </form>
                             </div>
+                            <form method="POST" action="/upload" enctype="multipart/form-data">
+                                <input type="file" name="file" /><br/><br/>
+                                <input type="submit" value="Submit" />
+                            </form>
                         </div>         
                     </div>     
                 </div>
