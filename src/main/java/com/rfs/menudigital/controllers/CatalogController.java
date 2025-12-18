@@ -68,7 +68,7 @@ public class CatalogController {
     @GetMapping("/favicon.ico")
     @ResponseBody
     public void dummyFavicon() {
-        // empty body to avoid get favicon.ico error in js console
+        // empty body to avoid get favicon.ico error in JS console
     }    
     
     @RequestMapping(value = "/catalog")
