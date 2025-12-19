@@ -26,16 +26,22 @@ import com.rfs.menudigital.util.Crypt;
 import com.rfs.menudigital.util.NumberConverter;
 import jakarta.validation.Valid;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,6 +49,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -298,4 +305,33 @@ public class CatalogController {
         model.addAttribute("cart", cart);
         model.addAttribute("totalCarrinho", totalCarrinho);
     }
+
+    @PostMapping("/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+
+        if (!file.isEmpty()) {
+            try {
+                File imageFile = File.createTempFile("temp", file.getOriginalFilename());
+                try (OutputStream os = new FileOutputStream(imageFile)) {
+                    os.write(file.getBytes());
+                }
+                Tesseract tess4j = new Tesseract();
+                tess4j.setDatapath("C:\\Users\\rosel\\tessdata");
+                tess4j.setLanguage("por");
+                try {
+                    String result = tess4j.doOCR(imageFile);
+                    byte[] isoBytes = result.getBytes( StandardCharsets.UTF_8);
+                    result = new String(isoBytes, "windows-1252");
+                    System.out.println(result);
+                } catch (TesseractException e) {
+                    System.err.println(e.getMessage());
+                }
+            } catch (IOException ex) {
+                System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        }
+        System.out.println("Fim!");
+        return "redirect:/catalog";
+    }
+
 }

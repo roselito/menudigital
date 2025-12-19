@@ -18,6 +18,7 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @Data
 @Entity
 public class Item {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -31,5 +32,10 @@ public class Item {
 
     public String generateBase64Image() {
         // Use a utility like Base64 from java.util or Apache Commons Codec
-        return Base64.getEncoder().encodeToString(this.image);
-    }}
+        if (this.image != null) {
+            return Base64.getEncoder().encodeToString(this.image);
+        } else {
+            return null;
+        }
+    }
+}
