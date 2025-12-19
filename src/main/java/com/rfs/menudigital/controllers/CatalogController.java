@@ -311,26 +311,45 @@ public class CatalogController {
 
         if (!file.isEmpty()) {
             try {
-                File imageFile = File.createTempFile("temp", file.getOriginalFilename());
-                try (OutputStream os = new FileOutputStream(imageFile)) {
-                    os.write(file.getBytes());
-                }
-                Tesseract tess4j = new Tesseract();
-                tess4j.setDatapath("C:\\Users\\rosel\\tessdata");
-                tess4j.setLanguage("por");
+                System.out.println("//////////////////////////////////");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("");
+                byte[] bytes = file.getBytes();
+                bytes = matOfByte.toArray();
                 try {
-                    String result = tess4j.doOCR(imageFile);
-                    byte[] isoBytes = result.getBytes( StandardCharsets.UTF_8);
-                    result = new String(isoBytes, "windows-1252");
-                    System.out.println(result);
-                } catch (TesseractException e) {
-                    System.err.println(e.getMessage());
+                    String arquivo = "temp";
+                    File imageFile = new File(arquivo);
+                    try (OutputStream os = new FileOutputStream(imageFile)) {
+                        os.write(bytes);
+                    }
+                    Tesseract tess4j = new Tesseract();
+                    tess4j.setDatapath("/usr/share/tesseract-ocr/5/tessdata");
+//                tess4j.setDatapath("C:\\Users\\rosel\\tessdata");
+                    tess4j.setLanguage("por");
+                    try {
+                        String result = tess4j.doOCR(imageFile);
+                        byte[] isoBytes = result.getBytes(StandardCharsets.UTF_8);
+                        result = new String(isoBytes, "windows-1252");
+                        System.out.println(result);
+                    } catch (TesseractException e) {
+                        System.err.println(e.getMessage());
+                    }
+                } catch (IOException ex) {
+                    System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
             } catch (IOException ex) {
                 System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
         }
         System.out.println("Fim!");
+        System.out.println("/////////////////////////////////////////");
         return "redirect:/catalog";
     }
 
