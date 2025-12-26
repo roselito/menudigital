@@ -76,15 +76,27 @@ function editarCustomer() {
     });
 }
 
-function voltarTela() {
-    window.history.back();
-//    $.ajax({
-//        type: 'GET',
-//        url: "/catalog",
-//        success: function (htmlContent) {
-//            window.location.href = 'catalog';
-//        }
-//    });
+function telaLogin() {
+    $.ajax({
+        type: 'GET',
+        url: "/telaLogin",
+        success: function (htmlContent) {
+            $('#modalLoginContent').html(htmlContent);
+            $('#modalLogin').modal('show');
+}
+    });
+}
+
+function voltarTela(modal) {
+//    window.history.back();    
+            $(modal).modal('hide()');
+    $.ajax({
+        type: 'GET',
+        url: "/catalog",
+        success: function (htmlContent) {
+            window.location.href = 'catalog';
+        }
+    });
 }
 
 function removerCartItem(id) {

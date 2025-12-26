@@ -142,7 +142,7 @@ public class CatalogController {
         UserLogin userLogin = new UserLogin();
         model.addAttribute("userLogin", userLogin);
         model.addAttribute("modais", Arrays.asList("#modalLogin"));
-        return "catalog";
+        return "fragments/modals/login :: loginContent";
     }
 
     @PostMapping("/login")
@@ -322,7 +322,7 @@ public class CatalogController {
                 System.out.println("");
                 System.out.println("");
                 byte[] bytes = file.getBytes();
-                bytes = matOfByte.toArray();
+//                bytes = matOfByte.toArray();
                 try {
                     String arquivo = "temp";
                     File imageFile = new File(arquivo);

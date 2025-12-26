@@ -34,15 +34,15 @@
                          cor='btn-primary',
                          toggle='modal',
                          target='#modalCart')}" ></div>
-                    <form th:if="${#strings.isEmpty(userName)}"
-                          th:action="@{telaLogin}"
-                          method="get">
-                        <div th:insert="~{fragments/components/botoes :: 
+
+                        <div th:if="${#strings.isEmpty(userName)}" th:insert="~{fragments/components/botoes :: 
                              botao(texto='Entrar',
-                             tipo='submit',
+                             onclick='telaLogin()',
+                             tipo='button',
+                         toggle='modal',
+                         target='#modalLogin',
                              imagem='bi-box-arrow-in-right',
                              cor='btn-primary')}" ></div>
-                    </form>
                     <form 
                         th:action="@{/logout}" 
                         th:unless="${#strings.isEmpty(userName)}" 

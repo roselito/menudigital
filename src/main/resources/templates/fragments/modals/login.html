@@ -15,78 +15,80 @@
                  aria-labelledby="modalLoginLabel" >
 
                 <div class="modal-dialog rounded rounded-3 shadow pe-2" data-pg-name="modalDialog">
-                    <div class="col-12 modal-content mw-100" data-pg-name="content"> 
-                        <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2 text-start" style="background-color: #f2eebb;" data-pg-name="header"> 
-                            <div class="col-12 p-0">
-                                <p class="col-12 fs-3 fw-bold lh-1 modal-title pb-2 pe-2">Login</p>
-                            </div>             
-                        </div>         
-                        <div class="bg-light col-12 modal-body pb-0 pe-0 ps-2 pt-2 text-start" data-pg-name="body">
-                            <form th:action="@{/login}"
-                                  th:if="${userLogin}"
-                                  th:object="${userLogin}" method="post" class="col-12 lh-sm">
-                                <div class="col-12 pb-2 pe-2">
-                                    <label class="col-12 mb-2">E-mail</label>
-                                    <input class="col-12" type="email" th:field="*{emailLogin}" id="emailLogin" required="true" ></input>
-                                </div>
-                                <div class="col-12 pb-2 pe-2">
-                                    <label class="col-12 mb-2 ">Senha</label>
-                                    <input type="password" name="senhaLogin" th:field="*{senhaLogin}" id="senhaLogin" required="true" class="col-12"></input>
-                                </div>
-                                <div class="col-12 text-end pb-2 ps-0 pt-0">
-                                    <div th:replace="~{fragments/components/botoes :: 
-                                         botao(texto='Cancelar',
-                                         tipo='button',
-                                         onclick='voltarTela()',
-                                         imagem='bi-x-circle',
-                                         cor='btn-danger',
-                                         dismiss='modal')}" />
-                                    <div th:replace="~{fragments/components/botoes :: 
-                                         botao(texto='Entrar',
-                                         tipo='submit',
-                                         imagem='bi-box-arrow-in-right',
-                                         cor='btn-primary')}" />
-                                </div>
-                                <div th:if="${#fields.hasErrors()}" 
-                                     class="toast" id="toastErrosLogin" 
-                                     data-bs-delay="10000"
-                                     style="position: absolute; top: 10px;">
-                                    <div class="toast-header">
-                                        <strong class="me-auto"><i class="bi-x-circle"></i> Erros encontrados!</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    <div class="col-12 modal-content mw-100" data-pg-name="content" id="modalLoginContent"> 
+                        <div th:fragment="loginContent" data-pg-name="fragmentLoginContent" th:remove="tag">
+                            <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2 text-start" style="background-color: #f2eebb;" data-pg-name="header"> 
+                                <div class="col-12 p-0">
+                                    <p class="col-12 fs-3 fw-bold lh-1 modal-title pb-2 pe-2">Login</p>
+                                </div>             
+                            </div>         
+                            <div class="bg-light col-12 modal-body pb-0 pe-0 ps-2 pt-2 text-start" data-pg-name="body">
+                                <form th:action="@{/login}"
+                                      th:if="${userLogin}"
+                                      th:object="${userLogin}" method="post" class="col-12 lh-sm">
+                                    <div class="col-12 pb-2 pe-2">
+                                        <label class="col-12 mb-2">E-mail</label>
+                                        <input class="col-12" type="email" th:field="*{emailLogin}" id="emailLogin" required="true" ></input>
                                     </div>
-                                    <div class="toast-body">
-                                        <ul class="list-group">
-                                            <div th:each="err : ${#fields.errors()}">
-                                                <li th:unless="${err.isEmpty()}" class="list-group-item text-danger text-start fw-bold" >
-                                                    <span th:text="${err}"></span>
-                                                </li>
-                                            </div>
-                                        </ul>
+                                    <div class="col-12 pb-2 pe-2">
+                                        <label class="col-12 mb-2 ">Senha</label>
+                                        <input type="password" name="senhaLogin" th:field="*{senhaLogin}" id="senhaLogin" required="true" class="col-12"></input>
                                     </div>
+                                    <div class="col-12 text-end pb-2 ps-0 pt-0">
+                                        <div th:replace="~{fragments/components/botoes :: 
+                                             botao(texto='Cancelar',
+                                             tipo='button',
+                                             onclick='voltarTela(\'modalLogin\')',
+                                             imagem='bi-x-circle',
+                                             cor='btn-danger',
+                                             dismiss='modal')}" />
+                                        <div th:replace="~{fragments/components/botoes :: 
+                                             botao(texto='Entrar',
+                                             tipo='submit',
+                                             imagem='bi-box-arrow-in-right',
+                                             cor='btn-primary')}" />
+                                    </div>
+                                    <div th:if="${#fields.hasErrors()}" 
+                                         class="toast" id="toastErrosLogin" 
+                                         data-bs-delay="10000"
+                                         style="position: absolute; top: 10px;">
+                                        <div class="toast-header">
+                                            <strong class="me-auto"><i class="bi-x-circle"></i> Erros encontrados!</strong>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                                        </div>
+                                        <div class="toast-body">
+                                            <ul class="list-group">
+                                                <div th:each="err : ${#fields.errors()}">
+                                                    <li th:unless="${err.isEmpty()}" class="list-group-item text-danger text-start fw-bold" >
+                                                        <span th:text="${err}"></span>
+                                                    </li>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </form>             
+                            </div>         
+                            <div class="bg-success-subtle justify-content-center modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer"> 
+                                <div class="col-12 lh-1 pb-2 pe-2 ps-0 pt-0 text-center">
+                                    <label class="fs-6 fst-italic lh-1 p-0 text-center text-primary w-100">Não tem uma senha? Cadastre-se!
+                                    </label>
                                 </div>
-                            </form>             
-                        </div>         
-                        <div class="bg-success-subtle justify-content-center modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer"> 
-                            <div class="col-12 lh-1 pb-2 pe-2 ps-0 pt-0 text-center">
-                                <label class="fs-6 fst-italic lh-1 p-0 text-center text-primary w-100">Não tem uma senha? Cadastre-se!
-                                </label>
-                            </div>
-                            <div class="col-12 lh-1 pb-2 pe-2 ps-0 pt-0 text-center">
-                                <form th:action="@{editarCadastro}"
-                                      method="get">
-                                    <div th:insert="~{fragments/components/botoes :: 
-                                         botao(texto='Cadastrar',
-                                         tipo='submit',
-                                         imagem='bi-person',
-                                         cor='btn-success')}" ></div>
+                                <div class="col-12 lh-1 pb-2 pe-2 ps-0 pt-0 text-center">
+                                    <form th:action="@{editarCadastro}"
+                                          method="get">
+                                        <div th:insert="~{fragments/components/botoes :: 
+                                             botao(texto='Cadastrar',
+                                             tipo='submit',
+                                             imagem='bi-person',
+                                             cor='btn-success')}" ></div>
+                                    </form>
+                                </div>
+                                <form method="POST" action="/upload" enctype="multipart/form-data">
+                                    <input type="file" name="file" id="file"  />
+                                    <button type="submit">Enviar Imagem</button>
                                 </form>
-                            </div>
-                            <form method="POST" action="/upload" enctype="multipart/form-data">
-                                <input type="file" name="file" id="file"  />
-                                <button type="submit">Enviar Imagem</button>
-                            </form>
-                        </div>         
+                            </div>         
+                        </div>     
                     </div>     
                 </div>
 
