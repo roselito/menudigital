@@ -156,7 +156,7 @@ public class CatalogController {
         model.addAttribute("modais", Arrays.asList("#modalLogin"));
         return "fragments/modals/login :: loginContent";
     }
-    
+
     @GetMapping("/enderecos")
     public String enderecos(Model model) {
 //        IterableToList<Endereco> itl = new IterableToList<>();
@@ -257,8 +257,10 @@ public class CatalogController {
                     -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
             model.addAttribute("cart", cart);
             model.addAttribute("totalCarrinho", totalCarrinho);
+            retorno = "fragments/modals/carrinho :: cartItems";
+        } else {
+            retorno = "catalog :: cabecalhoFragment";
         }
-        retorno = "fragments/modals/carrinho :: cartItems";
         return retorno;
     }
 
@@ -283,12 +285,6 @@ public class CatalogController {
             json = jsonSb.toString();
             json = json.replaceAll("[{},:]", "").replaceAll("\"", "\n");
             String array[] = json.split("\n");
-            /*
-            for (int i = 0; i < array.length; i++) {
-                System.out.println(i);
-                System.out.println(array[i]);
-            }
-             */
             if (array.length > 27) {
                 model.addAttribute("endereco", array[7]);
                 model.addAttribute("bairro", array[19]);

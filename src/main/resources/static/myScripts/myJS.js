@@ -150,9 +150,11 @@ function removerCartItem(id) {
         type: 'POST',
         url: "/removeCartItem/" + id,
         success: function (htmlContent) {
-            $('#cartItemsContent').html(htmlContent);
             if (String(htmlContent).indexOf("<span >Excluir</span>") < 0) {
-                window.location.reload();
+                $('#modalCart').modal('hide');
+                $('#cabecalho').html(htmlContent);
+            } else {
+                $('#cartItemsContent').html(htmlContent);
             }
         }
     });
@@ -209,6 +211,16 @@ function submitLogin(event) {
         success: function (htmlContent) {
             $('#modalLogin').modal('hide');
             $('.modal-backdrop').remove();
+            $('#cabecalho').html(htmlContent);
+        }
+    });
+}
+
+function logout() {
+    $.ajax({
+        type: 'POST',
+        url: '/logout',
+        success: function (htmlContent) {
             $('#cabecalho').html(htmlContent);
         }
     });

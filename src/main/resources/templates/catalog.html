@@ -40,16 +40,12 @@
                              target='#modalLogin',
                              imagem='bi-box-arrow-in-right',
                              cor='btn-primary')}" ></div>
-                        <form 
-                            th:action="@{/logout}" 
+                        <div 
                             th:unless="${#strings.isEmpty(userName)}" 
-                            method="post">
-                            <div 
-                                th:insert="~{fragments/components/botoes :: 
-                                botao(texto='Sair',
-                                revImagem='bi-box-arrow-right',
-                                tipo='submit')}" ></div>                    
-                        </form>
+                            th:insert="~{fragments/components/botoes :: 
+                            botao(texto='Sair',
+                            onclick='logout()',
+                            revImagem='bi-box-arrow-right')}" ></div>                    
                     </div>
                 </div>
             </div>
