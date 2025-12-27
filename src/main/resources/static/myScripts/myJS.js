@@ -1,4 +1,5 @@
 var modal = null;
+var enderecos = false;
 
 $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal = $(this);
@@ -198,7 +199,6 @@ $(document).ready(function () {
 
 });
 
-
 function submitLogin(event) {
     event.preventDefault();
     var form = $('#formLogin');
@@ -222,6 +222,57 @@ function submitLogin(event) {
     });
 }
 
+function submitLoginCustomer(event) {
+    event.preventDefault();
+    var form = $('#formLoginCustomer');
+    var url = form.attr('action');
+    var formData = form.serialize();
+    var formMethod = form.attr('method');
+    $.ajax({
+        method: formMethod,
+        url: url,
+        data: formData,
+        success: function (htmlContent) {
+            if (String(htmlContent).indexOf("Erros encontrados") < 0) {
+                $('#modalLogin').modal('hide');
+                $('.modal-backdrop').remove();
+                $('#modalCadastroContent').html(htmlContent);
+                $('#modalCadastro').modal('show');
+            } else {
+                $('#modalLoginContent').html(htmlContent);
+                $('#toastErrosLogin').toast('show');
+            }
+        }
+    });
+}
+
+function submitCustomer(event) {
+    event.preventDefault();
+    var form = $('#formCadastro');
+    var url = form.attr('action');
+    var formData = form.serialize();
+    var formMethod = form.attr('method');
+    $.ajax({
+        method: formMethod,
+        url: url,
+        data: formData,
+        success: function (htmlContent) {
+            if (String(htmlContent).indexOf("Erros encontrados") < 0) {
+                $('#modalCadastro').modal('hide');
+                $('.modal-backdrop').remove();
+                $('#cabecalho').html(htmlContent);
+                if (enderecos) {
+                    mostrarEnderecos();
+                    enderecos = false;
+                }
+            } else {
+                $('#modalCadastroContent').html(htmlContent);
+                $('#toastErrosCadastro').toast('show');
+            }
+        }
+    });
+}
+
 function logout() {
     $.ajax({
         type: 'POST',
@@ -230,4 +281,8 @@ function logout() {
             $('#cabecalho').html(htmlContent);
         }
     });
+}
+
+function toggleEnderecos() {
+    enderecos = true;
 }

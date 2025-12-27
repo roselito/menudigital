@@ -114,7 +114,7 @@ public class CatalogController {
         String senhaConf = customerCadastro.getSenhaConf();
         senha = senha == null ? "" : senha;
         senhaConf = senhaConf == null ? "" : senhaConf;
-        String retorno = "redirect:/catalog";
+        String retorno = "catalog :: cabecalhoFragment";
         List<Customer> emails = customersRepository.findByEmail(email);
         if ((id == null || (!senha.isEmpty() || !senhaConf.isEmpty()))) {
             if (!senha.equals(senhaConf)) {
@@ -135,7 +135,7 @@ public class CatalogController {
             model.addAttribute("modais", Arrays.asList("#modalCadastro"));
             model.addAttribute("toasts", Arrays.asList("#toastErrosCadastro"));
             model.addAttribute("errors", result.getFieldErrors());
-            retorno = "catalog";
+            retorno = "fragments/modals/cadastro :: cadastroContent";
         } else {
             if (!senha.isEmpty()) {
                 customerCadastro.setSenha(crypt.SHA(senha, "SHA-256"));
@@ -145,6 +145,7 @@ public class CatalogController {
             }
             customersRepository.save(customerCadastro);
             userSessionData.setCustomer(customerCadastro);
+            atualizarModelCatalogo(model);
         }
         return retorno;
     }
