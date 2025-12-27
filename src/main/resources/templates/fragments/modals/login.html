@@ -24,6 +24,8 @@
                             </div>         
                             <div class="bg-light col-12 modal-body pb-0 pe-0 ps-2 pt-2 text-start" data-pg-name="body">
                                 <form th:action="@{/login}"
+                                      onsubmit="submitLogin(event)"
+                                      id="formLogin"
                                       th:if="${userLogin}"
                                       th:object="${userLogin}" method="post" class="col-12 lh-sm">
                                     <div class="col-12 pb-2 pe-2">

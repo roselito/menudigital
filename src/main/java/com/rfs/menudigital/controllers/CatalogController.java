@@ -169,7 +169,7 @@ public class CatalogController {
 
     @PostMapping("/login")
     public String logar(@Valid UserLogin userLogin, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        String retorno = "redirect:/catalog";
+        String retorno = "catalog :: cabecalhoFragment";
         userSessionData.setCustomer(new Customer());
         List<Customer> customers = customersRepository.findByEmail(userLogin.getEmailLogin());
         if (!customers.isEmpty()) {
@@ -193,6 +193,7 @@ public class CatalogController {
             retorno = "catalog";
 
         }
+        atualizarModelCatalogo(model);
         return retorno;
     }
 

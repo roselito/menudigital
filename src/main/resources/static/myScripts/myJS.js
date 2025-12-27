@@ -128,17 +128,17 @@ function addCartItem() {
     var description = document.getElementById('description').value;
     var amount = document.getElementById('amount').value;
     var unitprice = document.getElementById('unitprice').value;
-    var observations = document.getElementById('observations').value+" ";
+    var observations = document.getElementById('observations').value + " ";
     var itemid = document.getElementById('itemid').value;
     $.ajax({
         type: 'POST',
         url: "/addCartItem/"
-                +title+"/"
-                +description+"/"
-                +amount+"/"
-                +convertPtBrToEnUs(unitprice)+"/"
-                +observations+"/"
-                +itemid,
+                + title + "/"
+                + description + "/"
+                + amount + "/"
+                + convertPtBrToEnUs(unitprice) + "/"
+                + observations + "/"
+                + itemid,
         success: function (htmlContent) {
             $('#cabecalho').html(htmlContent);
         }
@@ -193,4 +193,23 @@ $(document).ready(function () {
     $('.cpfMask').mask('000.000.000-00');
     $('.phoneMask').mask(SPMaskBehavior, spOptions);
     $('.dateMask').mask('00/00/0000');
+
 });
+
+
+function submitLogin(event) {
+    event.preventDefault();
+    var form = $('#formLogin');
+    var url = form.attr('action');
+    var formData = form.serialize();
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        success: function (htmlContent) {
+            $('#modalLogin').modal('hide');
+            $('.modal-backdrop').remove();
+            $('#cabecalho').html(htmlContent);
+        }
+    });
+}
