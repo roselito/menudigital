@@ -200,7 +200,8 @@ public class CatalogController {
     @PostMapping("/logout")
     public String sair(Model model) {
         userSessionData.setCustomer(null);
-        return "redirect:/catalog";
+        atualizarModelCatalogo(model);
+        return "catalog :: cabecalhoFragment";
     }
 
     @PostMapping("/addCartItem/{title}/{description}/{amount}/{unitprice}/{observations}/{itemid}")
