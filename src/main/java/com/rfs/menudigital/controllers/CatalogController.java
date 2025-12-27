@@ -190,8 +190,7 @@ public class CatalogController {
             model.addAttribute("modais", Arrays.asList("#modalLogin"));
             model.addAttribute("toasts", Arrays.asList("#toastErrosLogin"));
             model.addAttribute("errors", result.getFieldErrors());
-            retorno = "catalog";
-
+            return "fragments/modals/login :: loginContent";
         }
         atualizarModelCatalogo(model);
         return retorno;

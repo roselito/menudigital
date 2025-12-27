@@ -204,14 +204,20 @@ function submitLogin(event) {
     var form = $('#formLogin');
     var url = form.attr('action');
     var formData = form.serialize();
+    var formMethod = form.attr('method');
     $.ajax({
-        type: 'POST',
+        method: formMethod,
         url: url,
         data: formData,
         success: function (htmlContent) {
-            $('#modalLogin').modal('hide');
-            $('.modal-backdrop').remove();
-            $('#cabecalho').html(htmlContent);
+            if (String(htmlContent).indexOf("Erros encontrados") < 0) {
+                $('#modalLogin').modal('hide');
+                $('.modal-backdrop').remove();
+                $('#cabecalho').html(htmlContent);
+            } else {
+                $('#modalLoginContent').html(htmlContent);
+                $('#toastErrosLogin').toast('show');
+            }
         }
     });
 }
