@@ -99,6 +99,13 @@ public class CatalogController {
         return "fragments/modals/cadastro :: cadastroContent";
     }
 
+    @GetMapping("/recuperarCarrinho")
+    public String recuperarCarrinho(Model model) {
+        atualizarModelCatalogo(model);
+        model.addAttribute("modais", Arrays.asList("#modalCart"));
+        return "fragments/modals/carrinho :: carrinhoContentFragment";
+    }
+
     @PostMapping("/gravarCadastro")
     public String gravarCadastro(@Valid @ModelAttribute("customerCadastro") Customer customerCadastro, BindingResult result, Model model) {
         Integer id = customerCadastro.getId();
@@ -195,14 +202,14 @@ public class CatalogController {
         return "redirect:/catalog";
     }
 
-    @PostMapping("/addCartItem")
+    @PostMapping("/addCartItem/{title}/{description}/{amount}/{unitprice}/{observations}/{itemid}")
     public String addCartItem(
-            @RequestParam String title,
-            @RequestParam String description,
-            @RequestParam String amount,
-            @RequestParam String unitprice,
-            @RequestParam String observations,
-            @RequestParam String itemid,
+            @PathVariable String title,
+            @PathVariable String description,
+            @PathVariable String amount,
+            @PathVariable String unitprice,
+            @PathVariable String observations,
+            @PathVariable String itemid,
             Model model) {
         if (userSessionData.getCart().isEmpty()) {
             userSessionData.setCart(new ArrayList<>());
@@ -216,10 +223,12 @@ public class CatalogController {
         cartItem.setTitle(title);
         cartItem.setItemId(Integer.valueOf(itemid));
         cartItem.setAmount(Integer.valueOf(amount));
-        cartItem.setUnitPrice(Double.valueOf(numberConverter.ptBrEnUs(unitprice)));
+        cartItem.setUnitPrice(Double.valueOf(unitprice));
         cartItem.setObservations(observations);
         userSessionData.getCart().add(cartItem);
-        return "redirect:/catalog";
+        atualizarModelCatalogo(model);
+        return "catalog :: cabecalhoFragment";
+//        return "redirect:/catalog";
     }
 
     @PostMapping("/removeCartItem/{cartItemId}")

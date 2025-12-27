@@ -12,27 +12,31 @@
                  data-bs-backdrop="static"
                  aria-labelledby="modalCartLabel" >
                 <div class="modal-dialog">
-                    <div class="modal-content" id="cartContent">
-                        <div class="modal-header mt-0 mb-0 pt-0 pb-0">
-                            <h1 class="modal-title fs-5 text-center" id="modalCartLabel">Carrinho</h1>
-                            <hr>
-                        </div>
-                        <div id="cartItemsContent">
-                            <div class="modal-body mt-0 pt-0"  th:fragment="cartItems" >
-                                <div th:each="cartItem : ${cart}">
-                                    <div th:replace="~{fragments/cartItem :: cartItem(${cartItem})}"></div>
+                    <div id="carrinhoContent">
+                        <div th:fragment="carrinhoContentFragment" th:remove="tag">
+                            <div class="modal-content" id="cartContent">
+                                <div class="modal-header mt-0 mb-0 pt-0 pb-0">
+                                    <h1 class="modal-title fs-5 text-center" id="modalCartLabel">Carrinho</h1>
                                     <hr>
                                 </div>
-                                <div class="modal-footer d-flex flex-nowrap m-0 p-0 ps-3">
-                                    <div class="col-6 d-inline-flex gap-2 flex-column bg-success-subtle">
-                                        <span class="fw-bolder fs-5">Total:</span>
-                                        <span
-                                            class="fw-bolder fs-5"
-                                            th:text="${#numbers.formatCurrency(totalCarrinho)}">0.00</span>
-                                    </div>
-                                    <div class="col-6 d-inline-flex gap-2 flex-column">
-                                        <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Cardápio</button>
-                                        <button type="submit" class="btn btn-success btn-sm" data-bs-dismiss="modal">Pagamento</button>
+                                <div id="cartItemsContent">
+                                    <div class="modal-body mt-0 pt-0"  th:fragment="cartItems" >
+                                        <div th:each="cartItem : ${cart}">
+                                            <div th:replace="~{fragments/cartItem :: cartItem(${cartItem})}"></div>
+                                            <hr>
+                                        </div>
+                                        <div class="modal-footer d-flex flex-nowrap m-0 p-0 ps-3">
+                                            <div class="col-6 d-inline-flex gap-2 flex-column bg-success-subtle">
+                                                <span class="fw-bolder fs-5">Total:</span>
+                                                <span
+                                                    class="fw-bolder fs-5"
+                                                    th:text="${#numbers.formatCurrency(totalCarrinho)}">0.00</span>
+                                            </div>
+                                            <div class="col-6 d-inline-flex gap-2 flex-column">
+                                                <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Cardápio</button>
+                                                <button type="submit" class="btn btn-success btn-sm" data-bs-dismiss="modal">Pagamento</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -9,47 +9,48 @@
     </head>
     <body>
         <div class="container-fluid p-0 text-center ">
-            <div class="row align-items-center mt-1 mb-1">
-                <div class="col-12 justify-content-end d-flex ">
-                    <span 
-                        th:text="'Olá, '+${userName}"
-                        class="me-2" 
-                        th:unless="${#strings.isEmpty(userName)}">
-                    </span>
-                </div>
-                <div class="d-flex flex-row justify-content-end">
+            <div class="row align-items-center mt-1 mb-1" id="cabecalho">
+                <div th:fragment="cabecalhoFragment" th:remove="tag">
+                    <div class="col-12 justify-content-end d-flex ">
+                        <span 
+                            th:text="'Olá, '+${userName}"
+                            class="me-2" 
+                            th:unless="${#strings.isEmpty(userName)}">
+                        </span>
+                    </div>
+                    <div class="d-flex flex-row justify-content-end">
                         <div th:unless="${#strings.isEmpty(userName)}"
                              th:insert="~{fragments/components/botoes :: 
                              botao(texto='Cadastro',
                              onclick='editarCustomer()',
                              imagem='bi-person',
                              cor='btn-primary')}" ></div>
-                    <div th:unless="${#lists.isEmpty(cart)}"
-                         th:insert="~{fragments/components/botoes :: 
-                         botao(texto='Carrinho',
-                         imagem='bi-cart',
-                         cor='btn-primary',
-                         toggle='modal',
-                         target='#modalCart')}" ></div>
+                        <div th:unless="${#lists.isEmpty(cart)}"
+                             th:insert="~{fragments/components/botoes :: 
+                             botao(texto='Carrinho',
+                             imagem='bi-cart',
+                             onclick='recuperarCarrinho()',
+                             cor='btn-primary')}" ></div>
 
                         <div th:if="${#strings.isEmpty(userName)}" th:insert="~{fragments/components/botoes :: 
                              botao(texto='Entrar',
                              onclick='telaLogin()',
                              tipo='button',
-                         toggle='modal',
-                         target='#modalLogin',
+                             toggle='modal',
+                             target='#modalLogin',
                              imagem='bi-box-arrow-in-right',
                              cor='btn-primary')}" ></div>
-                    <form 
-                        th:action="@{/logout}" 
-                        th:unless="${#strings.isEmpty(userName)}" 
-                        method="post">
-                        <div 
-                            th:insert="~{fragments/components/botoes :: 
-                            botao(texto='Sair',
-                            revImagem='bi-box-arrow-right',
-                            tipo='submit')}" ></div>                    
-                    </form>
+                        <form 
+                            th:action="@{/logout}" 
+                            th:unless="${#strings.isEmpty(userName)}" 
+                            method="post">
+                            <div 
+                                th:insert="~{fragments/components/botoes :: 
+                                botao(texto='Sair',
+                                revImagem='bi-box-arrow-right',
+                                tipo='submit')}" ></div>                    
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -89,16 +90,16 @@
             var toasts = [[${toasts}]];
             var cart = [[${cart}]];
             if (modais !== null) {
-                modais.forEach(function(mod){
-                        $(mod).modal("show");
-                });
+            modais.forEach(function(mod){
+            $(mod).modal("show");
+            });
             }
             if (toasts !== null) {
-                toasts.forEach(function(toast){
-                    $(toast).toast("show");
-                });
+            toasts.forEach(function(toast){
+            $(toast).toast("show");
+            });
             }
-        });
+            });
         </script>
     </body>
 </html>

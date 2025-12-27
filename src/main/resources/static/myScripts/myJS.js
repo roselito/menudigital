@@ -100,7 +100,6 @@ function voltarTela(modal) {
 
 function mostrarEnderecos() {
     // precisa salvar antes
-    console.log('passou ///////////');
     $.ajax({
         type: 'GET',
         url: "/enderecos",
@@ -109,6 +108,39 @@ function mostrarEnderecos() {
             $('#modalCadastro').modal('hide');
 //            $('#enderecosContent').html(htmlContent);
             $('#modalEnderecos').modal('show');
+        }
+    });
+}
+
+function recuperarCarrinho() {
+    $.ajax({
+        type: 'GET',
+        url: "/recuperarCarrinho",
+        success: function (htmlContent) {
+            $('#carrinhoContent').html(htmlContent);
+            $('#modalCart').modal('show');
+        }
+    });
+}
+
+function addCartItem() {
+    var title = document.getElementById('title').value;
+    var description = document.getElementById('description').value;
+    var amount = document.getElementById('amount').value;
+    var unitprice = document.getElementById('unitprice').value;
+    var observations = document.getElementById('observations').value+" ";
+    var itemid = document.getElementById('itemid').value;
+    $.ajax({
+        type: 'POST',
+        url: "/addCartItem/"
+                +title+"/"
+                +description+"/"
+                +amount+"/"
+                +convertPtBrToEnUs(unitprice)+"/"
+                +observations+"/"
+                +itemid,
+        success: function (htmlContent) {
+            $('#cabecalho').html(htmlContent);
         }
     });
 }
