@@ -19,11 +19,6 @@ public class Customer {
     private Integer id;
     private String nome;
     private String senha;
-    private String endereco;
-    private String numero;
-    private String bairro;
-    private String estado;
-    private String cidade;
     private String telefone;
     private String email;
     @Transient

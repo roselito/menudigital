@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="<http://www.thymeleaf.org>"> 
+    <head>
+        <title>RFS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    </head>
+    <body>
+        <div th:fragment="enderecos" th:remove="tag">
+            <div class="modal pe-2" id="modalEnderecos" 
+                 tabindex="-1" 
+                 data-bs-backdrop="static"
+                 aria-labelledby="modalEnderecosLabel" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header mt-0 mb-0 pt-0 pb-0">
+                            <h1 class="modal-title fs-5 text-center" id="modalEnderecosLabel">Endereços</h1>
+                            <hr>
+                        </div>
+                        <div id="enderecosContent">
+                            <div th:fragment="enderecosFragment" class="modal-body mt-0 pt-0"  >
+                                <div th:each="enderecoItem : ${enderecos}">
+                                    <div th:replace="~{fragments/enderecoItem :: enderecoItem(${enderecoItem})}"></div>
+                                    <hr>
+                                </div>
+                                <div class="modal-footer d-flex flex-nowrap m-0 p-0 ps-3">
+                                    <div class="col-12 justify-items-center gap-2 flex-column">
+                                        <div th:replace="~{fragments/components/botoes :: 
+                                             botao(texto='Cardápio',
+                                             tipo='button',
+                                             imagem='bi-box-arrow-in-right',
+                                             cor='btn-primary',
+                                             dismiss='modal')}" ></div>    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    </body>
+</html>

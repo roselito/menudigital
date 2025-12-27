@@ -7,9 +7,11 @@ package com.rfs.menudigital.controllers;
 import com.rfs.menudigital.beans.UserSessionData;
 import com.rfs.menudigital.models.CartItem;
 import com.rfs.menudigital.models.Customer;
+import com.rfs.menudigital.models.Endereco;
 import com.rfs.menudigital.models.Item;
 import com.rfs.menudigital.models.UserLogin;
 import com.rfs.menudigital.repositories.CustomersRepository;
+import com.rfs.menudigital.repositories.EnderecosRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +25,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import com.rfs.menudigital.repositories.ItensRepository;
 import com.rfs.menudigital.util.Crypt;
+import com.rfs.menudigital.util.IterableToList;
 import com.rfs.menudigital.util.NumberConverter;
 import jakarta.validation.Valid;
 import java.io.BufferedReader;
@@ -67,6 +70,8 @@ public class CatalogController {
     @Autowired
     private CustomersRepository customersRepository;
     @Autowired
+    private EnderecosRepository enderecosRepository;
+    @Autowired
     private Crypt crypt;
 
     @GetMapping("/favicon.ico")
@@ -91,7 +96,7 @@ public class CatalogController {
         Customer customerCadastro = userSessionData.getCustomer();
         model.addAttribute("customerCadastro", customerCadastro);
         model.addAttribute("modais", Arrays.asList("#modalCadastro"));
-        return "catalog";
+        return "fragments/modals/cadastro :: cadastroContent";
     }
 
     @PostMapping("/gravarCadastro")
@@ -143,6 +148,16 @@ public class CatalogController {
         model.addAttribute("userLogin", userLogin);
         model.addAttribute("modais", Arrays.asList("#modalLogin"));
         return "fragments/modals/login :: loginContent";
+    }
+    
+    @GetMapping("/enderecos")
+    public String enderecos(Model model) {
+//        IterableToList<Endereco> itl = new IterableToList<>();
+//        List<Endereco> enderecos = itl.converter(enderecosRepository.findAll());
+        List<Endereco> enderecos = enderecosRepository.findByIdCustomer(userSessionData.getCustomer().getId());
+        model.addAttribute("enderecos", enderecos);
+        model.addAttribute("modais", Arrays.asList("#modalEnderecos"));
+        return "fragments/modals/enderecos :: enderecosFragment";
     }
 
     @PostMapping("/login")

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <div th:fragment="cadastro" th:remove="tag">
-        <div class="align-content-center h-auto modal pg-show-modal  pe-2" id="modalCadastro" tabindex="-1" role="dialog" data-pg-name="modal"> 
+        <div class="align-content-center modal pe-2" id="modalCadastro" tabindex="-1" data-pg-name="modal"> 
             <div class="modal-dialog rounded rounded-3 shadow" data-pg-name="modalDialog"> 
                 <div class="modal-content mw-100" data-pg-name="content" id="modalCadastroContent" > 
                     <div th:fragment="cadastroContent" data-pg-name="fragmentCadastroContent" th:remove="tag">
@@ -13,22 +13,28 @@
                               th:object="${customerCadastro}" method="post" id="formCadastro" >
                             <div class="bg-light modal-body p-2 d-flex flex-column text-start" data-pg-name="body">
                                 <label class="mb-2 w-100">Nome</label>
-                                <input class="mb-2 w-100" type="text" required="true" th:field="*{nome}" id="nome" >
+                                <input class="mb-2 w-100" type="text" required="true" th:field="*{nome}" >
                                 <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('email')} ? 'fieldError' : ''">E-mail</label>
-                                <input class="mb-2 w-100" type="email" required="true" th:field="*{email}" id="email" th:errorclass="fieldError">
+                                <input class="mb-2 w-100" type="email" required="true" th:field="*{email}" th:errorclass="fieldError">
                                 <label class="mb-2 w-100">Telefone</label>
-                                <input class="mb-2 w-100 phoneMask" type="text" required th:field="*{telefone}" id="telefone">
+                                <input class="mb-2 w-100 phoneMask" type="text" required th:field="*{telefone}" >
                                 <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senha')} ? 'fieldError' : ''" >Senha com 4 letras e números misturados</label>
-                                <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senha}" id="senha"  th:errorclass="fieldError">
+                                <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senha}"  th:errorclass="fieldError">
                                 <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senhaConf')} ? 'fieldError' : ''" >Repita a senha</label>
-                                <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senhaConf}" id="senhaConf" th:errorclass="fieldError">
-                                <input type="hidden" th:field="*{id}" name="id" ></input>
+                                <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senhaConf}" th:errorclass="fieldError">
+                                <input type="hidden" th:field="*{id}" ></input>
                             </div>              
+                            <div class="bg-light modal-body p-2 flex-column justify-center d-block " data-pg-name="body">
+                                <div th:replace="~{fragments/components/botoes :: 
+                                     botao(texto='Endereços',
+                                     tipo='button',
+                                     onclick='mostrarEnderecos()',
+                                     imagem='bi-postcard',
+                                     cor='btn-primary')}" ></div>                                </div>              
                             <div class="bg-success-subtle modal-footer text-end pt-2 pe-0" data-pg-name="footer">
                                 <div th:replace="~{fragments/components/botoes :: 
                                      botao(texto='Cancelar',
                                      tipo='button',
-                                     onclick='voltarTela(\'modalCadastro\')',
                                      imagem='bi-x-circle',
                                      cor='btn-danger',
                                      dismiss='modal')}" ></div>      

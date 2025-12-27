@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="<http://www.thymeleaf.org>"> 
+    <head>
+        <title>RFS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+    </head>
+    <body>
+        <div th:fragment="enderecoItem(enderecoItem)" th:remove="tag">
+            <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
+                <h1 class="modal-title fs-5">Endereço cadastrado</h1> 
+            </div>     
+            <div class="bg-light modal-body p-2" data-pg-name="body">
+                <div class="row m-0 p-0 d-flex align-items-center">
+                    <label class="fs-7 col-6 w-30 px-0 text-end" >CEP</label>
+                    <input class="border-0 fs-6 col-6 fw-bolder w-70  text-start" type="text" th:value="${enderecoItem.cep}" readonly/>
+                    <label class="fs-7 col-6  w-30 px-0 text-end" >Endereço</label>
+                    <textarea class="border-0 fs-6 col-6 fw-bolder w-70  text-start" type="text" th:text="${enderecoItem.endereco}" readonly />
+                    <label class="fs-7 col-6  w-30 px-0 text-end" >Número</label>
+                    <input class="border-0 fs-6 col-6 fw-bolder w-70  text-start" type="text" th:value="${enderecoItem.numero}" readonly/>
+                    <label class="fs-7 col-6  w-30 px-0 text-end" >Complemento</label>
+                    <input class="border-0 fs-6 col-6 fw-bolder w-70  text-start" type="text" th:value="${enderecoItem.complemento}" readonly/>
+                    <label class="fs-7 col-6  w-30 px-0 text-end" >Bairro</label>
+                    <textarea class="border-0 fs-6 col-6 fw-bolder w-70  text-start" type="text" th:text="${enderecoItem.bairro}" readonly/>
+                    <label class="fs-7 col-6  w-30 px-0 text-end" >Cidade</label>
+                    <textarea class="border-0 fs-6 col-6 fw-bolder w-70  text-start" type="text" th:text="${enderecoItem.cidade}" readonly/>
+                    <label class="fs-7 col-6  w-30 px-0 text-end" >Estado</label>
+                    <input class="border-0 fs-6 col-6 fw-bolder w-70 text-start" type="text" th:value="${enderecoItem.estado}" readonly/>
+                </div>
+            </div>
+            <div class="bg-success-subtle justify-content-end modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer">
+                <div class="col-12 pb-2 pe-0 ps-0 pt-0 text-center">                        
+                    <div th:replace="~{fragments/components/botoes :: 
+                         botao(texto='Alterar',imagem='bi-pencil-square',cor='btn-primary',
+                         onclick='alterarrEnderecoItem('+(${enderecoItem.id})+')')}">
+                    </div>
+                    <div th:replace="~{fragments/components/botoes :: 
+                         botao(texto='Excluir',imagem='bi-x-circle',cor='btn-danger',
+                         onclick='removerEnderecoItem('+(${enderecoItem.id})+')')}">
+                    </div>
+                </div>         
+            </div>     
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    </body>
+</html>

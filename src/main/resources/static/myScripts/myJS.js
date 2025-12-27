@@ -83,18 +83,32 @@ function telaLogin() {
         success: function (htmlContent) {
             $('#modalLoginContent').html(htmlContent);
             $('#modalLogin').modal('show');
-}
+        }
     });
 }
 
 function voltarTela(modal) {
-//    window.history.back();    
-            $(modal).modal('hide()');
+    $(modal).modal('hide');
     $.ajax({
         type: 'GET',
         url: "/catalog",
         success: function (htmlContent) {
             window.location.href = 'catalog';
+        }
+    });
+}
+
+function mostrarEnderecos() {
+    // precisa salvar antes
+    console.log('passou ///////////');
+    $.ajax({
+        type: 'GET',
+        url: "/enderecos",
+        success: function (htmlContent) {
+            $('#enderecosContent').html(htmlContent);
+            $('#modalCadastro').modal('hide');
+//            $('#enderecosContent').html(htmlContent);
+            $('#modalEnderecos').modal('show');
         }
     });
 }

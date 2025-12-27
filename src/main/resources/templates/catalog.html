@@ -18,15 +18,12 @@
                     </span>
                 </div>
                 <div class="d-flex flex-row justify-content-end">
-                    <form th:unless="${#strings.isEmpty(userName)}"
-                          th:action="@{editarCadastro}"
-                          method="get">
-                        <div th:insert="~{fragments/components/botoes :: 
+                        <div th:unless="${#strings.isEmpty(userName)}"
+                             th:insert="~{fragments/components/botoes :: 
                              botao(texto='Cadastro',
-                             tipo='submit',
+                             onclick='editarCustomer()',
                              imagem='bi-person',
                              cor='btn-primary')}" ></div>
-                    </form>
                     <div th:unless="${#lists.isEmpty(cart)}"
                          th:insert="~{fragments/components/botoes :: 
                          botao(texto='Carrinho',
@@ -79,6 +76,7 @@
             <div th:insert="~{fragments/modals/login :: login}"></div>
             <div th:insert="~{fragments/modals/address :: address}"></div>     
             <div th:insert="~{fragments/modals/cadastro :: cadastro}"></div>
+            <div th:insert="~{fragments/modals/enderecos :: enderecos}"></div>
 
         </div>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

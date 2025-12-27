@@ -18,27 +18,39 @@
                                     <h4 class="bg-warning-subtle modal-title text-primary">Cadastro de endereço</h4> 
                                 </div>
                                 <div class="modal-body mw-100 p-1 ps-2 pe-2"> 
-                                    <form class="col-12 mw-100 text-start" action="@{/login}" method="post" data-pg-name="formEndereco" id="formEndereco">
+                                    <form class="col-12 mw-100 text-start" action="@{/login}" 
+                                          method="post" data-pg-name="formEndereco" id="formEndereco"
+                                          th:if="${address}" th:object="${address}">
                                         <fieldset class="col-12 mw-100">
                                             <label class="fw-bold">CEP</label>
-                                            <input id="cep" data-pg-name="cep" class="col-12 mb-1 mw-100" onblur="buscarCEP()" th:value="${cep}">
+                                            <input data-pg-name="cep" class="col-12 mb-1 mw-100" onblur="buscarCEP()" th:field="*{cep}" ></input>
                                         </fieldset>
                                         <fieldset class="col-12 mw-100">
                                             <label class="fw-bold mb-1">Endereço</label>
-                                            <input id="endereco" data-pg-name="endereco" class="col-12 mw-100" th:value="${endereco}">
+                                            <input data-pg-name="endereco" class="col-12 mw-100" th:value="${endereco}" th:field="*{endereco}" ></input>
+                                        </fieldset>
+                                        <fieldset class="col-12 mw-100">
+                                            <label class="fw-bold mb-1">Número</label>
+                                            <input data-pg-name="numero" class="col-12 mw-100" th:field="*{numero}" ></input>
+                                        </fieldset>
+                                        <fieldset class="col-12 mw-100">
+                                            <label class="fw-bold mb-1">Complemento</label>
+                                            <input data-pg-name="complemento" class="col-12 mw-100" th:field="*{complemento}" ></input>
                                         </fieldset>
                                         <fieldset class="col-12 mw-100">
                                             <label class="fw-bold mb-1">Bairro</label>
-                                            <input id="bairro" data-pg-name="bairro" class="col-12 mw-100" th:value="${bairro}">
+                                            <input data-pg-name="bairro" class="col-12 mw-100" th:field="*{bairro}" ></input>
                                         </fieldset>
                                         <fieldset class="col-12 mw-100">
                                             <label class="fw-bold mb-1">Cidade</label>
-                                            <input id="cidade" data-pg-name="cidade" class="col-12 mw-100" th:value="${cidade}">
+                                            <input data-pg-name="cidade" class="col-12 mw-100" th:field="*{cidade}" ></input>
                                         </fieldset>
                                         <fieldset class="col-12 mw-100">
                                             <label class="fw-bold mb-1">Estado</label>
-                                            <input id="estado" data-pg-name="estado" class="col-12 mw-100" th:value="${estado}">
+                                            <input data-pg-name="estado" class="col-12 mw-100" th:field="*{estado}" ></input>
                                         </fieldset>
+                                        <input type="hidden" th:field="*{id}" ></input>
+                                        <input type="hidden" th:field="*{idCustomer}" ></input>
                                     </form>
                                 </div>
                                 <div class="modal-footer p-1"> 
