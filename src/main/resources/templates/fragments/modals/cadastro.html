@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <div th:fragment="cadastro" th:remove="tag">
-        <div class="align-content-center modal pe-2" id="modalCadastro" tabindex="-1" data-pg-name="modal"> 
+        <div class="align-content-center modal pe-2" id="modalCadastro" tabindex="-1" data-pg-name="modal" aria-hidden="false"> 
             <div class="modal-dialog rounded rounded-3 shadow" data-pg-name="modalDialog"> 
                 <div class="modal-content mw-100" data-pg-name="content" id="modalCadastroContent" > 
                     <div th:fragment="cadastroContent" data-pg-name="fragmentCadastroContent" th:remove="tag">
@@ -25,7 +25,12 @@
                                 <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senhaConf')} ? 'fieldError' : ''" >Repita a senha</label>
                                 <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senhaConf}" th:errorclass="fieldError">
                                 <input type="hidden" th:field="*{id}" ></input>
-                            </div>              
+                            </div>        
+                            <div th:insert="~{fragments/components/botoes :: 
+                                 botao(texto='Novo endereço',
+                                 onclick='mostrarEndereco(0)',
+                                 imagem='bi-person',
+                                 cor='btn-primary')}" ></div>
                             <div th:unless="${customerCadastro.id == null}"
                                  class="bg-light modal-body p-2 flex-column justify-center d-block " data-pg-name="body">
                                 <div th:replace="~{fragments/components/botoes :: 

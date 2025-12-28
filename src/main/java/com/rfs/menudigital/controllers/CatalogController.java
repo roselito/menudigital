@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import com.rfs.menudigital.repositories.ItensRepository;
 import com.rfs.menudigital.util.Crypt;
-import com.rfs.menudigital.util.IterableToList;
 import com.rfs.menudigital.util.NumberConverter;
 import jakarta.validation.Valid;
 import java.io.BufferedReader;
@@ -97,6 +96,19 @@ public class CatalogController {
         model.addAttribute("customerCadastro", customerCadastro);
         model.addAttribute("modais", Arrays.asList("#modalCadastro"));
         return "fragments/modals/cadastro :: cadastroContent";
+    }
+
+    @GetMapping("/mostrarEndereco/{id}")
+    public String mostrarEndereco(@PathVariable String id, Model model) {
+        Endereco endereco = new Endereco();
+        if (!id.equals("0")) {
+            endereco = enderecosRepository.findById(Integer.valueOf(id)).get();
+        } else {
+            endereco.setIdCustomer(userSessionData.getCustomer().getId());
+        }
+        model.addAttribute("address", endereco);
+//        model.addAttribute("modais", Arrays.asList("#modalCadastro"));
+        return "fragments/modals/address :: addressContent";
     }
 
     @GetMapping("/recuperarCarrinho")
@@ -230,7 +242,14 @@ public class CatalogController {
         userSessionData.getCart().add(cartItem);
         atualizarModelCatalogo(model);
         return "catalog :: cabecalhoFragment";
-//        return "redirect:/catalog";
+    }
+
+    @PostMapping("/gravarEndereco")
+    public String gravarEndereco(@Valid @ModelAttribute("address") Endereco address, BindingResult result, Model model) {
+        System.out.println(address);
+        enderecosRepository.save(address);
+        atualizarModelCatalogo(model);
+        return "catalog :: cabecalhoFragment";
     }
 
     @PostMapping("/removeCartItem/{cartItemId}")
@@ -275,6 +294,10 @@ public class CatalogController {
     @SuppressWarnings("CallToPrintStackTrace")
     public String buscarCep(@PathVariable String cep, Model model) {
         String json;
+        Endereco address = (Endereco) model.getAttribute("address");
+        if (address == null) {
+            address = new Endereco();
+        }
         try {
             URL url = (new URI("http://viacep.com.br/ws/" + cep + "/json")).toURL();
             URLConnection urlConnection = url.openConnection();
@@ -286,16 +309,19 @@ public class CatalogController {
             json = json.replaceAll("[{},:]", "").replaceAll("\"", "\n");
             String array[] = json.split("\n");
             if (array.length > 27) {
-                model.addAttribute("endereco", array[7]);
-                model.addAttribute("bairro", array[19]);
-                model.addAttribute("cidade", array[23]);
-                model.addAttribute("estado", array[27]);
+                address.setCep(cep);
+                address.setEndereco(array[7]);
+                address.setBairro(array[19]);
+                address.setCidade(array[23]);
+                address.setEstado(array[27]);
+                address.setIdCustomer(userSessionData.getCustomer().getId());
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException ex) {
             System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
+        model.addAttribute("address", address);
         return "fragments/modals/address :: addressContent";
     }
 

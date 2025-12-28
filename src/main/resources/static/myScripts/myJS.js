@@ -54,6 +54,7 @@ function increaseAmount() {
 
 function buscarCEP() {
     var cepDigitado = document.getElementById('cep').value;
+    $('.wait').val('Pesquisando...');
     $.ajax({
         type: 'GET',
         url: "/buscarCEP/" + cepDigitado,
@@ -73,6 +74,18 @@ function editarCustomer() {
         success: function (htmlContent) {
             $('#modalCadastroContent').html(htmlContent);
             $('#modalCadastro').modal('show');
+        }
+    });
+}
+function mostrarEndereco(id) {
+    $.ajax({
+        type: 'GET',
+        url: "/mostrarEndereco/" + id,
+        success: function (htmlContent) {
+            $('#modalCadastro').modal('hide');
+            $('#modalEnderecos').modal('hide');
+            $('#modalAddressContent').html(htmlContent);
+            $('#modalAddress').modal('show');
         }
     });
 }
@@ -196,6 +209,16 @@ $(document).ready(function () {
     $('.cpfMask').mask('000.000.000-00');
     $('.phoneMask').mask(SPMaskBehavior, spOptions);
     $('.dateMask').mask('00/00/0000');
+    
+    // Eliminar warning js de aria-hidden
+    document.querySelectorAll('.modal').forEach((modal) => {
+        modal.addEventListener('hide.bs.modal', () => {
+            // Blur the currently focused element before the modal is hidden
+            if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+            }
+        });
+    });
 
 });
 
@@ -258,6 +281,7 @@ function submitCustomer(event) {
         data: formData,
         success: function (htmlContent) {
             if (String(htmlContent).indexOf("Erros encontrados") < 0) {
+                document.body.focus();
                 $('#modalCadastro').modal('hide');
                 $('.modal-backdrop').remove();
                 $('#cabecalho').html(htmlContent);
@@ -268,6 +292,28 @@ function submitCustomer(event) {
             } else {
                 $('#modalCadastroContent').html(htmlContent);
                 $('#toastErrosCadastro').toast('show');
+            }
+        }
+    });
+}
+
+function submitAddress(event) {
+    event.preventDefault();
+    var form = $('#formEndereco');
+    var url = form.attr('action');
+    var formData = form.serialize();
+    var formMethod = form.attr('method');
+    $.ajax({
+        method: formMethod,
+        url: url,
+        data: formData,
+        success: function (htmlContent) {
+            if (String(htmlContent).indexOf("Erros encontrados") < 0) {
+                $('#modalAddress').modal('hide');
+                $('#cabecalho').html(htmlContent);
+            } else {
+                $('#modalAddressContent').html(htmlContent);
+                $('#toastErrosAddress').toast('show');
             }
         }
     });
