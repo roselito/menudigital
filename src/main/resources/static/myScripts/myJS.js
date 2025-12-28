@@ -1,6 +1,31 @@
 var modal = null;
 var enderecos = false;
 
+$(document).ready(function () {
+    var SPMaskBehavior = function (val) {
+        return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
+    };
+    spOptions = {
+        onKeyPress: function (val, e, field, options) {
+            field.mask(SPMaskBehavior.apply({}, arguments), options);
+        }
+    };
+    $('.cpfMask').mask('000.000.000-00');
+    $('.phoneMask').mask(SPMaskBehavior, spOptions);
+    $('.dateMask').mask('00/00/0000');
+    
+    // Eliminar warning js de aria-hidden
+    document.querySelectorAll('.modal').forEach((modal) => {
+        modal.addEventListener('hide.bs.modal', () => {
+            // Blur the currently focused element before the modal is hidden
+            if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+            }
+        });
+    });
+
+});
+
 $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal = $(this);
     var elemento = $(event.relatedTarget); // Elemento que disparou o modal
@@ -197,31 +222,6 @@ function convertPtBrToEnUs(ptBrNumberString) {
     return enUsNumber;
 }
 
-$(document).ready(function () {
-    var SPMaskBehavior = function (val) {
-        return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
-    };
-    spOptions = {
-        onKeyPress: function (val, e, field, options) {
-            field.mask(SPMaskBehavior.apply({}, arguments), options);
-        }
-    };
-    $('.cpfMask').mask('000.000.000-00');
-    $('.phoneMask').mask(SPMaskBehavior, spOptions);
-    $('.dateMask').mask('00/00/0000');
-    
-    // Eliminar warning js de aria-hidden
-    document.querySelectorAll('.modal').forEach((modal) => {
-        modal.addEventListener('hide.bs.modal', () => {
-            // Blur the currently focused element before the modal is hidden
-            if (document.activeElement instanceof HTMLElement) {
-                document.activeElement.blur();
-            }
-        });
-    });
-
-});
-
 function submitLogin(event) {
     event.preventDefault();
     var form = $('#formLogin');
@@ -314,6 +314,21 @@ function submitAddress(event) {
             } else {
                 $('#modalAddressContent').html(htmlContent);
                 $('#toastErrosAddress').toast('show');
+            }
+        }
+    });
+}
+
+function removerEndereco(id) {
+    $.ajax({
+        method: 'post',
+        url: '/removerEndereco/'+id,
+        success: function (htmlContent) {
+            if (String(htmlContent).indexOf("<span >Excluir</span>") < 0) {
+                $('#modalEnderecos').modal('hide');
+                $('#cabecalho').html(htmlContent);
+            } else {
+                $('#enderecosContent').html(htmlContent);
             }
         }
     });

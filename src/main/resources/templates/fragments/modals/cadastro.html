@@ -20,10 +20,10 @@
                                 <input class="mb-2 w-100" type="email" required="true" th:field="*{email}" th:errorclass="fieldError">
                                 <label class="mb-2 w-100">Telefone</label>
                                 <input class="mb-2 w-100 phoneMask" type="text" required th:field="*{telefone}" >
-                                <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senha')} ? 'fieldError' : ''" >Senha com 4 letras e números misturados</label>
-                                <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senha}"  th:errorclass="fieldError">
+                                <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senha')} ? 'fieldError' : ''" >Senha com ao menos 4 letras e números misturados</label>
+                                <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senha}"  th:errorclass="fieldError" autocomplete="off">
                                 <label class="mb-2 w-100" th:classappend="${#fields.hasErrors('senhaConf')} ? 'fieldError' : ''" >Repita a senha</label>
-                                <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senhaConf}" th:errorclass="fieldError">
+                                <input class="mb-2 w-100" type="password" th:required="${id!=null}" th:field="*{senhaConf}" th:errorclass="fieldError" autocomplete="off">
                                 <input type="hidden" th:field="*{id}" ></input>
                             </div>        
                             <div th:insert="~{fragments/components/botoes :: 

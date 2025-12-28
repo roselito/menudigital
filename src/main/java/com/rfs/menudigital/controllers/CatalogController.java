@@ -79,6 +79,12 @@ public class CatalogController {
         // empty body to avoid get favicon.ico error in JS console
     }
 
+    @RequestMapping("/")
+    public String checkout(Model model) {
+        model.addAttribute("mensagem", "Teste com thymeleaf");
+        return "index";
+    }
+
     @RequestMapping(value = "/catalog")
     public String mostrarCatalogo(HttpServletRequest request, Model model) {
         atualizarModelCatalogo(model);
@@ -90,6 +96,69 @@ public class CatalogController {
         return "catalog";
     }
 
+    @PostMapping("/addCartItem/{title}/{description}/{amount}/{unitprice}/{observations}/{itemid}")
+    public String addCartItem(
+            @PathVariable String title,
+            @PathVariable String description,
+            @PathVariable String amount,
+            @PathVariable String unitprice,
+            @PathVariable String observations,
+            @PathVariable String itemid,
+            Model model) {
+        if (userSessionData.getCart().isEmpty()) {
+            userSessionData.setCart(new ArrayList<>());
+        }
+        CartItem cartItem = new CartItem();
+        if (userSessionData.getCustomer() != null) {
+            cartItem.setUserId(userSessionData.getCustomer().getId());
+        }
+        cartItem.setDescription(description);
+        cartItem.setId(userSessionData.getCart().size() + 1);
+        cartItem.setTitle(title);
+        cartItem.setItemId(Integer.valueOf(itemid));
+        cartItem.setAmount(Integer.valueOf(amount));
+        cartItem.setUnitPrice(Double.valueOf(unitprice));
+        cartItem.setObservations(observations);
+        userSessionData.getCart().add(cartItem);
+        atualizarModelCatalogo(model);
+        return "catalog :: cabecalhoFragment";
+    }
+
+    @GetMapping("/buscarCEP/{cep}")
+    @SuppressWarnings("CallToPrintStackTrace")
+    public String buscarCep(@PathVariable String cep, Model model) {
+        String json;
+        Endereco address = (Endereco) model.getAttribute("address");
+        if (address == null) {
+            address = new Endereco();
+        }
+        try {
+            URL url = (new URI("http://viacep.com.br/ws/" + cep + "/json")).toURL();
+            URLConnection urlConnection = url.openConnection();
+            InputStream is = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            StringBuilder jsonSb = new StringBuilder();
+            br.lines().forEach(l -> jsonSb.append(l.trim()));
+            json = jsonSb.toString();
+            json = json.replaceAll("[{},:]", "").replaceAll("\"", "\n");
+            String array[] = json.split("\n");
+            if (array.length > 27) {
+                address.setCep(cep);
+                address.setEndereco(array[7]);
+                address.setBairro(array[19]);
+                address.setCidade(array[23]);
+                address.setEstado(array[27]);
+                address.setIdCustomer(userSessionData.getCustomer().getId());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException ex) {
+            System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        model.addAttribute("address", address);
+        return "fragments/modals/address :: addressContent";
+    }
+
     @GetMapping("/editarCadastro")
     public String editarCadastro(Model model) {
         Customer customerCadastro = userSessionData.getCustomer();
@@ -98,24 +167,14 @@ public class CatalogController {
         return "fragments/modals/cadastro :: cadastroContent";
     }
 
-    @GetMapping("/mostrarEndereco/{id}")
-    public String mostrarEndereco(@PathVariable String id, Model model) {
-        Endereco endereco = new Endereco();
-        if (!id.equals("0")) {
-            endereco = enderecosRepository.findById(Integer.valueOf(id)).get();
-        } else {
-            endereco.setIdCustomer(userSessionData.getCustomer().getId());
-        }
-        model.addAttribute("address", endereco);
-//        model.addAttribute("modais", Arrays.asList("#modalCadastro"));
-        return "fragments/modals/address :: addressContent";
-    }
-
-    @GetMapping("/recuperarCarrinho")
-    public String recuperarCarrinho(Model model) {
-        atualizarModelCatalogo(model);
-        model.addAttribute("modais", Arrays.asList("#modalCart"));
-        return "fragments/modals/carrinho :: carrinhoContentFragment";
+    @GetMapping("/enderecos")
+    public String enderecos(Model model) {
+//        IterableToList<Endereco> itl = new IterableToList<>();
+//        List<Endereco> enderecos = itl.converter(enderecosRepository.findAll());
+        List<Endereco> enderecos = enderecosRepository.findByIdCustomer(userSessionData.getCustomer().getId());
+        model.addAttribute("enderecos", enderecos);
+        model.addAttribute("modais", Arrays.asList("#modalEnderecos"));
+        return "fragments/modals/enderecos :: enderecosFragment";
     }
 
     @PostMapping("/gravarCadastro")
@@ -162,22 +221,12 @@ public class CatalogController {
         return retorno;
     }
 
-    @GetMapping("/telaLogin")
-    public String telaLogin(Model model) {
-        UserLogin userLogin = new UserLogin();
-        model.addAttribute("userLogin", userLogin);
-        model.addAttribute("modais", Arrays.asList("#modalLogin"));
-        return "fragments/modals/login :: loginContent";
-    }
-
-    @GetMapping("/enderecos")
-    public String enderecos(Model model) {
-//        IterableToList<Endereco> itl = new IterableToList<>();
-//        List<Endereco> enderecos = itl.converter(enderecosRepository.findAll());
-        List<Endereco> enderecos = enderecosRepository.findByIdCustomer(userSessionData.getCustomer().getId());
-        model.addAttribute("enderecos", enderecos);
-        model.addAttribute("modais", Arrays.asList("#modalEnderecos"));
-        return "fragments/modals/enderecos :: enderecosFragment";
+    @PostMapping("/gravarEndereco")
+    public String gravarEndereco(@Valid @ModelAttribute("address") Endereco address, BindingResult result, Model model) {
+        System.out.println(address);
+        enderecosRepository.save(address);
+        atualizarModelCatalogo(model);
+        return "catalog :: cabecalhoFragment";
     }
 
     @PostMapping("/login")
@@ -216,40 +265,39 @@ public class CatalogController {
         return "catalog :: cabecalhoFragment";
     }
 
-    @PostMapping("/addCartItem/{title}/{description}/{amount}/{unitprice}/{observations}/{itemid}")
-    public String addCartItem(
-            @PathVariable String title,
-            @PathVariable String description,
-            @PathVariable String amount,
-            @PathVariable String unitprice,
-            @PathVariable String observations,
-            @PathVariable String itemid,
-            Model model) {
-        if (userSessionData.getCart().isEmpty()) {
-            userSessionData.setCart(new ArrayList<>());
+    @GetMapping("/mostrarEndereco/{id}")
+    public String mostrarEndereco(@PathVariable String id, Model model) {
+        Endereco endereco = new Endereco();
+        if (!id.equals("0")) {
+            endereco = enderecosRepository.findById(Integer.valueOf(id)).get();
+        } else {
+            endereco.setIdCustomer(userSessionData.getCustomer().getId());
         }
-        CartItem cartItem = new CartItem();
-        if (userSessionData.getCustomer() != null) {
-            cartItem.setUserId(userSessionData.getCustomer().getId());
-        }
-        cartItem.setDescription(description);
-        cartItem.setId(userSessionData.getCart().size() + 1);
-        cartItem.setTitle(title);
-        cartItem.setItemId(Integer.valueOf(itemid));
-        cartItem.setAmount(Integer.valueOf(amount));
-        cartItem.setUnitPrice(Double.valueOf(unitprice));
-        cartItem.setObservations(observations);
-        userSessionData.getCart().add(cartItem);
-        atualizarModelCatalogo(model);
-        return "catalog :: cabecalhoFragment";
+        model.addAttribute("address", endereco);
+//        model.addAttribute("modais", Arrays.asList("#modalCadastro"));
+        return "fragments/modals/address :: addressContent";
     }
 
-    @PostMapping("/gravarEndereco")
-    public String gravarEndereco(@Valid @ModelAttribute("address") Endereco address, BindingResult result, Model model) {
-        System.out.println(address);
-        enderecosRepository.save(address);
+    @GetMapping("/recuperarCarrinho")
+    public String recuperarCarrinho(Model model) {
         atualizarModelCatalogo(model);
-        return "catalog :: cabecalhoFragment";
+        model.addAttribute("modais", Arrays.asList("#modalCart"));
+        return "fragments/modals/carrinho :: carrinhoContentFragment";
+    }
+
+    @PostMapping("/removerEndereco/{id}")
+    public String removerEndereco(@PathVariable String id, Model model) {
+        Endereco address = enderecosRepository.findById(Integer.valueOf(id)).get();
+        enderecosRepository.delete(address);
+        List<Endereco> enderecos = enderecosRepository.findByIdCustomer(userSessionData.getCustomer().getId());
+        if (enderecos.isEmpty()) {
+            atualizarModelCatalogo(model);
+            return "catalog :: cabecalhoFragment";
+        } else {
+            model.addAttribute("enderecos", enderecos);
+            model.addAttribute("modais", Arrays.asList("#modalEnderecos"));
+            return "fragments/modals/enderecos :: enderecosFragment";
+        }
     }
 
     @PostMapping("/removeCartItem/{cartItemId}")
@@ -283,75 +331,12 @@ public class CatalogController {
         return retorno;
     }
 
-    @RequestMapping("/")
-    public String checkout(Model model
-    ) {
-        model.addAttribute("mensagem", "Teste com thymeleaf");
-        return "index";
-    }
-
-    @GetMapping("/buscarCEP/{cep}")
-    @SuppressWarnings("CallToPrintStackTrace")
-    public String buscarCep(@PathVariable String cep, Model model) {
-        String json;
-        Endereco address = (Endereco) model.getAttribute("address");
-        if (address == null) {
-            address = new Endereco();
-        }
-        try {
-            URL url = (new URI("http://viacep.com.br/ws/" + cep + "/json")).toURL();
-            URLConnection urlConnection = url.openConnection();
-            InputStream is = urlConnection.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            StringBuilder jsonSb = new StringBuilder();
-            br.lines().forEach(l -> jsonSb.append(l.trim()));
-            json = jsonSb.toString();
-            json = json.replaceAll("[{},:]", "").replaceAll("\"", "\n");
-            String array[] = json.split("\n");
-            if (array.length > 27) {
-                address.setCep(cep);
-                address.setEndereco(array[7]);
-                address.setBairro(array[19]);
-                address.setCidade(array[23]);
-                address.setEstado(array[27]);
-                address.setIdCustomer(userSessionData.getCustomer().getId());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException ex) {
-            System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        model.addAttribute("address", address);
-        return "fragments/modals/address :: addressContent";
-    }
-
-    public boolean senhaForte(String senha) {
-        // a expressão mais completa:
-        // "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"
-        Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)[A-Za-z\\d]{4,}$");
-        Matcher m = p.matcher(senha);
-        return m.matches();
-    }
-
-    public void atualizarModelCatalogo(Model model) {
-        List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
-        if (itens.isEmpty()) {
-            cadastroInicial.executar();
-        }
-        if (userSessionData.getCustomer() == null) {
-            userSessionData.setCustomer(new Customer());
-        }
-        List<CartItem> cart = userSessionData.getCart();
-        Double totalCarrinho = 0.0;
-        if (!cart.isEmpty()) {
-            totalCarrinho = cart.stream().mapToDouble(item
-                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
-        }
-        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
-        model.addAttribute("itens", itens);
-        model.addAttribute("userName", userName);
-        model.addAttribute("cart", cart);
-        model.addAttribute("totalCarrinho", totalCarrinho);
+    @GetMapping("/telaLogin")
+    public String telaLogin(Model model) {
+        UserLogin userLogin = new UserLogin();
+        model.addAttribute("userLogin", userLogin);
+        model.addAttribute("modais", Arrays.asList("#modalLogin"));
+        return "fragments/modals/login :: loginContent";
     }
 
     @PostMapping("/upload")
@@ -399,6 +384,35 @@ public class CatalogController {
         System.out.println("Fim!");
         System.out.println("/////////////////////////////////////////");
         return "redirect:/catalog";
+    }
+
+    public boolean senhaForte(String senha) {
+        // a expressão mais completa:
+        // "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$"
+        Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)[A-Za-z\\d]{4,}$");
+        Matcher m = p.matcher(senha);
+        return m.matches();
+    }
+
+    public void atualizarModelCatalogo(Model model) {
+        List<Item> itens = new ArrayList((Collection) itensRepository.findAll());
+        if (itens.isEmpty()) {
+            cadastroInicial.executar();
+        }
+        if (userSessionData.getCustomer() == null) {
+            userSessionData.setCustomer(new Customer());
+        }
+        List<CartItem> cart = userSessionData.getCart();
+        Double totalCarrinho = 0.0;
+        if (!cart.isEmpty()) {
+            totalCarrinho = cart.stream().mapToDouble(item
+                    -> item.getUnitPrice() == null ? 0.0 : item.getAmount() * item.getUnitPrice()).sum();
+        }
+        String userName = userSessionData.getCustomer() != null ? (userSessionData.getCustomer().getNome() != null ? userSessionData.getCustomer().getNome() : "") : "";
+        model.addAttribute("itens", itens);
+        model.addAttribute("userName", userName);
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalCarrinho", totalCarrinho);
     }
 
 }
