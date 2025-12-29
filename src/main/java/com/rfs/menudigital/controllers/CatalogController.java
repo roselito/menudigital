@@ -159,10 +159,23 @@ public class CatalogController {
         return "fragments/modals/address :: addressContent";
     }
 
-    @GetMapping("/editarCadastro")
-    public String editarCadastro(Model model) {
+    @GetMapping("/editarCadastro/{edicao}")
+    public String editarCadastro(@PathVariable String edicao, Model model) {
+        edicao = edicao == null ? "0" : edicao;
+        String alteraSenha="0";
         Customer customerCadastro = userSessionData.getCustomer();
         model.addAttribute("customerCadastro", customerCadastro);
+        if (edicao.equals("0")) {
+            model.addAttribute("border", "border-0");
+            model.addAttribute("readonly", "readonly");
+            model.addAttribute("disabled", "disabled");
+        }
+        if (edicao.equals("2")) {
+            alteraSenha = "1";
+            edicao = "1";
+        }
+        model.addAttribute("edicao", edicao);
+        model.addAttribute("alteraSenha", alteraSenha);
         model.addAttribute("modais", Arrays.asList("#modalCadastro"));
         return "fragments/modals/cadastro :: cadastroContent";
     }
@@ -195,6 +208,13 @@ public class CatalogController {
             if (!senhaForte(senha)) {
                 result.rejectValue("senha", "", "Senha deve ter pelo menos 4 números e letras misturados.");
             }
+            if (result.getFieldErrorCount("senha")+result.getFieldErrorCount("senhaConf")>0){
+                model.addAttribute("alteraSenha", "1");
+                model.addAttribute("edicao", "0");
+                model.addAttribute("border", "border-0");
+                model.addAttribute("readonly", "readonly");
+                model.addAttribute("disabled", "disabled");
+            }
         }
         for (Customer c : emails) {
             if (!c.getId().equals(id)) {
@@ -223,7 +243,6 @@ public class CatalogController {
 
     @PostMapping("/gravarEndereco")
     public String gravarEndereco(@Valid @ModelAttribute("address") Endereco address, BindingResult result, Model model) {
-        System.out.println(address);
         enderecosRepository.save(address);
         atualizarModelCatalogo(model);
         return "catalog :: cabecalhoFragment";

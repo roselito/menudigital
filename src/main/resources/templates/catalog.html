@@ -22,7 +22,7 @@
                         <div th:unless="${#strings.isEmpty(userName)}"
                              th:insert="~{fragments/components/botoes :: 
                              botao(texto='Cadastro',
-                             onclick='editarCustomer()',
+                             onclick='editarCustomer(0)',
                              imagem='bi-person',
                              cor='btn-primary')}" ></div>
                         <div th:unless="${#lists.isEmpty(cart)}"

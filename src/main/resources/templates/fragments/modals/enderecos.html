@@ -25,6 +25,11 @@
                                 </div>
                                 <div class="modal-footer d-flex flex-nowrap m-0 p-0 ps-3">
                                     <div class="col-12 justify-items-center gap-2 flex-column">
+                                        <div th:insert="~{fragments/components/botoes :: 
+                                             botao(texto='Novo endereço',
+                                             onclick='mostrarEndereco(0)',
+                                             imagem='bi-postcard',
+                                             cor='btn-primary')}" ></div>
                                         <div th:replace="~{fragments/components/botoes :: 
                                              botao(texto='Cardápio',
                                              tipo='button',

@@ -1,6 +1,18 @@
 var modal = null;
 var enderecos = false;
 
+var formatter = new Intl.NumberFormat('en-US', {
+    style: 'decimal', // or 'currency', 'percent'
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+});
+
+var formatterBR = new Intl.NumberFormat('pt-BR', {
+    style: 'decimal', // or 'currency', 'percent'
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+});
+
 $(document).ready(function () {
     var SPMaskBehavior = function (val) {
         return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
@@ -47,34 +59,32 @@ $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal.find('#itemid').val(itemid);
 });
 
-var formatter = new Intl.NumberFormat('en-US', {
-    style: 'decimal', // or 'currency', 'percent'
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-});
-
-var formatterBR = new Intl.NumberFormat('pt-BR', {
-    style: 'decimal', // or 'currency', 'percent'
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-});
-
-function decreaseAmount() {
-    var valorAmount = parseInt(modal.find('#amount').val());
-    if (valorAmount > 1) {
-        valorAmount = valorAmount - 1;
-    }
-    modal.find('#amount').val(valorAmount);
-    modal.find('#amountlabel').text(valorAmount);
-    modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
+function addCartItem() {
+    var title = document.getElementById('title').value;
+    var description = document.getElementById('description').value;
+    var amount = document.getElementById('amount').value;
+    var unitprice = document.getElementById('unitprice').value;
+    var observations = document.getElementById('observations').value + " ";
+    var itemid = document.getElementById('itemid').value;
+    $.ajax({
+        type: 'POST',
+        url: "/addCartItem/"
+                + title + "/"
+                + description + "/"
+                + amount + "/"
+                + convertPtBrToEnUs(unitprice) + "/"
+                + observations + "/"
+                + itemid,
+        success: function (htmlContent) {
+            $('#cabecalho').html(htmlContent);
+        }
+    });
 }
 
-function increaseAmount() {
-    var valorAmount = parseInt(modal.find('#amount').val());
-    valorAmount = valorAmount + 1;
-    modal.find('#amount').val(valorAmount);
-    modal.find('#amountlabel').text(valorAmount);
-    modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
+function alterarSenha() {
+    $('#divSenha').removeClass('d-none');
+    $('#divGravar').removeClass('d-none');
+    $('#divBarra1').addClass('d-none');
 }
 
 function buscarCEP() {
@@ -92,16 +102,53 @@ function buscarCEP() {
     });
 }
 
-function editarCustomer() {
+function convertPtBrToEnUs(ptBrNumberString) {
+    let cleanedString = String(ptBrNumberString);
+    cleanedString = cleanedString.replace(/\./g, '');
+    cleanedString = cleanedString.replace(/,/g, '.');
+    const enUsNumber = Number(cleanedString);
+    return enUsNumber;
+}
+
+function decreaseAmount() {
+    var valorAmount = parseInt(modal.find('#amount').val());
+    if (valorAmount > 1) {
+        valorAmount = valorAmount - 1;
+    }
+    modal.find('#amount').val(valorAmount);
+    modal.find('#amountlabel').text(valorAmount);
+    modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
+}
+
+function editarCustomer(edicao) {
     $.ajax({
         type: 'GET',
-        url: "/editarCadastro",
+        url: "/editarCadastro/"+edicao,
         success: function (htmlContent) {
             $('#modalCadastroContent').html(htmlContent);
             $('#modalCadastro').modal('show');
         }
     });
 }
+
+function increaseAmount() {
+    var valorAmount = parseInt(modal.find('#amount').val());
+    valorAmount = valorAmount + 1;
+    modal.find('#amount').val(valorAmount);
+    modal.find('#amountlabel').text(valorAmount);
+    modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
+}
+
+function logout() {
+    $.ajax({
+        type: 'POST',
+        url: '/logout',
+        success: function (htmlContent) {
+            $('#cabecalho').html(htmlContent);
+        }
+    });
+}
+
 function mostrarEndereco(id) {
     $.ajax({
         type: 'GET',
@@ -111,28 +158,6 @@ function mostrarEndereco(id) {
             $('#modalEnderecos').modal('hide');
             $('#modalAddressContent').html(htmlContent);
             $('#modalAddress').modal('show');
-        }
-    });
-}
-
-function telaLogin() {
-    $.ajax({
-        type: 'GET',
-        url: "/telaLogin",
-        success: function (htmlContent) {
-            $('#modalLoginContent').html(htmlContent);
-            $('#modalLogin').modal('show');
-        }
-    });
-}
-
-function voltarTela(modal) {
-    $(modal).modal('hide');
-    $.ajax({
-        type: 'GET',
-        url: "/catalog",
-        success: function (htmlContent) {
-            window.location.href = 'catalog';
         }
     });
 }
@@ -162,28 +187,6 @@ function recuperarCarrinho() {
     });
 }
 
-function addCartItem() {
-    var title = document.getElementById('title').value;
-    var description = document.getElementById('description').value;
-    var amount = document.getElementById('amount').value;
-    var unitprice = document.getElementById('unitprice').value;
-    var observations = document.getElementById('observations').value + " ";
-    var itemid = document.getElementById('itemid').value;
-    $.ajax({
-        type: 'POST',
-        url: "/addCartItem/"
-                + title + "/"
-                + description + "/"
-                + amount + "/"
-                + convertPtBrToEnUs(unitprice) + "/"
-                + observations + "/"
-                + itemid,
-        success: function (htmlContent) {
-            $('#cabecalho').html(htmlContent);
-        }
-    });
-}
-
 function removerCartItem(id) {
     $.ajax({
         type: 'POST',
@@ -199,27 +202,70 @@ function removerCartItem(id) {
     });
 }
 
-setTimeout(function () {
-    var sucesso = document.querySelector('.alert-success');
-    var erro = document.querySelector('.alert-danger');
-    var mensagem = document.querySelector('.mensagem');
-    if (sucesso) {
-        sucesso.style.display = 'none';
-    }
-    if (erro) {
-        erro.style.display = 'none';
-    }
-    if (mensagem) {
-        mensagem.style.display = 'none';
-    }
-}, 5000);
+function removerEndereco(id) {
+    $.ajax({
+        method: 'post',
+        url: '/removerEndereco/'+id,
+        success: function (htmlContent) {
+            if (String(htmlContent).indexOf("<span >Excluir</span>") < 0) {
+                $('#modalEnderecos').modal('hide');
+                $('#cabecalho').html(htmlContent);
+            } else {
+                $('#enderecosContent').html(htmlContent);
+            }
+        }
+    });
+}
 
-function convertPtBrToEnUs(ptBrNumberString) {
-    let cleanedString = String(ptBrNumberString);
-    cleanedString = cleanedString.replace(/\./g, '');
-    cleanedString = cleanedString.replace(/,/g, '.');
-    const enUsNumber = Number(cleanedString);
-    return enUsNumber;
+function submitAddress(event) {
+    event.preventDefault();
+    var form = $('#formEndereco');
+    var url = form.attr('action');
+    var formData = form.serialize();
+    var formMethod = form.attr('method');
+    $.ajax({
+        method: formMethod,
+        url: url,
+        data: formData,
+        success: function (htmlContent) {
+            if (String(htmlContent).indexOf("Erros encontrados") < 0) {
+                $('#modalAddress').modal('hide');
+                $('#cabecalho').html(htmlContent);
+            } else {
+                $('#modalAddressContent').html(htmlContent);
+                $('#toastErrosAddress').toast('show');
+            }
+        }
+    });
+}
+
+function submitCustomer(event) {
+    event.preventDefault();
+    $(":input:disabled").prop('disabled',false);
+    var form = $('#formCadastro');
+    var url = form.attr('action');
+    var formData = form.serialize();
+    var formMethod = form.attr('method');
+    $.ajax({
+        method: formMethod,
+        url: url,
+        data: formData,
+        success: function (htmlContent) {
+            if (String(htmlContent).indexOf("Erros encontrados") < 0) {
+                document.body.focus();
+                $('#modalCadastro').modal('hide');
+                $('.modal-backdrop').remove();
+                $('#cabecalho').html(htmlContent);
+                if (enderecos) {
+                    mostrarEnderecos();
+                    enderecos = false;
+                }
+            } else {
+                $('#modalCadastroContent').html(htmlContent);
+                $('#toastErrosCadastro').toast('show');
+            }
+        }
+    });
 }
 
 function submitLogin(event) {
@@ -269,77 +315,13 @@ function submitLoginCustomer(event) {
     });
 }
 
-function submitCustomer(event) {
-    event.preventDefault();
-    var form = $('#formCadastro');
-    var url = form.attr('action');
-    var formData = form.serialize();
-    var formMethod = form.attr('method');
+function telaLogin() {
     $.ajax({
-        method: formMethod,
-        url: url,
-        data: formData,
+        type: 'GET',
+        url: "/telaLogin",
         success: function (htmlContent) {
-            if (String(htmlContent).indexOf("Erros encontrados") < 0) {
-                document.body.focus();
-                $('#modalCadastro').modal('hide');
-                $('.modal-backdrop').remove();
-                $('#cabecalho').html(htmlContent);
-                if (enderecos) {
-                    mostrarEnderecos();
-                    enderecos = false;
-                }
-            } else {
-                $('#modalCadastroContent').html(htmlContent);
-                $('#toastErrosCadastro').toast('show');
-            }
-        }
-    });
-}
-
-function submitAddress(event) {
-    event.preventDefault();
-    var form = $('#formEndereco');
-    var url = form.attr('action');
-    var formData = form.serialize();
-    var formMethod = form.attr('method');
-    $.ajax({
-        method: formMethod,
-        url: url,
-        data: formData,
-        success: function (htmlContent) {
-            if (String(htmlContent).indexOf("Erros encontrados") < 0) {
-                $('#modalAddress').modal('hide');
-                $('#cabecalho').html(htmlContent);
-            } else {
-                $('#modalAddressContent').html(htmlContent);
-                $('#toastErrosAddress').toast('show');
-            }
-        }
-    });
-}
-
-function removerEndereco(id) {
-    $.ajax({
-        method: 'post',
-        url: '/removerEndereco/'+id,
-        success: function (htmlContent) {
-            if (String(htmlContent).indexOf("<span >Excluir</span>") < 0) {
-                $('#modalEnderecos').modal('hide');
-                $('#cabecalho').html(htmlContent);
-            } else {
-                $('#enderecosContent').html(htmlContent);
-            }
-        }
-    });
-}
-
-function logout() {
-    $.ajax({
-        type: 'POST',
-        url: '/logout',
-        success: function (htmlContent) {
-            $('#cabecalho').html(htmlContent);
+            $('#modalLoginContent').html(htmlContent);
+            $('#modalLogin').modal('show');
         }
     });
 }
@@ -347,3 +329,29 @@ function logout() {
 function toggleEnderecos() {
     enderecos = true;
 }
+
+function voltarTela(modal) {
+    $(modal).modal('hide');
+    $.ajax({
+        type: 'GET',
+        url: "/catalog",
+        success: function (htmlContent) {
+            window.location.href = 'catalog';
+        }
+    });
+}
+
+setTimeout(function () {
+    var sucesso = document.querySelector('.alert-success');
+    var erro = document.querySelector('.alert-danger');
+    var mensagem = document.querySelector('.mensagem');
+    if (sucesso) {
+        sucesso.style.display = 'none';
+    }
+    if (erro) {
+        erro.style.display = 'none';
+    }
+    if (mensagem) {
+        mensagem.style.display = 'none';
+    }
+}, 5000);
