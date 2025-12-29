@@ -38,37 +38,42 @@
                                  data-pg-name="footer">
                                 <div th:insert="~{fragments/components/botoes :: 
                                      botao(texto='Meus dados',
+                                     fgcolor='text-white',
                                      onclick='editarCustomer(1)',
                                      imagem='bi-person',
-                                     cor='btn-primary')}" ></div>
+                                     cor='btn-mediumpurple')}" ></div>
                                 <div th:insert="~{fragments/components/botoes :: 
                                      botao(texto='Senha',
+                                     fgcolor='text-white',
                                      onclick='alterarSenha()',
                                      imagem='bi-key',
-                                     cor='btn-primary')}" ></div>
+                                     cor='btn-mediumpurple')}" ></div>
                                 <div th:unless="${customerCadastro.id == null}">
                                     <div th:insert="~{fragments/components/botoes :: 
                                          botao(texto='Endereços',
+                                         fgcolor='text-white',
                                          tipo='submit',
                                          onclick='toggleEnderecos()',
                                          imagem='bi-postcard',
-                                         cor='btn-primary')}" ></div>                                
+                                         cor='btn-mediumpurple')}" ></div>                                
                                 </div>              
                             </div>              
                             <div class="bg-success-subtle modal-footer text-end pt-2 pe-0" data-pg-name="footer">
                                 <div th:insert="~{fragments/components/botoes :: 
                                      botao(texto='Cancelar',
+                             fgcolor='text-white',
                                      tipo='button',
                                      imagem='bi-x-circle',
-                                     cor='btn-danger',
+                                     cor='btn-salmon',
                                      dismiss='modal')}" ></div>
                                 <div id="divGravar" class="m-0 p-0 lh-1"
                                      th:classappend="${(alteraSenha=='0' and edicao=='0')?'d-none':''}">
                                     <div th:insert="~{fragments/components/botoes :: 
                                          botao(texto='Gravar',
+                             fgcolor='text-white',
                                          tipo='submit',
                                          imagem='bi-x-circle',
-                                         cor='btn-success')}" ></div>                            
+                                         cor='btn-darkseagreen')}" ></div>                            
                                 </div>
                             </div>             
                             <div th:if="${#fields.hasErrors()}" 

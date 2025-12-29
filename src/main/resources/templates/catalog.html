@@ -22,28 +22,33 @@
                         <div th:unless="${#strings.isEmpty(userName)}"
                              th:insert="~{fragments/components/botoes :: 
                              botao(texto='Cadastro',
+                             fgcolor='text-white',
                              onclick='editarCustomer(0)',
                              imagem='bi-person',
-                             cor='btn-primary')}" ></div>
+                             cor='btn-mediumpurple')}" ></div>
                         <div th:unless="${#lists.isEmpty(cart)}"
                              th:insert="~{fragments/components/botoes :: 
                              botao(texto='Carrinho',
+                             fgcolor='text-white',
                              imagem='bi-cart',
                              onclick='recuperarCarrinho()',
-                             cor='btn-primary')}" ></div>
+                             cor='btn-mediumpurple')}" ></div>
 
                         <div th:if="${#strings.isEmpty(userName)}" th:insert="~{fragments/components/botoes :: 
                              botao(texto='Entrar',
+                             fgcolor='text-white',
                              onclick='telaLogin()',
                              tipo='button',
                              toggle='modal',
                              target='#modalLogin',
                              imagem='bi-box-arrow-in-right',
-                             cor='btn-primary')}" ></div>
+                             cor='btn-mediumpurple')}" ></div>
                         <div 
                             th:unless="${#strings.isEmpty(userName)}" 
                             th:insert="~{fragments/components/botoes :: 
                             botao(texto='Sair',
+                            cor='btn-salmon',
+                            fgcolor='text-white',
                             onclick='logout()',
                             revImagem='bi-box-arrow-right')}" ></div>                    
                     </div>

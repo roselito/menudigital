@@ -21,20 +21,22 @@
                             <div th:fragment="enderecosFragment" class="modal-body mt-0 pt-0"  >
                                 <div th:each="enderecoItem : ${enderecos}">
                                     <div th:replace="~{fragments/enderecoItem :: enderecoItem(${enderecoItem})}"></div>
-                                    <hr>
+                                    <hr class="m-0 my-2">
                                 </div>
-                                <div class="modal-footer d-flex flex-nowrap m-0 p-0 ps-3">
-                                    <div class="col-12 justify-items-center gap-2 flex-column">
+                                <div class="modal-footer justify-content-center m-0 p-0">
+                                    <div class="d-inline-flex justify-content-center flex-row m-0">
                                         <div th:insert="~{fragments/components/botoes :: 
                                              botao(texto='Novo endereço',
+                                             fgcolor='text-white',
                                              onclick='mostrarEndereco(0)',
                                              imagem='bi-postcard',
-                                             cor='btn-primary')}" ></div>
-                                        <div th:replace="~{fragments/components/botoes :: 
+                                             cor='btn-darkseagreen')}" ></div>
+                                        <div th:insert="~{fragments/components/botoes :: 
                                              botao(texto='Cardápio',
+                                             fgcolor='text-white',
                                              tipo='button',
                                              imagem='bi-box-arrow-in-right',
-                                             cor='btn-primary',
+                                             cor='btn-mediumpurple',
                                              dismiss='modal')}" ></div>    
                                     </div>
                                 </div>

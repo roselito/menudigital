@@ -32,9 +32,21 @@
                                                     class="fw-bolder fs-5"
                                                     th:text="${#numbers.formatCurrency(totalCarrinho)}">0.00</span>
                                             </div>
-                                            <div class="col-6 d-inline-flex gap-2 flex-column">
-                                                <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Cardápio</button>
-                                                <button type="submit" class="btn btn-success btn-sm" data-bs-dismiss="modal">Pagamento</button>
+                                            <div class="col-6 d-inline-flex gap-2 flex-column justify-content-center">
+                                                <div th:replace="~{fragments/components/botoes :: 
+                                                     botao(texto='Cardápio',
+                                                     fgcolor='text-white',
+                                                     tipo='button',
+                                                     imagem='bi-box-arrow-in-right',
+                                                     cor='btn-mediumpurple',
+                                                     dismiss='modal')}" ></div>
+                                                <div th:replace="~{fragments/components/botoes :: 
+                                                     botao(texto='Pagamento',
+                                                     fgcolor='text-white',
+                                                     tipo='button',
+                                                     imagem='bi-receipt-cutoff',
+                                                     cor='btn-darkseagreen',
+                                                     dismiss='modal')}" ></div>
                                             </div>
                                         </div>
                                     </div>

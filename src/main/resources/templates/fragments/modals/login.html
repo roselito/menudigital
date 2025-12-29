@@ -42,13 +42,14 @@
                                              tipo='button',
                                              onclick='voltarTela(\'modalLogin\')',
                                              imagem='bi-x-circle',
-                                             cor='btn-danger',
+                                             cor='btn-salmon',
                                              dismiss='modal')}" />
                                         <div th:replace="~{fragments/components/botoes :: 
                                              botao(texto='Entrar',
+                                             fgcolor='text-white',
                                              tipo='submit',
                                              imagem='bi-box-arrow-in-right',
-                                             cor='btn-primary')}" />
+                                             cor='btn-mediumpurple')}" />
                                     </div>
                                     <div th:if="${#fields.hasErrors()}" 
                                          class="toast" id="toastErrosLogin" 
@@ -84,7 +85,7 @@
                                              botao(texto='Cadastrar',
                                              tipo='submit',
                                              imagem='bi-person',
-                                             cor='btn-success')}" ></div>
+                                             cor='btn-darkseagreen')}" ></div>
                                     </form>
                                 </div>
                                 <form method="POST" action="/upload" enctype="multipart/form-data">

@@ -2,14 +2,14 @@
 <html>
     <body>       
         <div th:fragment="botao" 
-             th:with="tipo=${tipo}?:'button',cor=${cor}?:'btn-primary'"
+             th:with="tipo=${tipo}?:'button',cor=${cor}?:'btn-mediumpurple',fgcolor=${fgcolor}?:'text-dark'"
              th:remove="tag">
             <button th:type="${tipo}"
                     th:data-bs-toggle="${toggle}"
                     th:data-bs-target="${target}"
                     th:data-bs-dismiss="${dismiss}"
                     th:attr="onclick=|${onclick}|" 
-                    th:class="${'btn btn-sm d-inline-flex gap-2 lh-1 mb-auto me-2 ms-0 mt-0 pb-auto text-center fs-7 '+cor}">
+                    th:class="|btn btn-sm d-inline-flex gap-2 lh-1 mb-auto me-2 ms-0 mt-0 pb-auto text-center justify-content-center fs-7 ${cor} ${fgcolor}|">
                 <i th:if="${imagem}" th:class="${'bi '+imagem}"></i>
                 <span th:text="${texto}" ></span>
                 <i th:if="${revImagem}" th:class="${'bi '+revImagem}"></i>
