@@ -67,10 +67,12 @@
                             <div class="bg-success-subtle justify-content-end modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer">
                                 <div class="col-12 pb-2 pe-0 ps-0 pt-0 text-end">
                                     <div th:replace="~{fragments/components/botoes :: 
-                                         botao(texto='Cancelar',imagem='bi-x-circle',cor='btn-salmon',
+                                         botao(texto='Cancelar',
+                                         fgcolor='text-white',imagem='bi-x-circle',cor='btn-salmon',
                                          dismiss='modal')}"></div>
                                     <div th:replace="~{fragments/components/botoes :: 
-                                         botao(tipo='button',texto='Adicionar',imagem='bi-person-add',cor='btn-darkseagreen',
+                                         botao(tipo='button',texto='Adicionar',
+                                         fgcolor='text-white',imagem='bi-person-add',cor='btn-darkseagreen',
                                          onclick='addCartItem()',dismiss='modal')}"></div>
                                 </div>         
                             </div>     

@@ -124,6 +124,12 @@ public class CatalogController {
         return "catalog :: cabecalhoFragment";
     }
 
+    @GetMapping("/atualizarCabecalho")
+    public String atualizarCabecalho(Model model) {
+        atualizarModelCatalogo(model);
+        return "catalog :: cabecalhoFragment";
+    }
+
     @GetMapping("/buscarCEP/{cep}")
     @SuppressWarnings("CallToPrintStackTrace")
     public String buscarCep(@PathVariable String cep, Model model) {

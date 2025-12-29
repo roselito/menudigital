@@ -41,13 +41,13 @@
                                      fgcolor='text-white',
                                      onclick='editarCustomer(1)',
                                      imagem='bi-person',
-                                     cor='btn-mediumpurple')}" ></div>
+                                     cor='btn-tonicblue')}" ></div>
                                 <div th:insert="~{fragments/components/botoes :: 
                                      botao(texto='Senha',
                                      fgcolor='text-white',
                                      onclick='alterarSenha()',
                                      imagem='bi-key',
-                                     cor='btn-mediumpurple')}" ></div>
+                                     cor='btn-tonicblue')}" ></div>
                                 <div th:unless="${customerCadastro.id == null}">
                                     <div th:insert="~{fragments/components/botoes :: 
                                          botao(texto='Endereços',
@@ -55,7 +55,7 @@
                                          tipo='submit',
                                          onclick='toggleEnderecos()',
                                          imagem='bi-postcard',
-                                         cor='btn-mediumpurple')}" ></div>                                
+                                         cor='btn-tonicblue')}" ></div>                                
                                 </div>              
                             </div>              
                             <div class="bg-success-subtle modal-footer flex-row justify-content-center pt-2 pe-0 lh-1" data-pg-name="footer">

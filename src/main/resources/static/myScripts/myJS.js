@@ -87,6 +87,16 @@ function alterarSenha() {
     $('#divBarra1').addClass('d-none');
 }
 
+function atualizarCabecalho() {
+    $.ajax({
+        type: 'GET',
+        url: "/atualizarCabecalho",
+        success: function (htmlContent) {
+            $('#cabecalho').html(htmlContent);
+        }
+    });
+}
+
 function buscarCEP() {
     var cepDigitado = document.getElementById('cep').value;
     $('.wait').val('Pesquisando...');

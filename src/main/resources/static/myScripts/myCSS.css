@@ -5,6 +5,11 @@
 .no-decoration {
     text-decoration: none !important;
 }
+body {
+    padding-bottom: 3.1rem; /* Adjust as needed based on your footer's height */
+    padding-top: 3.1rem; /* Adjust as needed based on your footer's height */
+}
+
 .text-justify {
     text-align: justify;
 }
@@ -30,6 +35,26 @@ textarea {
     color: red;
 }
 
+.h-1rem {
+    height: 1rem !important;
+}
+
+.h-2rem {
+    height: 2rem !important;
+}
+
+.h-3rem {
+    height: 3rem !important;
+}
+
+.h-4rem {
+    height: 4rem !important;
+}
+
+.h-5rem {
+    height: 5rem !important;
+}
+
 .w-30 {
     width: 30% !important;
 }
@@ -43,571 +68,578 @@ textarea {
 }
 
 .btn-black {
-    background-color: #000000;
+    background-color: #000000 !important ;
 }
 .btn-grey11 {
-    background-color: #1C1C1C;
+    background-color: #1C1C1C !important ;
 }
 .btn-grey21 {
-    background-color: #363636;
+    background-color: #363636 !important ;
 }
 .btn-grey31 {
-    background-color: #4F4F4F;
+    background-color: #4F4F4F !important ;
 }
 .btn-dimgray {
-    background-color: #696969;
+    background-color: #696969 !important ;
 }
 .btn-gray {
-    background-color: #808080;
+    background-color: #808080 !important ;
 }
 .btn-darkgray {
-    background-color: #A9A9A9;
+    background-color: #A9A9A9 !important ;
 }
 .btn-silver {
-    background-color: #C0C0C0;
+    background-color: #C0C0C0 !important ;
 }
 .btn-lightgrey {
-    background-color: #D3D3D3;
+    background-color: #D3D3D3 !important ;
 }
 .btn-gainsboro {
-    background-color: #DCDCDC;
+    background-color: #DCDCDC !important ;
+}
+.btn-tonicblue {
+    background-color: #5d5a91 !important ;
 }
 .btn-slateblue {
-    background-color: #6A5ACD;
+    background-color: #6A5ACD !important ;
 }
 .btn-slateblue1 {
-    background-color: #836FFF;
+    background-color: #836FFF !important ;
 }
 .btn-slateblue3 {
-    background-color: #6959CD;
+    background-color: #6959CD !important ;
 }
 .btn-darkslateblue {
-    background-color: #483D8B;
+    background-color: #483D8B !important ;
 }
 .btn-midnightblue {
-    background-color: #191970;
+    background-color: #191970 !important ;
 }
 .btn-navy {
-    background-color: #000080;
+    background-color: #000080 !important ;
 }
 .btn-darkblue {
-    background-color: #00008B;
+    background-color: #00008B !important ;
 }
 .btn-mediumblue {
-    background-color: #0000CD;
+    background-color: #0000CD !important ;
 }
 .btn-blue {
-    background-color: #0000FF;
+    background-color: #0000FF !important ;
 }
 .btn-cornflowerblue {
-    background-color: #6495ED;
+    background-color: #6495ED !important ;
 }
 .btn-royalblue {
-    background-color: #4169E1;
+    background-color: #4169E1 !important ;
 }
 .btn-dodgerblue {
-    background-color: #1E90FF;
+    background-color: #1E90FF !important ;
 }
 .btn-deepskyblue {
-    background-color: #00BFFF;
+    background-color: #00BFFF !important ;
 }
 .btn-lightskyblue {
-    background-color: #87CEFA;
+    background-color: #87CEFA !important ;
 }
 .btn-skyblue {
-    background-color: #87CEEB;
+    background-color: #87CEEB !important ;
 }
 .btn-lightblue {
-    background-color: #ADD8E6;
+    background-color: #ADD8E6 !important ;
 }
 .btn-steelblue {
-    background-color: #4682B4;
+    background-color: #4682B4 !important ;
 }
 .btn-lightsteelblue {
-    background-color: #B0C4DE;
+    background-color: #B0C4DE !important ;
 }
 .btn-slategray {
-    background-color: #708090;
+    background-color: #708090 !important ;
 }
 .btn-lightslategray {
-    background-color: #778899;
+    background-color: #778899 !important ;
 }
 .btn-aqua {
-    background-color: #00FFFF;
+    background-color: #00FFFF !important ;
 }
 .btn-darkturquoise {
-    background-color: #00CED1;
+    background-color: #00CED1 !important ;
 }
 .btn-turquoise {
-    background-color: #40E0D0;
+    background-color: #40E0D0 !important ;
 }
 .btn-mediumturquoise {
-    background-color: #48D1CC;
+    background-color: #48D1CC !important ;
 }
 .btn-lightseagreen {
-    background-color: #20B2AA;
+    background-color: #20B2AA !important ;
 }
 .btn-darkcyan {
-    background-color: #008B8B;
+    background-color: #008B8B !important ;
 }
 .btn-teal {
-    background-color: #008080;
+    background-color: #008080 !important ;
 }
 .btn-aquamarine {
-    background-color: #7FFFD4;
+    background-color: #7FFFD4 !important ;
 }
 .btn-mediumaquamarine {
-    background-color: #66CDAA;
+    background-color: #66CDAA !important ;
 }
 .btn-cadetblue {
-    background-color: #5F9EA0;
+    background-color: #5F9EA0 !important ;
 }
 .btn-darkslategray {
-    background-color: #2F4F4F;
+    background-color: #2F4F4F !important ;
 }
 .btn-mediumspringgreen {
-    background-color: #00FA9A;
+    background-color: #00FA9A !important ;
 }
 .btn-springgreen {
-    background-color: #00FF7F;
+    background-color: #00FF7F !important ;
 }
 .btn-palegreen {
-    background-color: #98FB98;
+    background-color: #98FB98 !important ;
 }
 .btn-lightgreen {
-    background-color: #90EE90;
+    background-color: #90EE90 !important ;
 }
 .btn-darkseagreen {
-    background-color: #8FBC8F;
+    background-color: #8FBC8F !important ;
 }
 .btn-mediumseagreen {
-    background-color: #3CB371;
+    background-color: #3CB371 !important ;
 }
 .btn-seagreen {
-    background-color: #2E8B57;
+    background-color: #2E8B57 !important ;
 }
 .btn-darkgreen {
-    background-color: #006400;
+    background-color: #006400 !important ;
 }
 .btn-green {
-    background-color: #008000;
+    background-color: #008000 !important ;
 }
 .btn-forestgreen {
-    background-color: #228B22;
+    background-color: #228B22 !important ;
 }
 .btn-limegreen {
-    background-color: #32CD32;
+    background-color: #32CD32 !important ;
 }
 .btn-lime {
-    background-color: #00FF00;
+    background-color: #00FF00 !important ;
 }
 .btn-lawngreen {
-    background-color: #7CFC00;
+    background-color: #7CFC00 !important ;
 }
 .btn-chartreuse {
-    background-color: #7FFF00;
+    background-color: #7FFF00 !important ;
 }
 .btn-greenyellow {
-    background-color: #ADFF2F;
+    background-color: #ADFF2F !important ;
 }
 .btn-yellowgreen {
-    background-color: #9ACD32;
+    background-color: #9ACD32 !important ;
 }
 .btn-olivedrab {
-    background-color: #6B8E23;
+    background-color: #6B8E23 !important ;
 }
 .btn-darkolivegreen {
-    background-color: #556B2F;
+    background-color: #556B2F !important ;
 }
 .btn-olive {
-    background-color: #808000;
+    background-color: #808000 !important ;
 }
 .btn-darkkhaki {
-    background-color: #BDB76B;
+    background-color: #BDB76B !important ;
 }
 .btn-goldenrod {
-    background-color: #DAA520;
+    background-color: #DAA520 !important ;
 }
 .btn-darkgoldenrod {
-    background-color: #B8860B;
+    background-color: #B8860B !important ;
 }
 .btn-saddlebrown {
-    background-color: #8B4513;
+    background-color: #8B4513 !important ;
 }
 .btn-sienna {
-    background-color: #A0522D;
+    background-color: #A0522D !important ;
 }
 .btn-rosybrown {
-    background-color: #BC8F8F;
+    background-color: #BC8F8F !important ;
 }
 .btn-peru {
-    background-color: #CD853F;
+    background-color: #CD853F !important ;
 }
 .btn-chocolate {
-    background-color: #D2691E;
+    background-color: #D2691E !important ;
 }
 .btn-sandybrown {
-    background-color: #F4A460;
+    background-color: #F4A460 !important ;
 }
 .btn-navajowhite {
-    background-color: #FFDEAD;
+    background-color: #FFDEAD !important ;
 }
 .btn-wheat {
-    background-color: #F5DEB3;
+    background-color: #F5DEB3 !important ;
 }
 .btn-burlywood {
-    background-color: #DEB887;
+    background-color: #DEB887 !important ;
 }
 .btn-tan {
-    background-color: #D2B48C;
+    background-color: #D2B48C !important ;
 }
 .btn-mediumslateblue {
-    background-color: #7B68EE;
+    background-color: #7B68EE !important ;
 }
 .btn-mediumpurple {
-    background-color: #9370DB;
+    background-color: #9370DB !important ;
 }
 .btn-blueviolet {
-    background-color: #8A2BE2;
+    background-color: #8A2BE2 !important ;
 }
 .btn-indigo {
-    background-color: #4B0082;
+    background-color: #4B0082 !important ;
 }
 .btn-darkviolet {
-    background-color: #9400D3;
+    background-color: #9400D3 !important ;
 }
 .btn-darkorchid {
-    background-color: #9932CC;
+    background-color: #9932CC !important ;
 }
 .btn-mediumorchid {
-    background-color: #BA55D3;
+    background-color: #BA55D3 !important ;
 }
 .btn-purple {
-    background-color: #A020F0;
+    background-color: #A020F0 !important ;
 }
 .btn-darkmagenta {
-    background-color: #8B008B;
+    background-color: #8B008B !important ;
 }
 .btn-fuchsia {
-    background-color: #FF00FF;
+    background-color: #FF00FF !important ;
 }
 .btn-violet {
-    background-color: #EE82EE;
+    background-color: #EE82EE !important ;
 }
 .btn-orchid {
-    background-color: #DA70D6;
+    background-color: #DA70D6 !important ;
 }
 .btn-plum {
-    background-color: #DDA0DD;
+    background-color: #DDA0DD !important ;
 }
 .btn-mediumvioletred {
-    background-color: #C71585;
+    background-color: #C71585 !important ;
 }
 .btn-deeppink {
-    background-color: #FF1493;
+    background-color: #FF1493 !important ;
 }
 .btn-hotpink {
-    background-color: #FF69B4;
+    background-color: #FF69B4 !important ;
 }
 .btn-palevioletred {
-    background-color: #DB7093;
+    background-color: #DB7093 !important ;
 }
 .btn-lightpink {
-    background-color: #FFB6C1;
+    background-color: #FFB6C1 !important ;
 }
 .btn-pink {
-    background-color: #FFC0CB;
+    background-color: #FFC0CB !important ;
 }
 .btn-lightcoral {
-    background-color: #F08080;
+    background-color: #F08080 !important ;
 }
 .btn-indianred {
-    background-color: #CD5C5C;
+    background-color: #CD5C5C !important ;
 }
 .btn-crimson {
-    background-color: #DC143C;
+    background-color: #DC143C !important ;
 }
 .btn-maroon {
-    background-color: #800000;
+    background-color: #800000 !important ;
 }
 .btn-darkred {
-    background-color: #8B0000;
+    background-color: #8B0000 !important ;
 }
 .btn-firebrick {
-    background-color: #B22222;
+    background-color: #B22222 !important ;
 }
 .btn-brown {
-    background-color: #A52A2A;
+    background-color: #A52A2A !important ;
 }
 .btn-salmon {
-    background-color: #FA8072;
+    background-color: #FA8072 !important ;
 }
 .btn-darksalmon {
-    background-color: #E9967A;
+    background-color: #E9967A !important ;
 }
 .btn-lightsalmon {
-    background-color: #FFA07A;
+    background-color: #FFA07A !important ;
 }
 .btn-coral {
-    background-color: #FF7F50;
+    background-color: #FF7F50 !important ;
 }
 .btn-tomato {
-    background-color: #FF6347;
+    background-color: #FF6347 !important ;
 }
 .btn-red {
-    background-color: #FF0000;
+    background-color: #FF0000 !important ;
 }
 .btn-orangered {
-    background-color: #FF4500;
+    background-color: #FF4500 !important ;
 }
 .btn-darkorange {
-    background-color: #FF8C00;
+    background-color: #FF8C00 !important ;
 }
 .btn-orange {
-    background-color: #FFA500;
+    background-color: #FFA500 !important ;
 }
 .btn-gold {
-    background-color: #FFD700;
+    background-color: #FFD700 !important ;
 }
 .btn-yellow {
-    background-color: #FFFF00;
+    background-color: #FFFF00 !important ;
 }
 .btn-khaki {
-    background-color: #F0E68C;
+    background-color: #F0E68C !important ;
 }
 .btn-aliceblue {
-    background-color: #F0F8FF;
+    background-color: #F0F8FF !important ;
 }
 .btn-ghostwhite {
-    background-color: #F8F8FF;
+    background-color: #F8F8FF !important ;
 }
 .btn-snow {
-    background-color: #FFFAFA;
+    background-color: #FFFAFA !important ;
 }
 .btn-seashell {
-    background-color: #FFF5EE;
+    background-color: #FFF5EE !important ;
 }
 .btn-floralwhite {
-    background-color: #FFFAF0;
+    background-color: #FFFAF0 !important ;
 }
 .btn-whitesmoke {
-    background-color: #F5F5F5;
+    background-color: #F5F5F5 !important ;
 }
 .btn-beige {
-    background-color: #F5F5DC;
+    background-color: #F5F5DC !important ;
 }
 .btn-oldlace {
-    background-color: #FDF5E6;
+    background-color: #FDF5E6 !important ;
 }
 .btn-ivory {
-    background-color: #FFFFF0;
+    background-color: #FFFFF0 !important ;
 }
 .btn-linen {
-    background-color: #FAF0E6;
+    background-color: #FAF0E6 !important ;
 }
 .btn-cornsilk {
-    background-color: #FFF8DC;
+    background-color: #FFF8DC !important ;
 }
 .btn-antiquewhite {
-    background-color: #FAEBD7;
+    background-color: #FAEBD7 !important ;
 }
 .btn-blanchedalmond {
-    background-color: #FFEBCD;
+    background-color: #FFEBCD !important ;
 }
 .btn-bisque {
-    background-color: #FFE4C4;
+    background-color: #FFE4C4 !important ;
 }
 .btn-lightyellow {
-    background-color: #FFFFE0;
+    background-color: #FFFFE0 !important ;
 }
 .btn-lemonchiffon {
-    background-color: #FFFACD;
+    background-color: #FFFACD !important ;
 }
 .btn-lightgoldenrodyellow {
-    background-color: #FAFAD2;
+    background-color: #FAFAD2 !important ;
 }
 .btn-papayawhip {
-    background-color: #FFEFD5;
+    background-color: #FFEFD5 !important ;
 }
 .btn-peachpuff {
-    background-color: #FFDAB9;
+    background-color: #FFDAB9 !important ;
 }
 .btn-moccasin {
-    background-color: #FFE4B5;
+    background-color: #FFE4B5 !important ;
 }
 .btn-palegoldenrod {
-    background-color: #EEE8AA;
+    background-color: #EEE8AA !important ;
 }
 .btn-mistyrose {
-    background-color: #FFE4E1;
+    background-color: #FFE4E1 !important ;
 }
 .btn-lavenderblush {
-    background-color: #FFF0F5;
+    background-color: #FFF0F5 !important ;
 }
 .btn-lavender {
-    background-color: #E6E6FA;
+    background-color: #E6E6FA !important ;
 }
 .btn-thistle {
-    background-color: #D8BFD8;
+    background-color: #D8BFD8 !important ;
 }
 .btn-azure {
-    background-color: #F0FFFF;
+    background-color: #F0FFFF !important ;
 }
 .btn-lightcyan {
-    background-color: #E0FFFF;
+    background-color: #E0FFFF !important ;
 }
 .btn-powderblue {
-    background-color: #B0E0E6;
+    background-color: #B0E0E6 !important ;
 }
 .btn-paleturquoise {
-    background-color: #E0FFFF;
+    background-color: #E0FFFF !important ;
 }
 .btn-honeydew {
-    background-color: #F0FFF0;
+    background-color: #F0FFF0 !important ;
 }
 .btn-mintcream {
-    background-color: #F5FFFA;
+    background-color: #F5FFFA !important ;
 }
 
-.text-black {color: #000000;}
-.text-grey11 {color: #1C1C1C;}
-.text-grey21 {color: #363636;}
-.text-grey31 {color: #4F4F4F;}
-.text-dimgray {color: #696969;}
-.text-gray {color: #808080;}
-.text-darkgray {color: #A9A9A9;}
-.text-silver {color: #C0C0C0;}
-.text-lightgrey {color: #D3D3D3;}
-.text-gainsboro {color: #DCDCDC;}
-.text-slateblue {color: #6A5ACD;}
-.text-slateblue1 {color: #836FFF;}
-.text-slateblue3 {color: #6959CD;}
-.text-darkslateblue {color: #483D8B;}
-.text-midnightblue {color: #191970;}
-.text-navy {color: #000080;}
-.text-darkblue {color: #00008B;}
-.text-mediumblue {color: #0000CD;}
-.text-blue {color: #0000FF;}
-.text-cornflowerblue {color: #6495ED;}
-.text-royalblue {color: #4169E1;}
-.text-dodgerblue {color: #1E90FF;}
-.text-deepskyblue {color: #00BFFF;}
-.text-lightskyblue {color: #87CEFA;}
-.text-skyblue {color: #87CEEB;}
-.text-lightblue {color: #ADD8E6;}
-.text-steelblue {color: #4682B4;}
-.text-lightsteelblue {color: #B0C4DE;}
-.text-slategray {color: #708090;}
-.text-lightslategray {color: #778899;}
-.text-aqua {color: #00FFFF;}
-.text-darkturquoise {color: #00CED1;}
-.text-turquoise {color: #40E0D0;}
-.text-mediumturquoise {color: #48D1CC;}
-.text-lightseagreen {color: #20B2AA;}
-.text-darkcyan {color: #008B8B;}
-.text-teal {color: #008080;}
-.text-aquamarine {color: #7FFFD4;}
-.text-mediumaquamarine {color: #66CDAA;}
-.text-cadetblue {color: #5F9EA0;}
-.text-darkslategray {color: #2F4F4F;}
-.text-mediumspringgreen {color: #00FA9A;}
-.text-springgreen {color: #00FF7F;}
-.text-palegreen {color: #98FB98;}
-.text-lightgreen {color: #90EE90;}
-.text-darkseagreen {color: #8FBC8F;}
-.text-mediumseagreen {color: #3CB371;}
-.text-seagreen {color: #2E8B57;}
-.text-darkgreen {color: #006400;}
-.text-green {color: #008000;}
-.text-forestgreen {color: #228B22;}
-.text-limegreen {color: #32CD32;}
-.text-lime {color: #00FF00;}
-.text-lawngreen {color: #7CFC00;}
-.text-chartreuse {color: #7FFF00;}
-.text-greenyellow {color: #ADFF2F;}
-.text-yellowgreen {color: #9ACD32;}
-.text-olivedrab {color: #6B8E23;}
-.text-darkolivegreen {color: #556B2F;}
-.text-olive {color: #808000;}
-.text-darkkhaki {color: #BDB76B;}
-.text-goldenrod {color: #DAA520;}
-.text-darkgoldenrod {color: #B8860B;}
-.text-saddlebrown {color: #8B4513;}
-.text-sienna {color: #A0522D;}
-.text-rosybrown {color: #BC8F8F;}
-.text-peru {color: #CD853F;}
-.text-chocolate {color: #D2691E;}
-.text-sandybrown {color: #F4A460;}
-.text-navajowhite {color: #FFDEAD;}
-.text-wheat {color: #F5DEB3;}
-.text-burlywood {color: #DEB887;}
-.text-tan {color: #D2B48C;}
-.text-mediumslateblue {color: #7B68EE;}
-.text-mediumpurple {color: #9370DB;}
-.text-blueviolet {color: #8A2BE2;}
-.text-indigo {color: #4B0082;}
-.text-darkviolet {color: #9400D3;}
-.text-darkorchid {color: #9932CC;}
-.text-mediumorchid {color: #BA55D3;}
-.text-purple {color: #A020F0;}
-.text-darkmagenta {color: #8B008B;}
-.text-fuchsia {color: #FF00FF;}
-.text-violet {color: #EE82EE;}
-.text-orchid {color: #DA70D6;}
-.text-plum {color: #DDA0DD;}
-.text-mediumvioletred {color: #C71585;}
-.text-deeppink {color: #FF1493;}
-.text-hotpink {color: #FF69B4;}
-.text-palevioletred {color: #DB7093;}
-.text-lightpink {color: #FFB6C1;}
-.text-pink {color: #FFC0CB;}
-.text-lightcoral {color: #F08080;}
-.text-indianred {color: #CD5C5C;}
-.text-crimson {color: #DC143C;}
-.text-maroon {color: #800000;}
-.text-darkred {color: #8B0000;}
-.text-firebrick {color: #B22222;}
-.text-brown {color: #A52A2A;}
-.text-salmon {color: #FA8072;}
-.text-darksalmon {color: #E9967A;}
-.text-lightsalmon {color: #FFA07A;}
-.text-coral {color: #FF7F50;}
-.text-tomato {color: #FF6347;}
-.text-red {color: #FF0000;}
-.text-orangered {color: #FF4500;}
-.text-darkorange {color: #FF8C00;}
-.text-orange {color: #FFA500;}
-.text-gold {color: #FFD700;}
-.text-yellow {color: #FFFF00;}
-.text-khaki {color: #F0E68C;}
-.text-aliceblue {color: #F0F8FF;}
-.text-ghostwhite {color: #F8F8FF;}
-.text-snow {color: #FFFAFA;}
-.text-seashell {color: #FFF5EE;}
-.text-floralwhite {color: #FFFAF0;}
-.text-whitesmoke {color: #F5F5F5;}
-.text-beige {color: #F5F5DC;}
-.text-oldlace {color: #FDF5E6;}
-.text-ivory {color: #FFFFF0;}
-.text-linen {color: #FAF0E6;}
-.text-cornsilk {color: #FFF8DC;}
-.text-antiquewhite {color: #FAEBD7;}
-.text-blanchedalmond {color: #FFEBCD;}
-.text-bisque {color: #FFE4C4;}
-.text-lightyellow {color: #FFFFE0;}
-.text-lemonchiffon {color: #FFFACD;}
-.text-lightgoldenrodyellow {color: #FAFAD2;}
-.text-papayawhip {color: #FFEFD5;}
-.text-peachpuff {color: #FFDAB9;}
-.text-moccasin {color: #FFE4B5;}
-.text-palegoldenrod {color: #EEE8AA;}
-.text-mistyrose {color: #FFE4E1;}
-.text-lavenderblush {color: #FFF0F5;}
-.text-lavender {color: #E6E6FA;}
-.text-thistle {color: #D8BFD8;}
-.text-azure {color: #F0FFFF;}
-.text-lightcyan {color: #E0FFFF;}
-.text-powderblue {color: #B0E0E6;}
-.text-paleturquoise {color: #E0FFFF;}
-.text-honeydew {color: #F0FFF0;}
-.text-mintcream {color: #F5FFFA;}
+.btn-darkpalegreen {
+    background-color: #d1e7dd !important ;
+}
+
+.text-black {color: #000000 !important ;}
+.text-grey11 {color: #1C1C1C !important ;}
+.text-grey21 {color: #363636 !important ;}
+.text-grey31 {color: #4F4F4F !important ;}
+.text-dimgray {color: #696969 !important ;}
+.text-gray {color: #808080 !important ;}
+.text-darkgray {color: #A9A9A9 !important ;}
+.text-silver {color: #C0C0C0 !important ;}
+.text-lightgrey {color: #D3D3D3 !important ;}
+.text-gainsboro {color: #DCDCDC !important ;}
+.text-slateblue {color: #6A5ACD !important ;}
+.text-slateblue1 {color: #836FFF !important ;}
+.text-slateblue3 {color: #6959CD !important ;}
+.text-darkslateblue {color: #483D8B !important ;}
+.text-midnightblue {color: #191970 !important ;}
+.text-navy {color: #000080 !important ;}
+.text-darkblue {color: #00008B !important ;}
+.text-mediumblue {color: #0000CD !important ;}
+.text-blue {color: #0000FF !important ;}
+.text-cornflowerblue {color: #6495ED !important ;}
+.text-royalblue {color: #4169E1 !important ;}
+.text-dodgerblue {color: #1E90FF !important ;}
+.text-deepskyblue {color: #00BFFF !important ;}
+.text-lightskyblue {color: #87CEFA !important ;}
+.text-skyblue {color: #87CEEB !important ;}
+.text-lightblue {color: #ADD8E6 !important ;}
+.text-steelblue {color: #4682B4 !important ;}
+.text-lightsteelblue {color: #B0C4DE !important ;}
+.text-slategray {color: #708090 !important ;}
+.text-lightslategray {color: #778899 !important ;}
+.text-aqua {color: #00FFFF !important ;}
+.text-darkturquoise {color: #00CED1 !important ;}
+.text-turquoise {color: #40E0D0 !important ;}
+.text-mediumturquoise {color: #48D1CC !important ;}
+.text-lightseagreen {color: #20B2AA !important ;}
+.text-darkcyan {color: #008B8B !important ;}
+.text-teal {color: #008080 !important ;}
+.text-aquamarine {color: #7FFFD4 !important ;}
+.text-mediumaquamarine {color: #66CDAA !important ;}
+.text-cadetblue {color: #5F9EA0 !important ;}
+.text-darkslategray {color: #2F4F4F !important ;}
+.text-mediumspringgreen {color: #00FA9A !important ;}
+.text-springgreen {color: #00FF7F !important ;}
+.text-palegreen {color: #98FB98 !important ;}
+.text-lightgreen {color: #90EE90 !important ;}
+.text-darkseagreen {color: #8FBC8F !important ;}
+.text-mediumseagreen {color: #3CB371 !important ;}
+.text-seagreen {color: #2E8B57 !important ;}
+.text-darkgreen {color: #006400 !important ;}
+.text-green {color: #008000 !important ;}
+.text-forestgreen {color: #228B22 !important ;}
+.text-limegreen {color: #32CD32 !important ;}
+.text-lime {color: #00FF00 !important ;}
+.text-lawngreen {color: #7CFC00 !important ;}
+.text-chartreuse {color: #7FFF00 !important ;}
+.text-greenyellow {color: #ADFF2F !important ;}
+.text-yellowgreen {color: #9ACD32 !important ;}
+.text-olivedrab {color: #6B8E23 !important ;}
+.text-darkolivegreen {color: #556B2F !important ;}
+.text-olive {color: #808000 !important ;}
+.text-darkkhaki {color: #BDB76B !important ;}
+.text-goldenrod {color: #DAA520 !important ;}
+.text-darkgoldenrod {color: #B8860B !important ;}
+.text-saddlebrown {color: #8B4513 !important ;}
+.text-sienna {color: #A0522D !important ;}
+.text-rosybrown {color: #BC8F8F !important ;}
+.text-peru {color: #CD853F !important ;}
+.text-chocolate {color: #D2691E !important ;}
+.text-sandybrown {color: #F4A460 !important ;}
+.text-navajowhite {color: #FFDEAD !important ;}
+.text-wheat {color: #F5DEB3 !important ;}
+.text-burlywood {color: #DEB887 !important ;}
+.text-tan {color: #D2B48C !important ;}
+.text-mediumslateblue {color: #7B68EE !important ;}
+.text-mediumpurple {color: #9370DB !important ;}
+.text-blueviolet {color: #8A2BE2 !important ;}
+.text-indigo {color: #4B0082 !important ;}
+.text-darkviolet {color: #9400D3 !important ;}
+.text-darkorchid {color: #9932CC !important ;}
+.text-mediumorchid {color: #BA55D3 !important ;}
+.text-purple {color: #A020F0 !important ;}
+.text-darkmagenta {color: #8B008B !important ;}
+.text-fuchsia {color: #FF00FF !important ;}
+.text-violet {color: #EE82EE !important ;}
+.text-orchid {color: #DA70D6 !important ;}
+.text-plum {color: #DDA0DD !important ;}
+.text-mediumvioletred {color: #C71585 !important ;}
+.text-deeppink {color: #FF1493 !important ;}
+.text-hotpink {color: #FF69B4 !important ;}
+.text-palevioletred {color: #DB7093 !important ;}
+.text-lightpink {color: #FFB6C1 !important ;}
+.text-pink {color: #FFC0CB !important ;}
+.text-lightcoral {color: #F08080 !important ;}
+.text-indianred {color: #CD5C5C !important ;}
+.text-crimson {color: #DC143C !important ;}
+.text-maroon {color: #800000 !important ;}
+.text-darkred {color: #8B0000 !important ;}
+.text-firebrick {color: #B22222 !important ;}
+.text-brown {color: #A52A2A !important ;}
+.text-salmon {color: #FA8072 !important ;}
+.text-darksalmon {color: #E9967A !important ;}
+.text-lightsalmon {color: #FFA07A !important ;}
+.text-coral {color: #FF7F50 !important ;}
+.text-tomato {color: #FF6347 !important ;}
+.text-red {color: #FF0000 !important ;}
+.text-orangered {color: #FF4500 !important ;}
+.text-darkorange {color: #FF8C00 !important ;}
+.text-orange {color: #FFA500 !important ;}
+.text-gold {color: #FFD700 !important ;}
+.text-yellow {color: #FFFF00 !important ;}
+.text-khaki {color: #F0E68C !important ;}
+.text-aliceblue {color: #F0F8FF !important ;}
+.text-ghostwhite {color: #F8F8FF !important ;}
+.text-snow {color: #FFFAFA !important ;}
+.text-seashell {color: #FFF5EE !important ;}
+.text-floralwhite {color: #FFFAF0 !important ;}
+.text-whitesmoke {color: #F5F5F5 !important ;}
+.text-beige {color: #F5F5DC !important ;}
+.text-oldlace {color: #FDF5E6 !important ;}
+.text-ivory {color: #FFFFF0 !important ;}
+.text-linen {color: #FAF0E6 !important ;}
+.text-cornsilk {color: #FFF8DC !important ;}
+.text-antiquewhite {color: #FAEBD7 !important ;}
+.text-blanchedalmond {color: #FFEBCD !important ;}
+.text-bisque {color: #FFE4C4 !important ;}
+.text-lightyellow {color: #FFFFE0 !important ;}
+.text-lemonchiffon {color: #FFFACD !important ;}
+.text-lightgoldenrodyellow {color: #FAFAD2 !important ;}
+.text-papayawhip {color: #FFEFD5 !important ;}
+.text-peachpuff {color: #FFDAB9 !important ;}
+.text-moccasin {color: #FFE4B5 !important ;}
+.text-palegoldenrod {color: #EEE8AA !important ;}
+.text-mistyrose {color: #FFE4E1 !important ;}
+.text-lavenderblush {color: #FFF0F5 !important ;}
+.text-lavender {color: #E6E6FA !important ;}
+.text-thistle {color: #D8BFD8 !important ;}
+.text-azure {color: #F0FFFF !important ;}
+.text-lightcyan {color: #E0FFFF !important ;}
+.text-powderblue {color: #B0E0E6 !important ;}
+.text-paleturquoise {color: #E0FFFF !important ;}
+.text-honeydew {color: #F0FFF0 !important ;}
+.text-mintcream {color: #F5FFFA !important ;}
