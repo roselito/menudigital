@@ -58,19 +58,19 @@
                                          cor='btn-mediumpurple')}" ></div>                                
                                 </div>              
                             </div>              
-                            <div class="bg-success-subtle modal-footer text-end pt-2 pe-0" data-pg-name="footer">
+                            <div class="bg-success-subtle modal-footer flex-row justify-content-center pt-2 pe-0 lh-1" data-pg-name="footer">
                                 <div th:insert="~{fragments/components/botoes :: 
                                      botao(texto='Cancelar',
-                             fgcolor='text-white',
+                                     fgcolor='text-white',
                                      tipo='button',
                                      imagem='bi-x-circle',
                                      cor='btn-salmon',
                                      dismiss='modal')}" ></div>
-                                <div id="divGravar" class="m-0 p-0 lh-1"
+                                <div id="divGravar" class="m-0 p-0"
                                      th:classappend="${(alteraSenha=='0' and edicao=='0')?'d-none':''}">
                                     <div th:insert="~{fragments/components/botoes :: 
                                          botao(texto='Gravar',
-                             fgcolor='text-white',
+                                         fgcolor='text-white',
                                          tipo='submit',
                                          imagem='bi-x-circle',
                                          cor='btn-darkseagreen')}" ></div>                            

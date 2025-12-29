@@ -14,8 +14,8 @@
                     <div class="modal-dialog"> 
                         <div class="modal-content mw-100" id="modalAddressContent" data-pg-name="modalContent"> 
                             <div th:fragment="addressContent" data-pg-name="fragmentAddressContent" th:remove="tag">
-                                <div class="justify-content-center modal-header p-1 ps-2">
-                                    <h4 class="bg-warning-subtle modal-title text-primary">Cadastro de endereço</h4> 
+                                <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
+                                    <h4 class="modal-title">Endereço</h4> 
                                 </div>
                                 <form class="col-12 mw-100 text-start" 
                                       th:action="@{/gravarEndereco}" onsubmit="submitAddress(event)"
@@ -53,10 +53,24 @@
                                         <input type="hidden" th:field="*{id}" ></input>
                                         <input type="hidden" th:field="*{idCustomer}" ></input>
                                     </div>
-                                    <div class="modal-footer p-1"> 
-                                        <button type="button" class="btn btn-salmon btn-default btn-sm" data-bs-dismiss="modal" >Cancelar</button>                                     
-                                        <button type="submit" class="btn btn-sm btn-darkseagreen" >Gravar</button>                                     
-                                    </div>
+                                    <div class="bg-success-subtle modal-footer flex-row justify-content-center pt-2 pe-0 lh-1" data-pg-name="footer">
+                                        <div th:insert="~{fragments/components/botoes :: 
+                                             botao(texto='Cancelar',
+                                             fgcolor='text-white',
+                                             tipo='button',
+                                             imagem='bi-x-circle',
+                                             cor='btn-salmon',
+                                             dismiss='modal')}" ></div>
+                                        <div id="divGravar" class="m-0 p-0"
+                                             th:classappend="${(alteraSenha=='0' and edicao=='0')?'d-none':''}">
+                                            <div th:insert="~{fragments/components/botoes :: 
+                                                 botao(texto='Gravar',
+                                                 fgcolor='text-white',
+                                                 tipo='submit',
+                                                 imagem='bi-x-circle',
+                                                 cor='btn-darkseagreen')}" ></div>                            
+                                        </div>
+                                    </div> 
                                 </form>
                             </div>                             
                         </div>                         
