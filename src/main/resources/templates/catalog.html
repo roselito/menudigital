@@ -53,7 +53,7 @@
                         <div th:unless="${#lists.isEmpty(cart)}"
                              th:insert="~{fragments/components/botoes :: 
                              botaoBadge(texto='Carrinho',
-                             textoBadge=| ${#lists.size(cart)} |,
+                             textoBadge=| ${#lists.isEmpty(cart)?0:#lists.size(cart)} |,
                              fgcolor='text-white',
                              imagem='bi-cart',
                              onclick='recuperarCarrinho()',
