@@ -26,9 +26,9 @@
             </svg>
         </div>
         <div th:fragment="itemImagem" th:remove="tag">
-            <a href="#" class="no-decoration" th:onclick="marcarImagem([[${itemCartao.id}]])" >
                 <img class="card-img-top h-100 m-0 rounded" th:src="|/${itemCartao.imagePath}|" alt="Imagem">
-            </a>
         </div>
     </body>
 </html>
+            
+

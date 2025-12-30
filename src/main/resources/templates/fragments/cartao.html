@@ -2,17 +2,10 @@
 <html> 
     <body>
         <div th:fragment="cartao(itemCartao)" th:remove="tag">
-            <a th:href="modalSelecionado" class="no-decoration" data-bs-toggle="modal" data-bs-target="#modalSelecionado"
-               th:data-title="${itemCartao.title}"
-               th:data-description="${itemCartao.description}"
-               th:data-amount="1"
-               th:data-unitprice="${itemCartao.price}"
-               th:data-calcprice="${itemCartao.price}"
-               th:data-itemid="${itemCartao.id}"
-               >
+            <a href="#" class="no-decoration" th:onclick="selecionar([[${itemCartao.id}]])">
                 <div class="card mw-100 p-0 rounded rounded-3 shadow">
                     <div class="m-0 mw-100 p-0 row">
-                        <div th:id="|imagem${itemCartao.id}|" class="align-content-center col-4 m-0 mw-100 p-1">
+                        <div th:id="|imagemCartao${itemCartao.id}|" class="align-content-center col-4 m-0 mw-100 p-1">
                             <div th:replace="~{fragments/components/icones :: itemImagem}"></div>
                         </div>
                         <div class="col-8 card-body 

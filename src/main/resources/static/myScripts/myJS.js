@@ -41,42 +41,35 @@ $(document).ready(function () {
 
 $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal = $(this);
-    var elemento = $(event.relatedTarget); // Elemento que disparou o modal
-    var description = elemento.data('description'); // obtido de th:data-
-    var title = elemento.data('title');
-    var amount = elemento.data('amount');
-    var unitprice = elemento.data('unitprice');
-    var calcprice = elemento.data('calcprice');
-    var observations = elemento.data('observations');
-    var itemid = elemento.data('itemid');
-    modal.find('#description').text(description);
-    modal.find('#title').val(title);
-    modal.find('#titlelabel').text(title);
-    modal.find('#amountlabel').text(amount);
-    modal.find('#amount').val(amount);
-    modal.find('#unitprice').val(formatterBR.format(unitprice));
-    modal.find('#calcprice').val(formatterBR.format(calcprice));
-    modal.find('#observations').text(observations);
-    modal.find('#itemid').val(itemid);
+//    var elemento = $(event.relatedTarget); // Elemento que disparou o modal
+//    var description = elemento.data('description'); // obtido de th:data-
+//    var title = elemento.data('title');
+//    var amount = elemento.data('amount');
+//    var unitprice = elemento.data('unitprice');
+//    var calcprice = elemento.data('calcprice');
+//    var observations = elemento.data('observations');
+//    var itemid = elemento.data('itemid');
+//    modal.find('#description').text(description);
+//    modal.find('#title').val(title);
+//    modal.find('#titlelabel').text(title);
+//    modal.find('#amountlabel').text(amount);
+//    modal.find('#amount').val(amount);
+//    modal.find('#unitprice').val(formatterBR.format(unitprice));
+//    modal.find('#calcprice').val(formatterBR.format(calcprice));
+//    modal.find('#observations').text(observations);
+//    modal.find('#itemid').val(itemid);
 });
 
-function addCartItem() {
-    var title = document.getElementById('title').value;
-    var description = document.getElementById('description').value;
-    var amount = document.getElementById('amount').value;
-    var unitprice = document.getElementById('unitprice').value;
-    var observations = document.getElementById('observations').value + " ";
-    var itemid = document.getElementById('itemid').value;
+function addCartItem(event) {
+    event.preventDefault();
+    var form = $('#formCartItem');
+    $(":input:disabled").prop('disabled', false);
     $.ajax({
         type: 'POST',
-        url: "/addCartItem/"
-                + title + "/"
-                + description + "/"
-                + amount + "/"
-                + convertPtBrToEnUs(unitprice) + "/"
-                + observations + "/"
-                + itemid,
+        url: "/addCartItem",
+        data: form.serialize(),
         success: function (htmlContent) {
+            $('#modalSelecionado').modal('hide');
             $('#cabecalho').html(htmlContent);
         }
     });
@@ -115,6 +108,9 @@ function buscarCEP() {
 
 function convertPtBrToEnUs(ptBrNumberString) {
     let cleanedString = String(ptBrNumberString);
+    cleanedString = cleanedString.replace(/R/g, '');
+    cleanedString = cleanedString.replace(/\$/g, '');
+    cleanedString = cleanedString.replace(/\ /g, '');
     cleanedString = cleanedString.replace(/\./g, '');
     cleanedString = cleanedString.replace(/,/g, '.');
     const enUsNumber = Number(cleanedString);
@@ -122,13 +118,14 @@ function convertPtBrToEnUs(ptBrNumberString) {
 }
 
 function decreaseAmount() {
-    var valorAmount = parseInt(modal.find('#amount').val());
+    var valorAmount = Number(document.getElementById('amount').value);
+    var valor = document.getElementById('unitPrice').value;
+    valor = convertPtBrToEnUs(valor);
     if (valorAmount > 1) {
         valorAmount = valorAmount - 1;
     }
     modal.find('#amount').val(valorAmount);
-    modal.find('#amountlabel').text(valorAmount);
-    modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
+    modal.find('#calcPrice').val(formatterBR.format(valorAmount * valor));
 }
 
 function editarCustomer(edicao) {
@@ -143,11 +140,19 @@ function editarCustomer(edicao) {
 }
 
 function increaseAmount() {
-    var valorAmount = parseInt(modal.find('#amount').val());
+    var valorAmount = Number(document.getElementById('amount').value);
+    var valor = document.getElementById('unitPrice').value;
+    valor = convertPtBrToEnUs(valor);
+
     valorAmount = valorAmount + 1;
     modal.find('#amount').val(valorAmount);
-    modal.find('#amountlabel').text(valorAmount);
-    modal.find('#calcprice').val(formatterBR.format(valorAmount * parseFloat(convertPtBrToEnUs(modal.find('#unitprice').val()))));
+    modal.find('#calcPrice').val(formatterBR.format(valorAmount * valor));
+}
+
+function iniciarUpload(event){
+    if (event.target.files && event.target.files[0].name){
+        $('#formImagemButtonSubmit').click();
+    }
 }
 
 function logout() {
@@ -224,6 +229,17 @@ function removerEndereco(id) {
             } else {
                 $('#enderecosContent').html(htmlContent);
             }
+        }
+    });
+}
+
+function selecionar(id) {
+    $.ajax({
+        type: 'GET',
+        url: '/selecionar/' + id,
+        success: function (htmlContent) {
+            $('#selecionadoContent').html(htmlContent);
+            $('#modalSelecionado').modal('show');
         }
     });
 }
@@ -360,7 +376,8 @@ function uploadImagem(event) {
         processData: false,
         contentType: false,
         success: function (htmlContent) {
-            $('#imagem' + idImagem).html(htmlContent);
+            $('#imagemSelecionado' + idImagem).html(htmlContent);
+            $('#imagemCartao' + idImagem).html(htmlContent);
         }
     });
 }

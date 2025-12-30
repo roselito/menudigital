@@ -1,10 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="<http://www.thymeleaf.org>"> 
-    <head>
-        <title>RFS</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
-    </head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
     <body>
         <div th:fragment="selecionado" th:remove="tag">
             <div class="modal pe-2 align-content-center " id="modalSelecionado" 
@@ -12,75 +7,83 @@
                  data-bs-backdrop="static"
                  aria-labelledby="modalSelecionadoLabel" >
                 <div class="modal-dialog">
-                    <div class="modal-content mw-100" data-pg-name="content"> 
-                        <form th:action="@{/addCartItem}" method="POST">
-                            <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
-                                <h1 class="modal-title fs-5">Item selecionado</h1> 
-                            </div>     
-                            <div class="bg-light modal-body p-2" data-pg-name="body">
-                                <div class="col-12 m-0 p-0">
-                                    <label class="fs-5 fw-bold mb-2 w-100 text-start" id="titlelabel">Item 1</label>
-                                    <textarea class="border-0 mb-2 w-100" type="text" required="true" readonly 
-                                              data-pg-name="textarea"
-                                              id="description" name="description">Descrição</textarea>
-                                </div>
-                                <div class="col-12 d-flex flex-row justify-content-between m-0 p-0">
-                                    <div class="align-content-between col-4 d-flex flex-column m-0 p-0 text-center">
-                                        <label class="fs-5 fw-semibold">Quantidade</label>
-                                        <div class="align-items-center col-4 
-                                             d-flex flex-row justify-content-between 
-                                             m-0 p-0 w-100">
-                                            <button type="button" onclick="decreaseAmount()"
-                                                    class="align-self-center 
-                                                    bg-danger-subtle btn btn-light btn-outline-danger btn-sm 
-                                                    d-flex flex-column fs-1 fw-bolder 
-                                                    h-75 justify-content-center 
-                                                    lh-1 pb-1 pe-2 ps-2 pt-0 text-danger">-</button>
-                                            <label id="amountlabel" class="fs-4 fw-bolder text-end">12</label>
-                                            <button type="button"  onclick="increaseAmount()"
-                                                    class="align-self-center 
-                                                    bg-success-subtle btn btn-light btn-outline-success btn-sm 
-                                                    d-flex flex-column fs-1 fw-bolder 
-                                                    h-75 justify-content-center 
-                                                    lh-1 pb-1 pe-1 ps-1 pt-0 text-success">+</button>
+                    <div id="selecionadoContent" class="modal-content mw-100" data-pg-name="content"> 
+                        <div th:fragment="selecionadoFragment" th:remove="tag" >
+                            <form class="d-none" id="formImagem" method="POST" action="/upload" enctype="multipart/form-data" onsubmit="uploadImagem(event)">
+                                <input type="file" name="imgFile" id="imgFile" onchange="iniciarUpload(event)" />
+                                <button id="formImagemButtonSubmit" type="submit">Enviar Imagem</button>
+                            </form>
+                            <form id="formCartItem" th:action="@{/addCartItem}" method="POST" th:object="${itemCartao}" th:if="${itemCartao}" onsubmit="addCartItem(event)">
+                                <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
+                                    <h1 class="modal-title fs-5">Item selecionado</h1> 
+                                </div>     
+                                <div class="bg-light modal-body p-2" data-pg-name="body">
+                                    <a href="#" class="no-decoration" th:onclick="marcarImagem([[${itemCartao.itemId}]])" >
+                                        <div th:id="|imagemSelecionado${itemCartao.itemId}|" class="align-content-center col-4 m-0 mw-100 p-1">
+                                            <div th:replace="~{fragments/components/icones :: itemImagem}"></div>
+                                        </div>
+                                    </a>
+                                    <div class="col-12 m-0 p-0">
+                                        <label class="fs-5 fw-bold mb-2 w-100 text-start" id="titlelabel">[[*{title}]]</label>
+                                        <textarea class="border-0 mb-2 w-100" type="text" required="true" readonly 
+                                                  data-pg-name="textarea"
+                                                  th:field="*{description}" >Descrição</textarea>
+                                    </div>
+                                    <div class="col-12 d-flex flex-row justify-content-between m-0 p-0">
+                                        <div class="align-content-between col-4 d-flex flex-column m-0 p-0 text-center">
+                                            <label class="fs-5 fw-semibold">Quantidade</label>
+                                            <div class="align-items-center col-4 
+                                                 d-flex flex-row justify-content-between 
+                                                 m-0 p-0 w-100">
+                                                <button type="button" onclick="decreaseAmount()"
+                                                        class="align-self-center 
+                                                        bg-danger-subtle btn btn-light btn-outline-danger btn-sm 
+                                                        d-flex flex-column fs-1 fw-bolder 
+                                                        h-75 justify-content-center 
+                                                        lh-1 pb-1 pe-2 ps-2 pt-0 text-danger">-</button>
+                                                <input type ="text" th:field="*{amount}" class="border-0 text-center fs-4 fw-bolder" size="2" disabled readonly  />
+                                                <button type="button" onclick="increaseAmount()"
+                                                        class="align-self-center 
+                                                        bg-success-subtle btn btn-light btn-outline-success btn-sm 
+                                                        d-flex flex-column fs-1 fw-bolder 
+                                                        h-75 justify-content-center 
+                                                        lh-1 pb-1 pe-1 ps-1 pt-0 text-success">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
+                                            <label class="fs-5 fw-semibold text-end">Preço</label>
+                                            <input class="border-0 fs-4 fw-bolder mt-1 text-end" type="text"  th:field="*{{unitPrice}}" readonly />
+                                        </div>
+                                        <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
+                                            <label class="fs-5 fw-semibold text-end">Total</label>
+                                            <input class="border-0 fs-4 fw-bolder mt-1 text-end" type="text"  th:field="*{calcPrice}" readonly />
                                         </div>
                                     </div>
-                                    <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
-                                        <label class="fs-5 fw-semibold text-end">Preço</label>
-                                        <input class="border-0 fs-4 fw-bolder mt-1 text-end" type="text" id="unitprice" name="unitprice" readonly/>
-                                    </div>
-                                    <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
-                                        <label class="fs-5 fw-semibold text-end">Total</label>
-                                        <input class="border-0 fs-4 fw-bolder mt-1 text-end" type="text" id="calcprice" name="calcprice" readonly/>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 m-0 p-0 px-1">
-                                <label class="fs-5 fw-bold mb-2 w-100 text-start">Observações</label>
-                                <textarea class="mb-2 w-100"
-                                          id="observations" name="observations"
-                                          data-pg-name="textarea"></textarea>
-                            </div>
-                            <input type="hidden" id="itemid" name="itemid" />
-                            <input type="hidden" id="title" name="title" />
-                            <input type="hidden" id="amount" name="amount" />
-                            <div class="bg-success-subtle justify-content-end modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer">
-                                <div class="col-12 pb-2 pe-0 ps-0 pt-0 text-end">
-                                    <div th:replace="~{fragments/components/botoes :: 
-                                         botao(texto='Cancelar',
-                                         fgcolor='text-white',imagem='bi-x-circle',cor='btn-salmon',
-                                         dismiss='modal')}"></div>
-                                    <div th:replace="~{fragments/components/botoes :: 
-                                         botao(tipo='button',texto='Adicionar',
-                                         fgcolor='text-white',imagem='bi-person-add',cor='btn-darkseagreen',
-                                         onclick='addCartItem()',dismiss='modal')}"></div>
-                                </div>         
-                            </div>     
-                        </form>
+                                <div class="col-12 m-0 p-0 px-1">
+                                    <label class="fs-5 fw-bold mb-2 w-100 text-start">Observações</label>
+                                    <textarea class="mb-2 w-100"
+                                              th:field="*{observations}"
+                                              data-pg-name="textarea"></textarea>
+                                </div>
+                                <input type="hidden" th:field="*{itemId}" />
+                                <input type="hidden" th:field="*{title}" />
+                                <div class="bg-success-subtle justify-content-end modal-footer pb-0 pe-0 ps-2 pt-2" data-pg-name="footer">
+                                    <div class="col-12 pb-2 pe-0 ps-0 pt-0 text-end">
+                                        <div th:replace="~{fragments/components/botoes :: 
+                                             botao(texto='Cancelar',
+                                             fgcolor='text-white',imagem='bi-x-circle',cor='btn-salmon',
+                                             dismiss='modal')}"></div>
+                                        <div th:replace="~{fragments/components/botoes :: 
+                                             botao(tipo='submit',texto='Adicionar',
+                                             fgcolor='text-white',imagem='bi-person-add',cor='btn-darkseagreen')}"></div>
+                                    </div>         
+                                </div>     
+                            </form>
+                        </div>                    
                     </div>                    
                 </div>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     </body>
 </html>

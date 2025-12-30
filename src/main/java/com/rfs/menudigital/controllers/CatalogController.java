@@ -105,30 +105,18 @@ public class CatalogController {
         return "catalog";
     }
 
-    @PostMapping("/addCartItem/{title}/{description}/{amount}/{unitprice}/{observations}/{itemid}")
+    @PostMapping("/addCartItem")
     public String addCartItem(
-            @PathVariable String title,
-            @PathVariable String description,
-            @PathVariable String amount,
-            @PathVariable String unitprice,
-            @PathVariable String observations,
-            @PathVariable String itemid,
+            @ModelAttribute("itemCartao") CartItem itemCartao,
             Model model) {
         if (userSessionData.getCart().isEmpty()) {
             userSessionData.setCart(new ArrayList<>());
         }
-        CartItem cartItem = new CartItem();
         if (userSessionData.getCustomer() != null) {
-            cartItem.setUserId(userSessionData.getCustomer().getId());
+            itemCartao.setUserId(userSessionData.getCustomer().getId());
         }
-        cartItem.setDescription(description);
-        cartItem.setId(userSessionData.getCart().size() + 1);
-        cartItem.setTitle(title);
-        cartItem.setItemId(Integer.valueOf(itemid));
-        cartItem.setAmount(Integer.valueOf(amount));
-        cartItem.setUnitPrice(Double.valueOf(unitprice));
-        cartItem.setObservations(observations);
-        userSessionData.getCart().add(cartItem);
+        itemCartao.setId(userSessionData.getCart().size() + 1);
+        userSessionData.getCart().add(itemCartao);
         atualizarModelCatalogo(model);
         return "catalog :: cabecalhoFragment";
     }
@@ -363,6 +351,21 @@ public class CatalogController {
             retorno = "catalog :: cabecalhoFragment";
         }
         return retorno;
+    }
+
+    @GetMapping("/selecionar/{id}")
+    public String selecionar(@PathVariable String id, Model model) {
+        Item item = itensRepository.findById(Integer.valueOf(id)).get();
+        CartItem itemCartao = new CartItem();
+        itemCartao.setAmount(1);
+        itemCartao.setDescription(item.getDescription());
+        itemCartao.setItemId(item.getId());
+        itemCartao.setTitle(item.getTitle());
+        itemCartao.setImagePath(item.getImagePath());
+        itemCartao.setUnitPrice(item.getPrice());
+        itemCartao.setCalcPrice(item.getPrice());
+        model.addAttribute("itemCartao", itemCartao);
+        return "fragments/modals/selecionado :: selecionadoFragment";
     }
 
     @GetMapping("/telaLogin")
