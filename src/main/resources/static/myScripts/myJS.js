@@ -1,5 +1,6 @@
 var modal = null;
 var enderecos = false;
+var idImagem = "";
 
 var formatter = new Intl.NumberFormat('en-US', {
     style: 'decimal', // or 'currency', 'percent'
@@ -25,7 +26,7 @@ $(document).ready(function () {
     $('.cpfMask').mask('000.000.000-00');
     $('.phoneMask').mask(SPMaskBehavior, spOptions);
     $('.dateMask').mask('00/00/0000');
-    
+
     // Eliminar warning js de aria-hidden
     document.querySelectorAll('.modal').forEach((modal) => {
         modal.addEventListener('hide.bs.modal', () => {
@@ -133,7 +134,7 @@ function decreaseAmount() {
 function editarCustomer(edicao) {
     $.ajax({
         type: 'GET',
-        url: "/editarCadastro/"+edicao,
+        url: "/editarCadastro/" + edicao,
         success: function (htmlContent) {
             $('#modalCadastroContent').html(htmlContent);
             $('#modalCadastro').modal('show');
@@ -215,7 +216,7 @@ function removerCartItem(id) {
 function removerEndereco(id) {
     $.ajax({
         method: 'post',
-        url: '/removerEndereco/'+id,
+        url: '/removerEndereco/' + id,
         success: function (htmlContent) {
             if (String(htmlContent).indexOf("<span >Excluir</span>") < 0) {
                 $('#modalEnderecos').modal('hide');
@@ -251,7 +252,7 @@ function submitAddress(event) {
 
 function submitCustomer(event) {
     event.preventDefault();
-    $(":input:disabled").prop('disabled',false);
+    $(":input:disabled").prop('disabled', false);
     var form = $('#formCadastro');
     var url = form.attr('action');
     var formData = form.serialize();
@@ -338,6 +339,30 @@ function telaLogin() {
 
 function toggleEnderecos() {
     enderecos = true;
+}
+
+function marcarImagem(id) {
+    idImagem = id;
+    $('#imgFile').click();
+}
+
+function uploadImagem(event) {
+    event.preventDefault();
+    var formDOM = $('#formImagem')[0];
+    var url = '/upload';
+    var formData = new FormData(formDOM);
+    formData.append("id", idImagem);
+    var formMethod = 'POST';
+    $.ajax({
+        method: formMethod,
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (htmlContent) {
+            $('#imagem' + idImagem).html(htmlContent);
+        }
+    });
 }
 
 function voltarTela(modal) {

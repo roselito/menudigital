@@ -12,11 +12,8 @@
                >
                 <div class="card mw-100 p-0 rounded rounded-3 shadow">
                     <div class="m-0 mw-100 p-0 row">
-
-                        <div class="align-content-center col-4 m-0 mw-100 p-1">
-                            <img th:src="@{'data:image/jpeg;base64,' + ${itemCartao.generateBase64Image()}}" 
-                                 class="card-img-top h-100 m-0 rounded" alt="Imagem" >
-                            <!--<img class="card-img-top h-100 m-0 rounded" src="/images/mandala09.jpg" alt="Imagem">-->
+                        <div th:id="|imagem${itemCartao.id}|" class="align-content-center col-4 m-0 mw-100 p-1">
+                            <div th:replace="~{fragments/components/icones :: itemImagem}"></div>
                         </div>
                         <div class="col-8 card-body 
                              m-0 mw-100 p-0

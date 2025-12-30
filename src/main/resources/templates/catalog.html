@@ -74,13 +74,17 @@
                     <p th:text="${successMessage}" class="my-1 p-0">Sucesso</p>
                 </div>
             </div>
-
+            <form id="formImagem" method="POST" action="/upload" enctype="multipart/form-data" onsubmit="uploadImagem(event)">
+                <input type="file" name="imgFile" id="imgFile"  />
+                <button type="submit">Enviar Imagem</button>
+            </form>
+            <!-- /////////////////// Cartões//////////////////////////////////// -->
             <div class="m-0 mw-100 p-0 ps-1 row row-cols-1 row-cols-sm-2">
                 <div class="col-sm-6 m-0 mb-1 p-0 pe-1" th:each="item,i : ${itens}">
                     <div th:insert="~{fragments/cartao :: cartao(${item})}"></div>
                 </div>
             </div>
-
+            <!-- //////////////////////////////////////////////////////////////// -->
             <div th:insert="~{fragments/modals/carrinho :: carrinho}"></div>
             <div th:insert="~{fragments/modals/selecionado :: selecionado}"></div>
             <div th:insert="~{fragments/modals/login :: login}"></div>

@@ -39,11 +39,17 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -72,6 +78,9 @@ public class CatalogController {
     private EnderecosRepository enderecosRepository;
     @Autowired
     private Crypt crypt;
+
+    @Value("${app.upload.dir}")
+    private String uploadDir;
 
     @GetMapping("/favicon.ico")
     @ResponseBody
@@ -168,7 +177,7 @@ public class CatalogController {
     @GetMapping("/editarCadastro/{edicao}")
     public String editarCadastro(@PathVariable String edicao, Model model) {
         edicao = edicao == null ? "0" : edicao;
-        String alteraSenha="0";
+        String alteraSenha = "0";
         Customer customerCadastro = userSessionData.getCustomer();
         model.addAttribute("customerCadastro", customerCadastro);
         if (edicao.equals("0")) {
@@ -214,7 +223,7 @@ public class CatalogController {
             if (!senhaForte(senha)) {
                 result.rejectValue("senha", "", "Senha deve ter pelo menos 4 números e letras misturados.");
             }
-            if (result.getFieldErrorCount("senha")+result.getFieldErrorCount("senhaConf")>0){
+            if (result.getFieldErrorCount("senha") + result.getFieldErrorCount("senhaConf") > 0) {
                 model.addAttribute("alteraSenha", "1");
                 model.addAttribute("edicao", "0");
                 model.addAttribute("border", "border-0");
@@ -365,6 +374,26 @@ public class CatalogController {
     }
 
     @PostMapping("/upload")
+    public String fileUpload(@RequestParam("imgFile") MultipartFile imgFile, @RequestParam("id") String id, Model model) {
+        String fileName = UUID.randomUUID().toString() + "-" + imgFile.getOriginalFilename();
+        Path uploadPath = Paths.get(uploadDir);
+        try { 
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            Path targetLocation = uploadPath.resolve(fileName);
+            Files.copy(imgFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        Item item = itensRepository.findById(Integer.valueOf(id)).get();
+        item.setImagePath(fileName);
+        itensRepository.save(item);
+        model.addAttribute("itemCartao", item);
+        return "fragments/components/icones :: itemImagem";
+    }
+
+    @PostMapping("/uploadTess")
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
 
         if (!file.isEmpty()) {
