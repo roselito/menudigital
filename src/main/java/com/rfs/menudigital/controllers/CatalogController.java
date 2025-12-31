@@ -88,13 +88,13 @@ public class CatalogController {
         // empty body to avoid get favicon.ico error in JS console
     }
 
-    @RequestMapping("/")
+    @RequestMapping("/cores")
     public String checkout(Model model) {
         model.addAttribute("mensagem", "Teste com thymeleaf");
         return "index";
     }
 
-    @RequestMapping(value = "/catalog")
+    @RequestMapping(value = {"/","/catalog"})
     public String mostrarCatalogo(HttpServletRequest request, Model model) {
         atualizarModelCatalogo(model);
         Customer customerCadastro = userSessionData.getCustomer();
