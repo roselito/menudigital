@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"> 
     <body>
         <div th:fragment="selecionado" th:remove="tag">
-            <div class="modal pe-2 align-content-center " id="modalSelecionado" 
+            <div class="modal pe-0 align-content-center " id="modalSelecionado" 
                  tabindex="-1" 
                  data-bs-backdrop="static"
                  aria-labelledby="modalSelecionadoLabel" >
@@ -15,48 +15,41 @@
                             </form>
                             <form id="formCartItem" th:action="@{/addCartItem}" method="POST" th:object="${itemCartao}" th:if="${itemCartao}" onsubmit="addCartItem(event)">
                                 <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
-                                    <h1 class="modal-title fs-5">Item selecionado</h1> 
+                                    <h1 class="modal-title fs-5">[[*{title}]]</h1> 
                                 </div>     
                                 <div class="bg-light modal-body p-2" data-pg-name="body">
-                                    <a href="#" class="no-decoration" th:onclick="marcarImagem([[${itemCartao.itemId}]])" >
-                                        <div th:id="|imagemSelecionado${itemCartao.itemId}|" class="align-content-center col-4 m-0 mw-100 p-1">
-                                            <div th:replace="~{fragments/components/icones :: itemImagem}"></div>
-                                        </div>
-                                    </a>
-                                    <div class="col-12 m-0 p-0">
-                                        <label class="fs-5 fw-bold mb-2 w-100 text-start" id="titlelabel">[[*{title}]]</label>
-                                        <textarea class="border-0 mb-2 w-100" type="text" required="true" readonly 
+                                    <div class="d-flex flex-row m-0 p-0">
+                                        <a href="#" class="col-4 no-decoration" th:onclick="marcarImagem([[${itemCartao.itemId}]])" >
+                                            <div th:id="|imagemSelecionado${itemCartao.itemId}|" class="align-content-center m-0 p-1">
+                                                <div th:replace="~{fragments/components/icones :: itemImagem}"></div>
+                                            </div>
+                                        </a>
+                                        <textarea class="col-8 border-0 mb-2" type="text" required="true" readonly 
                                                   data-pg-name="textarea"
                                                   th:field="*{description}" >Descrição</textarea>
                                     </div>
-                                    <div class="col-12 d-flex flex-row justify-content-between m-0 p-0">
-                                        <div class="align-content-between col-4 d-flex flex-column m-0 p-0 text-center">
+                                    <div class="col-12 d-flex flex-row m-0 p-0">
+                                        <div class="align-content-between col-4 d-flex flex-column m-0 p-0 pt-1 text-center">
                                             <label class="fs-5 fw-semibold">Quantidade</label>
-                                            <div class="align-items-center col-4 
-                                                 d-flex flex-row justify-content-between 
-                                                 m-0 p-0 w-100">
+                                            <div class="align-items-center d-flex flex-row ">
                                                 <button type="button" onclick="decreaseAmount()"
-                                                        class="align-self-center 
-                                                        bg-danger-subtle btn btn-light btn-outline-danger btn-sm 
-                                                        d-flex flex-column fs-1 fw-bolder 
-                                                        h-75 justify-content-center 
-                                                        lh-1 pb-1 pe-2 ps-2 pt-0 text-danger">-</button>
-                                                <input type ="text" th:field="*{amount}" class="border-0 text-center fs-4 fw-bolder" size="2" disabled readonly  />
+                                                        class="col-3 btn btn-light btn-outline-danger bg-danger-subtle text-danger btn-sm 
+                                                        d-flex fs-1 fw-bolder justify-content-center align-content-center lh-1">
+                                                    <span class="align-items-center pb-1">-</span></button>
+                                                <input type ="text" th:field="*{amount}" class="col-6 border-0 text-center fs-4 fw-bolder" disabled readonly  />
                                                 <button type="button" onclick="increaseAmount()"
-                                                        class="align-self-center 
-                                                        bg-success-subtle btn btn-light btn-outline-success btn-sm 
-                                                        d-flex flex-column fs-1 fw-bolder 
-                                                        h-75 justify-content-center 
-                                                        lh-1 pb-1 pe-1 ps-1 pt-0 text-success">+</button>
+                                                        class="col-3 bg-success-subtle btn btn-light btn-outline-success btn-sm text-success
+                                                        d-flex fs-1 fw-bolder justify-content-center align-items-center lh-1">
+                                                    <span class="align-items-center pb-1">+</span></button>
                                             </div>
                                         </div>
-                                        <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
+                                        <div class="align-content-between col-4 d-flex flex-column m-0 p-0 pt-1 ps-2 text-center">
                                             <label class="fs-5 fw-semibold text-end">Preço</label>
-                                            <input class="border-0 fs-4 fw-bolder mt-1 text-end" type="text"  th:field="*{{unitPrice}}" readonly />
+                                            <input class="w-100 border-0 fs-4 fw-bolder mt-1 text-end align-self-end" type="text" th:field="*{{unitPrice}}" readonly />
                                         </div>
-                                        <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
+                                        <div class="align-content-between col-4 d-flex flex-column m-0 p-0 pt-1 ps-1 text-center">
                                             <label class="fs-5 fw-semibold text-end">Total</label>
-                                            <input class="border-0 fs-4 fw-bolder mt-1 text-end" type="text"  th:field="*{calcPrice}" readonly />
+                                            <input class="w-100 border-0 fs-4 fw-bolder mt-1 text-end align-self-end" type="text"  th:field="*{calcPrice}" readonly />
                                         </div>
                                     </div>
                                 </div>

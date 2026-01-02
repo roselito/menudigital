@@ -6,8 +6,8 @@
     text-decoration: none !important;
 }
 body {
-    padding-bottom: 3.1rem; /* Adjust as needed based on your footer's height */
-    padding-top: 3.1rem; /* Adjust as needed based on your footer's height */
+    padding-bottom: 2.75rem; /* Adjust as needed based on your footer's height */
+    padding-top: 2.75rem; /* Adjust as needed based on your footer's height */
 }
 
 .text-justify {

@@ -8,11 +8,10 @@
     <body>
         <div th:fragment="cartItem(cartItem)" th:remove="tag">
             <div class="bg-success-subtle modal-header pb-0 pe-0 ps-2 pt-2" style="background-color: #f2eebb;" data-pg-name="header"> 
-                <h1 class="modal-title fs-5">Item escolhido</h1> 
+                <h1 class="modal-title fs-5" th:text="${cartItem.title}">Item escolhido</h1> 
             </div>     
             <div class="bg-light modal-body p-2" data-pg-name="body">
                 <div class="col-12 m-0 p-0">
-                    <label class="fs-5 fw-bold mb-2 w-100 text-start" th:text="${cartItem.title}">Item 1</label>
                     <textarea class="border-0 mb-2 w-100" type="text" required="true" readonly 
                               data-pg-name="textarea"
                               th:text="${cartItem.description}">Descrição</textarea>
@@ -24,11 +23,11 @@
                     </div>
                     <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
                         <label class="fs-5 fw-semibold text-end">Preço</label>
-                        <input class="border-0 fs-6 fw-bolder mt-1 text-end" type="text" th:value="${#numbers.formatDecimal(cartItem.unitPrice,1,2)}" readonly/>
+                        <input class="border-0 fs-6 fw-bolder mt-1 text-end" type="text" th:value="${#numbers.formatDecimal(cartItem.unitPrice,1,'POINT',2,'COMMA')}" readonly/>
                     </div>
                     <div class="align-content-between col-4 d-flex flex-column justify-content-start m-0 p-0">
                         <label class="fs-5 fw-semibold text-end">Total</label>
-                        <input class="border-0 fs-6 fw-bolder mt-1 text-end" type="text" th:value="${#numbers.formatDecimal(cartItem.amount*cartItem.unitPrice,1,2)}" readonly/>
+                        <input class="border-0 fs-6 fw-bolder mt-1 text-end" type="text" th:value="${#numbers.formatDecimal(cartItem.amount*cartItem.unitPrice,1,'POINT',2,'COMMA')}" readonly/>
                     </div>
                 </div>
             </div>
