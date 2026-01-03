@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat WebSocket</title>
+    </head>
+    <body onload="disconnect()">
+        <div>
+            <div>
+                <input type="text" id="from" placeholder="Choose a nickname"/>
+            </div>
+            <br />
+            <div>
+                <button id="connect" onclick="connect();">Connect</button>
+                <button id="disconnect" disabled="disabled" onclick="disconnect();">
+                    Disconnect
+                </button>
+            </div>
+            <br />
+            <div id="conversationDiv">
+                <input type="text" id="text" placeholder="Write a message..."/>
+                <button id="sendMessage" onclick="sendMessage();">Send</button>
+                <p id="response"></p>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js" integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+                    var stompClient = null;
+                    var latitude = null;
+                    var longitude = null;
+                    var audio = new Audio('/som2.mp3');
+
+                    function setConnected(connected) {
+                        document.getElementById('connect').disabled = connected;
+                        document.getElementById('disconnect').disabled = !connected;
+                        document.getElementById('conversationDiv').style.visibility
+                                = connected ? 'visible' : 'hidden';
+                        document.getElementById('response').innerHTML = '';
+                    }
+
+                    function connect() {
+                        var socket = new SockJS(window.location.origin + '/chat');
+                        stompClient = Stomp.over(socket);
+                        stompClient.connect({}, function (frame) {
+                            setConnected(true);
+                            console.log('Connected: ' + frame);
+                            stompClient.subscribe('/topic/messages', function (messageOutput) {
+                                showMessageOutput(JSON.parse(messageOutput.body));
+                            });
+                        });
+                    }
+
+                    function disconnect() {
+                        if (stompClient !== null) {
+                            stompClient.disconnect();
+                        }
+                        setConnected(false);
+                    }
+
+
+                    function posicao() {
+                        return new Promise((resolve, reject) => {
+                            if (!navigator.geolocation) {
+                                reject(new Error("Geolocalização não suportada no navegador."));
+                            }
+                            navigator.geolocation.getCurrentPosition(
+                                    position => resolve(position),
+                                    error => reject(error),
+                                    {
+                                        enableHighAccuracy: true,
+                                        timeout: 10000,
+                                        maximumAge: 0
+                                    }
+                            );
+                        });
+                    }
+
+                    async function sendMessage() {
+                        var from = document.getElementById('from').value;
+                        var text = document.getElementById('text').value;
+                        stompClient.send("/app/chat", {}, JSON.stringify({'from': from, 'text': text}));
+                    }
+
+                    async function showMessageOutput(messageOutput) {
+                        var from = document.getElementById('from').value;
+                        var text = document.getElementById('text').value;
+                        position = await posicao();
+                        console.log(position.coords);
+                        var minhaLat = position.coords.latitude;
+                        var minhaLong = position.coords.longitude;
+                        if (from === 'f') {
+                            var minhaLat = -21.9752200;
+                            var minhaLong = -47.9367920;
+                        }
+                        if (from === 'c') {
+                            var minhaLat = -21.9756370;
+                            var minhaLong = -47.9367140;
+                        }
+                        var latLoja = -21.9755229;
+                        var longLoja = -47.9395909;
+                        var distancia = calculateDistance(latLoja, longLoja, minhaLat, minhaLong);
+//                        if (from === 'c') {
+//                            alert(distancia);
+//                        }
+                        text = distancia;
+                        if (distancia <= 500 && from !== 'o') {
+                            text = messageOutput.text + ": " + position.coords.latitude + ", " + position.coords.longitude + " - " + distancia;
+                            audio.play();
+                        }
+                        var response = document.getElementById('response');
+                        var p = document.createElement('p');
+                        p.style.wordWrap = 'break-word';
+                        p.appendChild(document.createTextNode(messageOutput.from + ": "
+                                + text + " (" + messageOutput.time + ")"));
+                        response.appendChild(p);
+//                        }
+                    }
+
+                    // Fórmula de Haversine
+                    function calculateDistance(lat1, lon1, lat2, lon2) {
+                        const R = 6371000; // Raio da Terra em quilômetros
+                        const dLat = degToRad(lat2 - lat1);
+                        const dLon = degToRad(lon2 - lon1);
+                        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) *
+                                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                        const distance = R * c; // Distância em km
+                        return formatter.format(distance);
+                    }
+                    function degToRad(deg) {
+                        return deg * (Math.PI / 180);
+                    }
+
+                    var formatter = new Intl.NumberFormat('en-US', {
+                        style: 'decimal', // or 'currency', 'percent'
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+        </script>
+    </body>
+</html>

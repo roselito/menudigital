@@ -41,23 +41,6 @@ $(document).ready(function () {
 
 $('#modalSelecionado').on('show.bs.modal', function (event) {
     modal = $(this);
-//    var elemento = $(event.relatedTarget); // Elemento que disparou o modal
-//    var description = elemento.data('description'); // obtido de th:data-
-//    var title = elemento.data('title');
-//    var amount = elemento.data('amount');
-//    var unitprice = elemento.data('unitprice');
-//    var calcprice = elemento.data('calcprice');
-//    var observations = elemento.data('observations');
-//    var itemid = elemento.data('itemid');
-//    modal.find('#description').text(description);
-//    modal.find('#title').val(title);
-//    modal.find('#titlelabel').text(title);
-//    modal.find('#amountlabel').text(amount);
-//    modal.find('#amount').val(amount);
-//    modal.find('#unitprice').val(formatterBR.format(unitprice));
-//    modal.find('#calcprice').val(formatterBR.format(calcprice));
-//    modal.find('#observations').text(observations);
-//    modal.find('#itemid').val(itemid);
 });
 
 function addCartItem(event) {

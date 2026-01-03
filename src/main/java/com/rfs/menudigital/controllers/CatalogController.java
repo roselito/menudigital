@@ -28,17 +28,13 @@ import com.rfs.menudigital.util.Crypt;
 import com.rfs.menudigital.util.NumberConverter;
 import jakarta.validation.Valid;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,8 +43,6 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -94,7 +88,7 @@ public class CatalogController {
         return "index";
     }
 
-    @RequestMapping(value = {"/","/catalog"})
+    @RequestMapping(value = {"/", "/catalog"})
     public String mostrarCatalogo(HttpServletRequest request, Model model) {
         atualizarModelCatalogo(model);
         Customer customerCadastro = userSessionData.getCustomer();
@@ -380,7 +374,7 @@ public class CatalogController {
     public String fileUpload(@RequestParam("imgFile") MultipartFile imgFile, @RequestParam("id") String id, Model model) {
         String fileName = UUID.randomUUID().toString() + "-" + imgFile.getOriginalFilename();
         Path uploadPath = Paths.get(uploadDir);
-        try { 
+        try {
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
@@ -394,53 +388,6 @@ public class CatalogController {
         itensRepository.save(item);
         model.addAttribute("itemCartao", item);
         return "fragments/components/icones :: itemImagem";
-    }
-
-    @PostMapping("/uploadTess")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
-
-        if (!file.isEmpty()) {
-            try {
-                System.out.println("//////////////////////////////////");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                byte[] bytes = file.getBytes();
-//                bytes = matOfByte.toArray();
-                try {
-                    String arquivo = "temp";
-                    File imageFile = new File(arquivo);
-                    try (OutputStream os = new FileOutputStream(imageFile)) {
-                        os.write(bytes);
-                    }
-                    Tesseract tess4j = new Tesseract();
-                    tess4j.setDatapath("/usr/share/tesseract-ocr/5/tessdata");
-//                tess4j.setDatapath("C:\\Users\\rosel\\tessdata");
-                    tess4j.setLanguage("por");
-                    try {
-                        String result = tess4j.doOCR(imageFile);
-                        byte[] isoBytes = result.getBytes(StandardCharsets.UTF_8);
-                        result = new String(isoBytes, "windows-1252");
-                        System.out.println(result);
-                    } catch (TesseractException e) {
-                        System.err.println(e.getMessage());
-                    }
-                } catch (IOException ex) {
-                    System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-                }
-            } catch (IOException ex) {
-                System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
-        }
-        System.out.println("Fim!");
-        System.out.println("/////////////////////////////////////////");
-        return "redirect:/catalog";
     }
 
     public boolean senhaForte(String senha) {
@@ -472,4 +419,14 @@ public class CatalogController {
         model.addAttribute("totalCarrinho", totalCarrinho);
     }
 
+
+    @RequestMapping("/teste")
+    public String teste(Model model) {
+        return "teste";
+    }
+    
+    @RequestMapping("/testea")
+    public String testea(Model model) {
+        return "testea";
+    }
 }
