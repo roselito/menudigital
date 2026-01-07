@@ -9,92 +9,110 @@
     </head>
     <body>
         <div class="container-fluid p-0 text-center ">
-            <div class="m-0 p-0" id="cabecalho">
-                <div th:fragment="cabecalhoFragment" th:remove="tag">
-                    <header class="btn-plum d-flex
-                            rounded-top-3 h-3rem m-1 my-0 pe-0 ps-2 pt-1 fixed-top">
-                        <div class="col-4 d-flex justify-content-start m-0 p-0 pe-1 align-items-center">
-                            <img src="/images/ic_launcher.png" class="h-100" />
-                        </div>
-                        <div class="col-8 d-flex flex-column justify-content-center align-items-end h-100 m-0 p-0 pe-1 pb-2">
-                            <span  class="col-12 p-0 px-1 text-end"
-                                   th:text="'Olá, '+${userName}"
-                                   th:unless="${#strings.isEmpty(userName)}">
-                            </span>
-                            <div class="col-12 d-flex flex-row justify-content-end">
-                                <div th:unless="${#strings.isEmpty(userName)}"
-                                     th:insert="~{fragments/components/botoes :: 
-                                     botao(texto='Cadastro',
-                                     fgcolor='text-white',
-                                     onclick='editarCustomer(0)',
-                                     imagem='bi-person',
-                                     cor='btn-tonicblue')}" ></div>
+            <form>
 
-
-                                <div th:if="${#strings.isEmpty(userName)}" th:insert="~{fragments/components/botoes :: 
-                                     botao(texto='Entrar',
-                                     fgcolor='text-white',
-                                     onclick='telaLogin()',
-                                     tipo='button',
-                                     toggle='modal',
-                                     target='#modalLogin',
-                                     imagem='bi-box-arrow-in-right',
-                                     cor='btn-tonicblue')}" ></div>
-                                <div 
-                                    th:unless="${#strings.isEmpty(userName)}" 
-                                    th:insert="~{fragments/components/botoes :: 
-                                    botao(texto='Sair',
-                                    cor='btn-salmon',
-                                    fgcolor='text-white',
-                                    onclick='logout()',
-                                    revImagem='bi-box-arrow-right')}" ></div>                    
+                <div class="m-0 p-0" id="cabecalho">
+                    <div th:fragment="cabecalhoFragment" th:remove="tag">
+                        <header class="btn-plum d-flex
+                                rounded-top-3 h-3rem m-1 my-0 pe-0 ps-2 pt-1 fixed-top">
+                            <div class="col-4 d-flex justify-content-start m-0 p-0 pe-1 align-items-center">
+                                <img src="/images/ic_launcher.png" class="h-100" />
                             </div>
-                        </div>
-                    </header>
-                    <footer class="btn-plum text-center rounded-bottom-3 h-3rem m-1 my-0 fixed-bottom">
-                        <div th:unless="${#lists.isEmpty(cart)}"
-                             th:insert="~{fragments/components/botoes :: 
-                             botaoBadge(texto='Carrinho',
-                             textoBadge=| ${#lists.isEmpty(cart)?0:#lists.size(cart)} |,
-                             fgcolor='text-white',
-                             imagem='bi-cart',
-                             onclick='recuperarCarrinho()',
-                             cor='btn-tonicblue')}" ></div>
-                        <p class="m-0 p-0">&copy; 2025 Lu Mandalas</p>
-                    </footer>
+                            <div class="col-8 d-flex flex-column justify-content-center align-items-end h-100 m-0 p-0 pe-1 pb-2">
+                                <span  class="col-12 p-0 px-1 text-end"
+                                       th:text="'Olá, '+${userName}"
+                                       th:unless="${#strings.isEmpty(userName)}">
+                                </span>
+                                <div class="col-12 d-flex flex-row justify-content-end">
+                                    <div th:unless="${#strings.isEmpty(userName)}"
+                                         th:insert="~{fragments/components/botoes :: 
+                                         botao(texto='Cadastro',
+                                         fgcolor='text-white',
+                                         onclick='editarCustomer(0)',
+                                         imagem='bi-person',
+                                         cor='btn-tonicblue')}" ></div>
+
+
+                                    <div th:if="${#strings.isEmpty(userName)}" th:insert="~{fragments/components/botoes :: 
+                                         botao(texto='Entrar',
+                                         fgcolor='text-white',
+                                         onclick='telaLogin()',
+                                         tipo='button',
+                                         toggle='modal',
+                                         target='#modalLogin',
+                                         imagem='bi-box-arrow-in-right',
+                                         cor='btn-tonicblue')}" ></div>
+                                    <div 
+                                        th:unless="${#strings.isEmpty(userName)}" 
+                                        th:insert="~{fragments/components/botoes :: 
+                                        botao(texto='Sair',
+                                        cor='btn-salmon',
+                                        fgcolor='text-white',
+                                        onclick='logout()',
+                                        revImagem='bi-box-arrow-right')}" ></div>                    
+                                </div>
+                            </div>
+                        </header>
+                        <footer class="btn-plum text-center rounded-bottom-3 h-3rem m-1 my-0 fixed-bottom">
+                            <div th:unless="${#lists.isEmpty(cart)}"
+                                 th:insert="~{fragments/components/botoes :: 
+                                 botaoBadge(texto='Carrinho',
+                                 textoBadge=| ${#lists.isEmpty(cart)?0:#lists.size(cart)} |,
+                                 fgcolor='text-white',
+                                 imagem='bi-cart',
+                                 onclick='recuperarCarrinho()',
+                                 cor='btn-tonicblue')}" ></div>
+                            <p class="m-0 p-0">&copy; 2025 Lu Mandalas</p>
+                        </footer>
+                    </div>
                 </div>
-            </div>
 
-            <div th:if="${errorMessage}" class="mensagem m-0 px-2 py-1">
-                <div class="alert alert-danger m-0 p-0">
-                    <p th:text="${errorMessage}" class="my-1 p-0" >Erro</p>
-                </div>            
-            </div>
-
-            <div th:if="${successMessage}" class="mensagem m-0 px-2 py-1">
-                <div class="alert alert-success m-0 p-0">
-                    <p th:text="${successMessage}" class="my-1 p-0">Sucesso</p>
+                <div th:if="${errorMessage}" class="mensagem m-0 px-2 py-1">
+                    <div class="alert alert-danger m-0 p-0">
+                        <p th:text="${errorMessage}" class="my-1 p-0" >Erro</p>
+                    </div>            
                 </div>
-            </div>
 
-            <!-- /////////////////// Cartões//////////////////////////////////// -->
-            <div class="btn-plum m-1 mw-100 p-0 ps-1 row row-cols-1 row-cols-sm-2">
-                <div class="col-sm-6 my-1 p-0 pe-1" th:each="item,i : ${itens}">
-                    <div th:insert="~{fragments/cartao :: cartao(${item})}"></div>
+                <div th:if="${successMessage}" class="mensagem m-0 px-2 py-1">
+                    <div class="alert alert-success m-0 p-0">
+                        <p th:text="${successMessage}" class="my-1 p-0">Sucesso</p>
+                    </div>
                 </div>
-            </div>
-            <!-- //////////////////////////////////////////////////////////////// -->
-            <div th:insert="~{fragments/modals/carrinho :: carrinho}"></div>
-            <div th:insert="~{fragments/modals/selecionado :: selecionado}"></div>
-            <div th:insert="~{fragments/modals/login :: login}"></div>
-            <div th:insert="~{fragments/modals/address :: address}"></div>     
-            <div th:insert="~{fragments/modals/cadastro :: cadastro}"></div>
-            <div th:insert="~{fragments/modals/enderecos :: enderecos}"></div>
 
+                <!-- /////////////////// Cartões//////////////////////////////////// -->
+                <div class="btn-plum m-1 mw-100 p-0 ps-1 row row-cols-1 row-cols-sm-2">
+                    <div class="col-sm-6 my-1 p-0 pe-1" th:each="item,i : ${itens}">
+                        <div th:insert="~{fragments/cartao :: cartao(${item})}"></div>
+                    </div>
+                </div>
+                <!-- //////////////////////////////////////////////////////////////// -->
+                <div th:insert="~{fragments/modals/carrinho :: carrinho}"></div>
+                <div th:insert="~{fragments/modals/selecionado :: selecionado}"></div>
+                <div th:insert="~{fragments/modals/login :: login}"></div>
+                <div th:insert="~{fragments/modals/address :: address}"></div>     
+                <div th:insert="~{fragments/modals/cadastro :: cadastro}"></div>
+                <div th:insert="~{fragments/modals/enderecos :: enderecos}"></div>
+
+                <div class="toast" data-bs-delay="10000"
+                     style="position: absolute; top: 3.5rem;" id="messageToast">
+                    <div class="toast-header">
+                        <img src="/images/ic_launcher.png" class="rounded me-2" alt="...">
+                            <strong class="me-auto" id="messageTitle">Atenção!</strong>
+                            <small>11 mins ago</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <span id="messageBody">Nova notificação.</span>
+                    </div>
+                </div>
+            </form>
         </div>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" crossorigin="anonymous"></script>
+        <!--    <script src="node_modules/firebase/firebase-app.js"></script>
+            <script src="node_modules/firebase/firebase-auth.js"></script>-->
         <script src="myScripts/myJS.js"></script>
+        <script src="myScripts/firebase.js" type="module"></script>
     </body>
 </html>

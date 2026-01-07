@@ -2,7 +2,6 @@ package com.rfs.menudigital.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 /**
  *
  * @author Roselito@RFS

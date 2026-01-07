@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Crypt {
-
     public String SHA(String senha, String algorithm) {
         String retorno = "";
         try {

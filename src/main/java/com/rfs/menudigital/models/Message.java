@@ -1,7 +1,6 @@
 package com.rfs.menudigital.models;
 
 import lombok.Data;
-
 /**
  *
  * @author Roselito@RFS

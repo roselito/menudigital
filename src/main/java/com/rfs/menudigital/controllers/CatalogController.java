@@ -4,6 +4,10 @@
  */
 package com.rfs.menudigital.controllers;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 import com.rfs.menudigital.beans.UserSessionData;
 import com.rfs.menudigital.models.CartItem;
 import com.rfs.menudigital.models.Customer;
@@ -419,14 +423,41 @@ public class CatalogController {
         model.addAttribute("totalCarrinho", totalCarrinho);
     }
 
-
     @RequestMapping("/teste")
     public String teste(Model model) {
         return "teste";
     }
-    
+
     @RequestMapping("/testea")
     public String testea(Model model) {
         return "testea";
     }
+
+    @GetMapping("/token/{s}")
+    public String token(@PathVariable String s, Model model) {
+        System.out.println(s);
+        return "catalog :: cabecalhoFragment";
+    }
+
+    @GetMapping("/mensagem")
+    public String enviarMensagem() {
+
+        try {
+            Notification notification = Notification.builder()
+                    .setTitle("Mensagem")
+                    .setBody("Teste firebase com sucesso")
+                    .setImage("/imagens/ic_launcher.png")
+                    .build();
+            Message msg = Message.builder()
+                    .setToken("cDwu1FYUNiTe-3nlGpVDp4:APA91bH3CJfK_QeWueG6-qFdKOsjUbzIIsC3SDgEQDIeHxur0FGZAYHThKTpJXcRcc-yBGWtk6AbYSVyeedOspv6g0bqbVPy_P_ArLMgzgRln0E4InbMgF0")
+                    .setNotification(notification)
+                    .build();
+            String idmsg = FirebaseMessaging.getInstance().send(msg);
+            System.out.println(idmsg);
+        } catch (FirebaseMessagingException ex) {
+            System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return "catalog :: cabecalhoFragment";
+    }
+
 }

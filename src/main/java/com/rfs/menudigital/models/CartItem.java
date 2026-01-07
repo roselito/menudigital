@@ -12,7 +12,6 @@ import org.springframework.format.annotation.NumberFormat;
 
 @Data
 public class CartItem {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

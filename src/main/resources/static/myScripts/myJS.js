@@ -18,7 +18,7 @@ $(document).ready(function () {
     var SPMaskBehavior = function (val) {
         return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
     };
-    spOptions = {
+    var spOptions = {
         onKeyPress: function (val, e, field, options) {
             field.mask(SPMaskBehavior.apply({}, arguments), options);
         }
@@ -36,6 +36,8 @@ $(document).ready(function () {
             }
         });
     });
+
+
 
 });
 
@@ -132,8 +134,8 @@ function increaseAmount() {
     modal.find('#calcPrice').val(formatterBR.format(valorAmount * valor));
 }
 
-function iniciarUpload(event){
-    if (event.target.files && event.target.files[0].name){
+function iniciarUpload(event) {
+    if (event.target.files && event.target.files[0].name) {
         $('#formImagemButtonSubmit').click();
     }
 }
@@ -390,3 +392,5 @@ setTimeout(function () {
         mensagem.style.display = 'none';
     }
 }, 5000);
+
+
