@@ -36,9 +36,6 @@ $(document).ready(function () {
             }
         });
     });
-
-
-
 });
 
 $('#modalSelecionado').on('show.bs.modal', function (event) {

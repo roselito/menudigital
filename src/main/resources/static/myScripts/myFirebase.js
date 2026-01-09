@@ -4,10 +4,9 @@ import { getAuth,
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
         GoogleAuthProvider,
+        EmailAuthProvider,
         signInWithPopup } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
 const firebaseConfig = {
     apiKey: "AIzaSyC0PdUVe7ouuZgUUffy6HiK-vI-qVnEiyE",
     authDomain: "lu-mandalas.firebaseapp.com",
@@ -17,7 +16,10 @@ const firebaseConfig = {
     appId: "1:555973831215:web:680ecfba650edd731c34da",
     measurementId: "G-TZF5LS36NM"
 };
-const auth = getAuth();
+// precisa vir depois da configuração
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+const auth = getAuth(app);
 auth.useDeviceLanguage();
 const provider = new GoogleAuthProvider();
 
@@ -80,28 +82,26 @@ onMessage(getMessaging(), (payload) => {
 export const enviarNotificacao = () => {
     const registrationToken = 'cDwu1FYUNiTe-3nlGpVDp4:APA91bH3CJfK_QeWueG6-qFdKOsjUbzIIsC3SDgEQDIeHxur0FGZAYHThKTpJXcRcc-yBGWtk6AbYSVyeedOspv6g0bqbVPy_P_ArLMgzgRln0E4InbMgF0';
 
-const message = {
-  notification: {
-    title: 'Teste envio',
-    body: 'para o chrome',
-    image: 'https://localhost/images/ic_launcher.png'
-  },
-  token: registrationToken
-};
+    const message = {
+        notification: {
+            title: 'Teste envio',
+            body: 'para o chrome',
+            image: 'https://localhost/images/ic_launcher.png'
+        },
+        token: registrationToken
+    };
 
 // Send a message to the device corresponding to the provided
 // registration token.
-messaging.send(message)
-  .then((response) => {
-    // Response is a message ID string.
-    console.log('Successfully sent message:', response);
-  })
-  .catch((error) => {
-    console.log('Error sending message:', error);
-  });
+    messaging.send(message)
+            .then((response) => {
+                // Response is a message ID string.
+                console.log('Successfully sent message:', response);
+            })
+            .catch((error) => {
+                console.log('Error sending message:', error);
+            });
 };
-
-
 
 function displayNotification(title, options) {
     if (!("Notification" in window)) {
@@ -128,20 +128,38 @@ function displayNotification(title, options) {
     }
 }
 
-async function logar() {
-    await signInWithPopup(auth, provider).then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+export function logar2() {
+//    await signInWithPopup(auth, provider).then((result) => {
+    signInWithEmailAndPassword(auth, "roselitofs@hotmail.com", "lito.!R0").then((result) => {
+//        createUserWithEmailAndPassword(auth,"roselitofs@hotmail.com", "lito.!R0").then((result) => {
+        //const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
+        console.log(user);
         console.log(user.displayName);
         console.log(user.email);
+        console.log(user.accessToken);
         return true;
     }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
         alert(errorMessage);
         return false;
     });
+}
+
+export function logar() {
+    var uiConfig = {
+        signInSuccessUrl: '<your-redirect-url>',
+        signInOptions: [
+            // List of providers
+            GoogleAuthProvider.PROVIDER_ID,
+            EmailAuthProvider.PROVIDER_ID
+                    // Add other providers here
+        ]
+                // Other customizations
+    };
+
+// Initialize the FirebaseUI Widget using Firebase.
+    var ui = new firebaseui.auth.AuthUI(auth);
+    ui.start('#firebaseui-auth-container', uiConfig);
 }
