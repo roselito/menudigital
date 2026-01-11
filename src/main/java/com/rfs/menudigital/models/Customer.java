@@ -22,4 +22,6 @@ public class Customer {
     private String email;
     @Transient
     private String senhaConf;
+    @Transient
+    private String fireBaseError;
 }

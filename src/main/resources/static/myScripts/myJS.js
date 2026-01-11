@@ -138,6 +138,11 @@ function iniciarUpload(event) {
 }
 
 function logout() {
+    try {
+        firebase.auth().signOut();
+    } catch (error) {
+        console.error("Erro ao deslogar:", error);
+    }
     $.ajax({
         type: 'POST',
         url: '/logout',
@@ -248,13 +253,59 @@ function submitAddress(event) {
     });
 }
 
-function submitCustomer(event) {
+async function submitCustomer(event) {
     event.preventDefault();
     $(":input:disabled").prop('disabled', false);
     var form = $('#formCadastro');
     var url = form.attr('action');
-    var formData = form.serialize();
     var formMethod = form.attr('method');
+    var formData = form.serializeArray();
+    var formArray = formData.map(input => [input.name, input.value]);
+    var formMap = new Map(formArray);
+    var email = formMap.get('email');
+    var senha = formMap.get('senha');
+    var senhaConf = formMap.get('senhaConf');
+    var senhaFraca = false;
+    var senhaNaoConfere = false;
+    var emailEmUso = false;
+    console.log(email, senha);
+    const fetchSignIn = async (email, formData) => {
+        try {
+            const methods = await auth.fetchSignInMethodsForEmail(email);
+            if (methods.length > 0) {
+                // invalidar o form
+                formData.push({name: 'fireBaseError', value: 'auth/email-already-in-use'});
+                emailEmUso = true;
+            }
+        } catch (error) {
+            console.log("erro do fetchsign:",error.code);
+        }
+    };
+    await fetchSignIn(email, formData);
+    if (!emailEmUso) {
+        if (!senhaForte(senha)) {
+            formData.push({name: 'fireBaseError', value: 'auth/weak-password'});
+            senhaFraca = true;
+        } else {
+            if (senha !== senhaConf) {
+                formData.push({name: 'fireBaseError', value: 'auth/not-equal-password'});
+                senhaNaoConfere = true;
+            }
+        }
+    }
+    if (!emailEmUso && !senhaFraca && !senhaNaoConfere) {
+        const invalida = async (email, senha) => {
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, senha);
+                console.log(userCredential);
+            } catch (error) {
+                console.log("erro do firebase:", error.code);
+                // invalidar o form
+                formData.push({name: 'fireBaseError', value: error.code});
+            }
+        };
+        invalida(email, senha);
+    }
     $.ajax({
         method: formMethod,
         url: url,
@@ -277,12 +328,37 @@ function submitCustomer(event) {
     });
 }
 
-function submitLogin(event) {
+async function submitLogin(event) {
     event.preventDefault();
     var form = $('#formLogin');
     var url = form.attr('action');
-    var formData = form.serialize();
     var formMethod = form.attr('method');
+
+    var formData = form.serializeArray();
+    var formArray = formData.map(input => [input.name, input.value]);
+    var formMap = new Map(formArray);
+    var email = formMap.get('emailLogin');
+    var senhaLogin = formMap.get('senhaLogin');
+
+    const signIn = async (email, senhaLogin) => {
+        try {
+            userCredential = await auth.signInWithEmailAndPassword(email, senhaLogin);
+            console.log(userCredential);
+            console.log(userCredential.user._delegate.email);
+            /*
+             *  guardar na sessão: 
+             *      user._delegate.accessToken
+             *      user._delegate.displayName
+             *      user._delegate.email
+             *      user._delegate.uid
+             */
+        } catch (error) {
+            console.log("erro signin:",error.code);
+            // invalidar o form
+            formData.push({name: 'fireBaseError', value: error.code});
+        }
+    };
+    await signIn(email, senhaLogin);
     $.ajax({
         method: formMethod,
         url: url,
@@ -344,6 +420,13 @@ function marcarImagem(id) {
     $('#imgFile').click();
 }
 
+function senhaForte(senha) {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
+    console.log(senha, "senhaforte:", regex.test(senha));
+    return regex.test(senha);
+}
+
+
 function uploadImagem(event) {
     event.preventDefault();
     var formDOM = $('#formImagem')[0];
@@ -388,6 +471,7 @@ setTimeout(function () {
     if (mensagem) {
         mensagem.style.display = 'none';
     }
-}, 5000);
+}
+, 5000);
 
 

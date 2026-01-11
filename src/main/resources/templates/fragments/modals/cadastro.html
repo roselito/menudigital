@@ -33,7 +33,8 @@
                                 </div>
                                 <input type="hidden" th:field="*{id}" ></input>
                             </div>        
-                            <div id="divBarra1" class="bg-light p-0 m-0 mb-1 flex-nowrap d-flex justify-content-center"
+                            <div id="divBarra1"  th:unless="${#fields.hasErrors()}"
+                                 class="bg-light p-0 m-0 mb-1 flex-nowrap d-flex justify-content-center"
                                  th:classappend="${(alteraSenha=='1' or edicao=='1')?'d-none':''}"
                                  data-pg-name="footer">
                                 <div th:insert="~{fragments/components/botoes :: 

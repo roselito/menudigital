@@ -4,7 +4,6 @@
  */
 package com.rfs.menudigital.controllers;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -81,6 +80,9 @@ public class CatalogController {
     @Value("${app.upload.dir}")
     private String uploadDir;
 
+    private static final String USUARIO = "USUARIO";
+    private static final String EMAIL = "EMAIL";
+
     @GetMapping("/favicon.ico")
     @ResponseBody
     public void dummyFavicon() {
@@ -101,6 +103,7 @@ public class CatalogController {
             customerCadastro = (Customer) model.getAttribute("customerCadastro");
         }
         model.addAttribute("customerCadastro", customerCadastro);
+        System.out.println("");
         return "catalog";
     }
 
@@ -194,6 +197,60 @@ public class CatalogController {
 
     @PostMapping("/gravarCadastro")
     public String gravarCadastro(@Valid @ModelAttribute("customerCadastro") Customer customerCadastro, BindingResult result, Model model) {
+            System.out.println(customerCadastro);
+        Integer id = customerCadastro.getId();
+//        String email = customerCadastro.getEmail();
+        String senha = customerCadastro.getSenha();
+        String senhaConf = customerCadastro.getSenhaConf();
+        senha = senha == null ? "" : senha;
+        senhaConf = senhaConf == null ? "" : senhaConf;
+        String erroFireBase = customerCadastro.getFireBaseError();
+        erroFireBase = erroFireBase==null?"":erroFireBase;
+        String retorno = "catalog :: cabecalhoFragment";
+//        List<Customer> emails = customersRepository.findByEmail(email);
+        if ((id == null || (!senha.isEmpty() || !senhaConf.isEmpty()))) {
+            if (erroFireBase.endsWith("not-equal-password")) {
+                result.rejectValue("senha", "", "Senha e confirmação não estão iguais.");
+                result.rejectValue("senhaConf", "", "");
+            }
+            if (erroFireBase.endsWith("weak-password")) {
+                result.rejectValue("senha", "", "Senha: ao menos 6 números, símbolos e letras misturados.");
+            }
+            if (result.getFieldErrorCount("senha") + result.getFieldErrorCount("senhaConf") > 0) {
+                model.addAttribute("alteraSenha", "1");
+                model.addAttribute("edicao", "0");
+                model.addAttribute("border", "border-0");
+                model.addAttribute("readonly", "readonly");
+                model.addAttribute("disabled", "disabled");
+            }
+        }
+        if (erroFireBase.endsWith("email-already-in-use")) {
+            if (id==null) {
+                result.rejectValue("email", "", "E-mail já cadastrado.");
+            }
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("customerCadastro", customerCadastro);
+            model.addAttribute("modais", Arrays.asList("#modalCadastro"));
+            model.addAttribute("toasts", Arrays.asList("#toastErrosCadastro"));
+            model.addAttribute("errors", result.getFieldErrors());
+            retorno = "fragments/modals/cadastro :: cadastroContent";
+        } else {
+//            if (!senha.isEmpty()) {
+//                customerCadastro.setSenha(crypt.SHA(senha, "SHA-256"));
+//            } else {
+//                Customer c = customersRepository.findById(id).get();
+//                customerCadastro.setSenha(c.getSenha());
+//            }
+            //customersRepository.save(customerCadastro);
+            userSessionData.setCustomer(customerCadastro);
+            atualizarModelCatalogo(model);
+        }
+        return retorno;
+    }
+
+    @PostMapping("/gravarCadastro/original")
+    public String gravarCadastroOriginal(@Valid @ModelAttribute("customerCadastro") Customer customerCadastro, BindingResult result, Model model) {
         Integer id = customerCadastro.getId();
         String email = customerCadastro.getEmail();
         String senha = customerCadastro.getSenha();
@@ -251,23 +308,26 @@ public class CatalogController {
     }
 
     @PostMapping("/login")
-    public String logar(@Valid UserLogin userLogin, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    public String logar(
+            @Valid UserLogin userLogin,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes) {
         String retorno = "catalog :: cabecalhoFragment";
+        String erroFireBase = userLogin.getFireBaseError();
+        erroFireBase = erroFireBase==null?"":erroFireBase;
         userSessionData.setCustomer(new Customer());
-        List<Customer> customers = customersRepository.findByEmail(userLogin.getEmailLogin());
-        if (!customers.isEmpty()) {
-            Customer foundCustomer = customers.get(0);
-            String senhaCrypt = crypt.SHA(userLogin.getSenhaLogin(), "SHA-256");
-            if (foundCustomer.getSenha().equalsIgnoreCase(senhaCrypt)) {
-                userSessionData.setCustomer(foundCustomer);
-                redirectAttributes.addFlashAttribute("successMessage", "Bem-vindo(a)!");
-            } else {
-                userSessionData.setCustomer(null);
-                result.rejectValue("senhaLogin", "", "Senha incorreta!.");
-            }
-        } else {
+        if (erroFireBase.endsWith("user-not-found")) {
             userSessionData.setCustomer(null);
             result.rejectValue("emailLogin", "", "E-mail não cadastrado.");
+        } else if (erroFireBase.endsWith("wrong-password")) {
+            userSessionData.setCustomer(null);
+            result.rejectValue("senhaLogin", "", "Senha incorreta!.");
+        } else {
+            List<Customer> customers = customersRepository.findByEmail(userLogin.getEmailLogin());
+            if (!customers.isEmpty()) {
+                userSessionData.setCustomer(customers.get(0));
+            }
         }
         if (result.hasErrors()) {
             model.addAttribute("modais", Arrays.asList("#modalLogin"));

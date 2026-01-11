@@ -23,29 +23,29 @@
             const app = firebase.initializeApp(firebaseConfig);
             const auth = firebase.auth();
             
-            auth.onAuthStateChanged(auth, (user) => {
-                if (user) {// O usuário está logado                    
-                    console.log("Usuário logado:", user);
-                    const uid = user.uid;
-                    const email = user.email;
-                    const displayName = user.displayName;
-                    const photoURL = user.photoURL;
-                    console.log(user.email);
-                    console.log(user.accessToken);
-                } else {
-                    console.log("Usuário deslogado");
-                }
-            });
+//            firebase.auth().onAuthStateChanged((user) => {
+//                if (user) {// O usuário está logado                    
+//                    console.log("Usuário logado:", user);
+//                    const uid = user.uid;
+//                    const email = user.email;
+//                    const displayName = user.displayName;
+//                    const photoURL = user.photoURL;
+//                    console.log(user.email);
+//                    console.log(user.accessToken);
+//                } else {
+//                    console.log("Usuário deslogado");
+//                }
+//            });
 //            auth.languageCode = 'pt_br';
-            var ui = new firebaseui.auth.AuthUI(auth);
-            var uiConfig = {
-//                signInSuccessUrl: '#',
-                signInOptions: [
-                    // List of providers
-                    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                    firebase.auth.GoogleAuthProvider.PROVIDER_ID
-                            // Add other providers here
-                ]
-            };
-//            ui.start('#firebaseui-auth-container', uiConfig);
+//            var ui = new firebaseui.auth.AuthUI(auth);
+//            var uiConfig = {
+////                signInSuccessUrl: '#',
+//                signInOptions: [
+//                    // List of providers
+//                    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+//                    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+//                            // Add other providers here
+//                ]
+//            };
+            //ui.start('#firebaseui-auth-container', uiConfig);
 
