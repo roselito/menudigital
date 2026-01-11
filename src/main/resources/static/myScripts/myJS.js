@@ -278,7 +278,7 @@ async function submitCustomer(event) {
                 emailEmUso = true;
             }
         } catch (error) {
-            console.log("erro do fetchsign:",error.code);
+            console.log("erro do fetchsign:", error.code);
         }
     };
     await fetchSignIn(email, formData);
@@ -353,7 +353,7 @@ async function submitLogin(event) {
              *      user._delegate.uid
              */
         } catch (error) {
-            console.log("erro signin:",error.code);
+            console.log("erro signin:", error.code);
             // invalidar o form
             formData.push({name: 'fireBaseError', value: error.code});
         }
@@ -418,6 +418,34 @@ function toggleEnderecos() {
 function marcarImagem(id) {
     idImagem = id;
     $('#imgFile').click();
+}
+
+
+async function notificacoes() {
+    if (await receberNotificacoes()) {
+        console.log("device token: ", deviceToken);
+        gravarToken();
+    }
+}
+
+function gravarToken() {
+    const payload = {
+        token: deviceToken
+    };
+    $.ajax({
+        url: "/gravarToken",
+        contentType: "application/json",
+        type: "POST",            
+        data: JSON.stringify(payload),
+        success: function (response) {
+            console.log("Device salvo:", response);
+            alert("Device criado com ID: " + response.id);
+        },
+        error: function (error) {
+            console.error("Erro:", error);
+            alert("Erro ao salvar device");
+        }
+    })
 }
 
 function senhaForte(senha) {

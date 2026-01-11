@@ -4,6 +4,7 @@
  */
 package com.rfs.menudigital.controllers;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -11,10 +12,12 @@ import com.google.firebase.messaging.Notification;
 import com.rfs.menudigital.beans.UserSessionData;
 import com.rfs.menudigital.models.CartItem;
 import com.rfs.menudigital.models.Customer;
+import com.rfs.menudigital.models.Device;
 import com.rfs.menudigital.models.Endereco;
 import com.rfs.menudigital.models.Item;
 import com.rfs.menudigital.models.UserLogin;
 import com.rfs.menudigital.repositories.CustomersRepository;
+import com.rfs.menudigital.repositories.DevicesRepository;
 import com.rfs.menudigital.repositories.EnderecosRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,6 +57,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,7 +80,11 @@ public class CatalogController {
     @Autowired
     private EnderecosRepository enderecosRepository;
     @Autowired
+    private DevicesRepository devicesRepository;
+    @Autowired
     private Crypt crypt;
+    @Autowired
+    private FirebaseApp firebaseApp;
 
     @Value("${app.upload.dir}")
     private String uploadDir;
@@ -197,7 +206,7 @@ public class CatalogController {
 
     @PostMapping("/gravarCadastro")
     public String gravarCadastro(@Valid @ModelAttribute("customerCadastro") Customer customerCadastro, BindingResult result, Model model) {
-            System.out.println(customerCadastro);
+        System.out.println(customerCadastro);
         Integer id = customerCadastro.getId();
 //        String email = customerCadastro.getEmail();
         String senha = customerCadastro.getSenha();
@@ -205,7 +214,7 @@ public class CatalogController {
         senha = senha == null ? "" : senha;
         senhaConf = senhaConf == null ? "" : senhaConf;
         String erroFireBase = customerCadastro.getFireBaseError();
-        erroFireBase = erroFireBase==null?"":erroFireBase;
+        erroFireBase = erroFireBase == null ? "" : erroFireBase;
         String retorno = "catalog :: cabecalhoFragment";
 //        List<Customer> emails = customersRepository.findByEmail(email);
         if ((id == null || (!senha.isEmpty() || !senhaConf.isEmpty()))) {
@@ -225,7 +234,7 @@ public class CatalogController {
             }
         }
         if (erroFireBase.endsWith("email-already-in-use")) {
-            if (id==null) {
+            if (id == null) {
                 result.rejectValue("email", "", "E-mail já cadastrado.");
             }
         }
@@ -307,6 +316,17 @@ public class CatalogController {
         return "catalog :: cabecalhoFragment";
     }
 
+    @PostMapping("/gravarToken")
+    @ResponseBody
+    public Device gravarToken(@RequestBody Device device) {
+        if (devicesRepository.findByToken(device.getToken()).isEmpty()) {
+            device.setCreated(new Date());
+            return devicesRepository.save(device);
+        } else {
+            return new Device();
+        }
+    }
+
     @PostMapping("/login")
     public String logar(
             @Valid UserLogin userLogin,
@@ -315,7 +335,7 @@ public class CatalogController {
             RedirectAttributes redirectAttributes) {
         String retorno = "catalog :: cabecalhoFragment";
         String erroFireBase = userLogin.getFireBaseError();
-        erroFireBase = erroFireBase==null?"":erroFireBase;
+        erroFireBase = erroFireBase == null ? "" : erroFireBase;
         userSessionData.setCustomer(new Customer());
         if (erroFireBase.endsWith("user-not-found")) {
             userSessionData.setCustomer(null);
@@ -504,13 +524,14 @@ public class CatalogController {
     public String enviarMensagem() {
 
         try {
+            Device device = devicesRepository.findById(1).get();
             Notification notification = Notification.builder()
                     .setTitle("Mensagem")
                     .setBody("Teste firebase com sucesso")
                     .setImage("/imagens/ic_launcher.png")
                     .build();
             Message msg = Message.builder()
-                    .setToken("cDwu1FYUNiTe-3nlGpVDp4:APA91bH3CJfK_QeWueG6-qFdKOsjUbzIIsC3SDgEQDIeHxur0FGZAYHThKTpJXcRcc-yBGWtk6AbYSVyeedOspv6g0bqbVPy_P_ArLMgzgRln0E4InbMgF0")
+                    .setToken(device.getToken())
                     .setNotification(notification)
                     .build();
             String idmsg = FirebaseMessaging.getInstance().send(msg);
