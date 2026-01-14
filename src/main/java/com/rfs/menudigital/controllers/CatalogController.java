@@ -9,6 +9,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.WebpushConfig;
+import com.google.firebase.messaging.WebpushNotification;
 import com.rfs.menudigital.beans.UserSessionData;
 import com.rfs.menudigital.models.CartItem;
 import com.rfs.menudigital.models.Customer;
@@ -86,11 +88,9 @@ public class CatalogController {
     @Autowired
     private FirebaseApp firebaseApp;
 
+
     @Value("${app.upload.dir}")
     private String uploadDir;
-
-    private static final String USUARIO = "USUARIO";
-    private static final String EMAIL = "EMAIL";
 
     @GetMapping("/favicon.ico")
     @ResponseBody
@@ -321,6 +321,7 @@ public class CatalogController {
     public Device gravarToken(@RequestBody Device device) {
         if (devicesRepository.findByToken(device.getToken()).isEmpty()) {
             device.setCreated(new Date());
+            device.setNome(userSessionData.getCustomer().getNome());
             return devicesRepository.save(device);
         } else {
             return new Device();
@@ -525,21 +526,33 @@ public class CatalogController {
 
         try {
             Device device = devicesRepository.findById(1).get();
-            Notification notification = Notification.builder()
-                    .setTitle("Mensagem")
-                    .setBody("Teste firebase com sucesso")
-                    .setImage("/imagens/ic_launcher.png")
-                    .build();
+            
             Message msg = Message.builder()
-                    .setToken(device.getToken())
-                    .setNotification(notification)
-                    .build();
+        .setToken(device.getToken())
+        .setWebpushConfig(
+            WebpushConfig.builder()
+                .setNotification(
+                    WebpushNotification.builder()
+                        .setTitle("Entrega")
+                        .setBody("Clique para ver os detalhes")
+                        .setIcon("/imagens/ic_launcher.png")
+                        .setBadge("/imagens/ic_launcher.png")
+                        .setImage("/imagens/ic_launcher.png")
+                        .build()
+                )
+                .putData("url", "/promocoes")
+                .build()
+        )
+        .build();
             String idmsg = FirebaseMessaging.getInstance().send(msg);
             System.out.println(idmsg);
         } catch (FirebaseMessagingException ex) {
             System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (Exception ex) {
+            System.getLogger(CatalogController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return "catalog :: cabecalhoFragment";
     }
+
 
 }

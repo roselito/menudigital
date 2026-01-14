@@ -75,6 +75,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
         </dependency>
+        <!--  ////////////// jackson json  -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -84,7 +85,7 @@
             <artifactId>jackson-databind</artifactId> 
         </dependency>
         
-        
+        <!--  ////////////// Firebase  -->
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>

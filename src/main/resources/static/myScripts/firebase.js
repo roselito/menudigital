@@ -68,19 +68,33 @@ messaging.onMessage((payload) => {
     console.log('Message received. ', payload);
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
-        body: payload.notification.body
+        body: payload.notification.body || '',
+        icon: payload.notification.icon ,
+        badge: payload.notification.badge ,
+        image: payload.notification.image,
+        data: {
+            url: payload.notification.data?.url || '/'
+        },
+        tag: payload.notification.tag || 'default',
+        renotify: false,
+        requireInteraction: false,
+        silent: false,
+        actions: payload.notification.actions || [
+            {
+                action: 'open',
+                title: 'Abrir'
+            }
+        ]
     };
     $('#messageToast').toast('show');
     $('#messageTitle').text(payload.notification.title);
     $('#messageBody').text(payload.notification.body);
-    console.log(payload.notification.title);
-    console.log(payload.notification.body);
     displayNotification(notificationTitle, notificationOptions);
 });
 
 async function displayNotification(title, options) {
     try {
-        const reg = await navigator.serviceWorker.getRegistration();
+        const reg = await navigator.serviceWorker.ready;
         if (reg) {
             reg.showNotification(title, options);
             console.log(reg);
